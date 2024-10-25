@@ -1,0 +1,157 @@
+/* Theme Colors */
+:root {
+    --dark-blue: #1b3a67;
+    --dark-red: #8b0000;
+    --light-gray: #f8f9fa;
+}
+
+/* General Body */
+body {
+    background-color: var(--light-gray);
+}
+
+/* Top Navigation Bar */
+.navbar {
+    background-color: var(--dark-blue);
+}
+
+.navbar-brand {
+    color: var(--light-gray);
+    font-size: 1.2rem;
+}
+
+.navbar-brand:hover {
+    color: #ffffff;
+}
+
+.navbar-nav .nav-link {
+    color: var(--light-gray);
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+
+.search-bar {
+    border: 1px solid var(--light-gray);
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+.dropdown-menu {
+    right: 0;
+    left: auto;
+    width: 200px;
+}
+
+/* Sidebar for large and small screens */
+.sidebar {
+    height: 100vh;
+    background-color: var(--dark-blue);
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 60px; /* Reduced width for icon-only view */
+    padding-top: 20px;
+    overflow-x: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Sidebar hideable on small screens */
+.sidebar.hide {
+    left: -60px;
+}
+
+.sidebar a {
+    color: var(--light-gray);
+    display: block;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.8rem; /* Reduced font size */
+    position: relative;
+}
+
+.sidebar a:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    color: var(--dark-red); /* Red text */
+    background-color: var(--dark-blue); /* Blue background */
+}
+
+/* Sidebar Icon Styling */
+.sidebar i {
+    font-size: 1rem; /* Reduced icon size */
+    margin-bottom: 5px;
+}
+
+/* Tooltip text style */
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    background-color: var(--dark-blue); /* Blue background */
+    color: var(--dark-red); /* Red text */
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 65px; /* Reduced margin */
+    margin-top: 60px; /* Adjusted for navbar */
+    padding: 15px; /* Reduced padding */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* Adjust main content for hidden sidebar */
+.sidebar.hide ~ .main-content {
+    margin-left: 0;
+}
+
+/* Bottom navigation for small screens */
+.bottom-nav {
+    display: none;
+}
+
+/* Toggle Button for Sidebar */
+.toggle-btn {
+    font-size: 1.5rem;
+    background-color: var(--dark-blue);
+    color: var(--light-gray);
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    /* Display the toggle button before the logo in small screens */
+    .toggle-btn {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+    }
+
+    .sidebar a {
+        padding: 10px 0;
+    }
+}
+
+/* Dropdown hover effect over content */
+.navbar .dropdown-menu {
+    position: absolute;
+    top: 56px;
+    background-color: var(--dark-blue);
+}

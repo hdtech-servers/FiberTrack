@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer List{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Icons for Add, Import, and Export -->
+    <div>
+        <!-- Add Customer Icon -->
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addCustomerModal" title="Add Customer">
+            <i class="fas fa-user-plus"></i>
+        </button>
+
+        <!-- Import Customers Icon -->
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#importModal" title="Import Customers">
+            <i class="fas fa-file-import"></i>
+        </button>
+
+        <!-- Export Customers Icon -->
+        <a class="btn btn-light" href="{% url 'customer_export' %}" title="Export Customers">
+            <i class="fas fa-file-export"></i>
+        </a>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+        <input type="text" class="form-control" id="search-input" placeholder="Search customers..." value="{{ search_query }}">
+    </div>
+
+    <!-- Dropdown to select the number of customers per page -->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="perPageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Show {{ per_page }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="perPageDropdown">
+            <li><a class="dropdown-item" href="?per_page=25">25</a></li>
+            <li><a class="dropdown-item" href="?per_page=50">50</a></li>
+            <li><a class="dropdown-item" href="?per_page=100">100</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Customer Table -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>PPPoE Username</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="customer-list">
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.customer_id }}</td>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.contact_number }}</td>
+            <td>{{ customer.pppoe_username }}</td>
+            <td>
+                <a href="{% url 'customer_detail' customer.customer_id %}">View</a> |
+                <a href="{% url 'customer_edit' customer.customer_id %}">Edit</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No customers found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination controls -->
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if customers.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1&per_page={{ per_page }}">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number }}&per_page={{ per_page }}">Previous</a></li>
+        {% endif %}
+
+        <li class="page-item disabled"><a class="page-link">Page {{ customers.number }} of {{ customers.paginator.num_pages }}</a></li>
+
+        {% if customers.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}&per_page={{ per_page }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ customers.paginator.num_pages }}&per_page={{ per_page }}">Last</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<!-- Add Customer Modal -->
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'customer_add' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Import Customer Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importModalLabel">Import Customers</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data" action="{% url 'customer_import' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="file" class="form-label">Select CSV file:</label>
+            <input type="file" class="form-control" id="file" name="file" accept=".csv">
+          </div>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include FontAwesome for the icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Live Search Script -->
+<script>
+document.getElementById('search-input').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#customer-list tr');
+
+    rows.forEach(row => {
+        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const contact = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        const pppoe = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+        if (name.includes(query) || contact.includes(query) || pppoe.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}
+``

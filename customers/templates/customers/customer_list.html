@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer List{% endblock %}
+
+{% block content %}
+<h1>Customer List</h1>
+<table class="table table-striped">
+    <tr>
+        <th>Customer ID</th>
+        <th>Name</th>
+        <th>Contact Number</th>
+        <th>PPPoE Username</th>
+        <th>Actions</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+        <td>{{ customer.customer_id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.contact_number }}</td>
+        <td>{{ customer.pppoe_username }}</td>
+        <td>
+            <a href="{% url 'customer_detail' customer.customer_id %}">View</a> | 
+            <a href="{% url 'customer_edit' customer.customer_id %}">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Import Icon and Export Button -->
+<div class="d-flex justify-content-between">
+    <div>
+        <!-- Import Icon -->
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#importModal">
+            <i class="fas fa-file-import"></i> Import Customers
+        </button>
+    </div>
+    <div>
+        <a class="btn btn-success" href="{% url 'customer_export' %}">Export Customers</a>
+    </div>
+</div>
+
+<!-- Modal for Import Customers -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importModalLabel">Import Customers</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data" action="{% url 'customer_import' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="file" class="form-label">Select CSV file:</label>
+            <input type="file" class="form-control" id="file" name="file" accept=".csv">
+          </div>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Include FontAwesome if needed for the icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+{% endblock %}

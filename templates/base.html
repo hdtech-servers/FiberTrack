@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiberTrack</title>
+
+    {% load static %}
+
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <!-- Toggle Button for Sidebar (Small Screens) -->
+            <button class="toggle-btn" id="toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="{% url 'customer_list' %}">FiberTrack</a>
+
+            <!-- Search Bar -->
+            <form class="d-flex mx-auto" role="search">
+                <input class="form-control me-2 search-bar" type="search" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <!-- User Profile Dropdown -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                                <i class="fas fa-user-edit"></i> Edit Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidebar for large and small screens -->
+    <div class="sidebar" id="sidebar">
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-home"></i>
+            <span class="tooltip-text">Dashboard</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            <span class="tooltip-text">Payments</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-receipt"></i>
+            <span class="tooltip-text">Expenses</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-users"></i>
+            <span class="tooltip-text">Customers</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-ticket-alt"></i>
+            <span class="tooltip-text">Tickets</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-boxes"></i>
+            <span class="tooltip-text">Inventory</span>
+        </a>
+        <a href="{% url 'customer_list' %}">
+            <i class="fas fa-chart-line"></i>
+            <span class="tooltip-text">Reports</span>
+        </a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main-content" id="main-content">
+        {% block content %}
+        <!-- Content goes here -->
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle sidebar visibility
+        const toggleBtn = document.getElementById('toggle-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hide');
+            mainContent.classList.toggle('hide');
+        });
+    </script>
+</body>
+</html>

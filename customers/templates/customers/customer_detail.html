@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Details{% endblock %}
+
+{% block content %}
+<h1>Customer Details for {{ customer.name }}</h1>
+<p><strong>Customer ID:</strong> {{ customer.customer_id }}</p>
+<p><strong>Contact Number:</strong> {{ customer.contact_number }}</p>
+<p><strong>Email:</strong> {{ customer.email }}</p>
+<p><strong>PPPoE Username:</strong> {{ customer.pppoe_username }}</p>
+<p><strong>PPPoE Password:</strong> {{ customer.pppoe_password }}</p>
+<p><strong>Billing Address:</strong> {{ customer.billing_address }}</p>
+
+<div id="map" style="height: 400px;"></div>
+
+<a href="{% url 'customer_edit' customer.customer_id %}" class="btn btn-warning">Edit Customer</a>
+<a href="{% url 'customer_list' %}" class="btn btn-secondary">Back to List</a>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function initMap() {
+    var customerLat = {{ customer.latitude|default:0 }};
+    var customerLng = {{ customer.longitude|default:0 }};
+    var customerLocation = { lat: customerLat, lng: customerLng };
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: customerLocation,
+    });
+
+    var marker = new google.maps.Marker({
+      position: customerLocation,
+      map: map,
+      title: '{{ customer.name }}',
+    });
+  }
+
+  var script = document.createElement('script');
+  script.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap";
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+</script>
+{% endblock %}
