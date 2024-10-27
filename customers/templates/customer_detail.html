@@ -3,40 +3,102 @@
 {% block title %}Customer Details{% endblock %}
 
 {% block content %}
-<h1>Customer Details for {{ customer.name }}</h1>
-<p><strong>Customer ID:</strong> {{ customer.customer_id }}</p>
-<p><strong>Contact Number:</strong> {{ customer.contact_number }}</p>
-<p><strong>Email:</strong> {{ customer.email }}</p>
-<p><strong>PPPoE Username:</strong> {{ customer.pppoe_username }}</p>
-<p><strong>PPPoE Password:</strong> {{ customer.pppoe_password }}</p>
-<p><strong>Billing Address:</strong> {{ customer.billing_address }}</p>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Customer Information Card -->
+        <div class="col-lg-8 col-md-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Customer Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6"><strong>Customer ID:</strong> {{ customer.customer_id }}</div>
+                        <div class="col-6"><strong>Name:</strong> {{ customer.name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6"><strong>Contact Number:</strong> {{ customer.contact_number }}</div>
+                        <div class="col-6"><strong>Email:</strong> {{ customer.email }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6"><strong>PPPoE Username:</strong> {{ customer.pppoe_username }}</div>
+                        <div class="col-6"><strong>PPPoE Password:</strong> {{ customer.pppoe_password }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12"><strong>Billing Address:</strong> {{ customer.billing_address }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div id="map" style="height: 400px;"></div>
+        <!-- Customer Location and Google Maps -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Customer Location</h5>
+                </div>
+                <div class="card-body">
+                    <div id="map" style="height: 300px;"></div> <!-- Google Map Placeholder -->
+                    <div class="mt-3 text-muted">
+                        <p><strong>Latitude:</strong> {{ customer.latitude }}</p>
+                        <p><strong>Longitude:</strong> {{ customer.longitude }}</p>
+                    </div>
+                    <div id="map-error" class="text-danger d-none">Unable to load the map.</div>
+                </div>
+            </div>
+        </div>
 
-<a href="{% url 'customer_edit' customer.customer_id %}" class="btn btn-warning">Edit Customer</a>
-<a href="{% url 'customer_list' %}" class="btn btn-secondary">Back to List</a>
-
+        <!-- Action Buttons -->
+        <div class="col-lg-8 col-md-12">
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'customer_edit' customer.customer_id %}" class="btn btn-outline-primary">
+                    <i class="fas fa-edit"></i> Edit Customer
+                </a>
+                <a href="{% url 'customer_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Customer List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
+<!-- Google Maps Script -->
 <script>
   function initMap() {
-    var customerLat = {{ customer.latitude|default:0 }};
-    var customerLng = {{ customer.longitude|default:0 }};
-    var customerLocation = { lat: customerLat, lng: customerLng };
+    // Default to a fallback location if no coordinates are provided
+    var defaultLat = 0;
+    var defaultLng = 0;
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: customerLocation,
-    });
+    // Get customer coordinates
+    var customerLat = parseFloat('{{ customer.latitude|default:defaultLat }}');
+    var customerLng = parseFloat('{{ customer.longitude|default:defaultLng }}');
 
-    var marker = new google.maps.Marker({
-      position: customerLocation,
-      map: map,
-      title: '{{ customer.name }}',
-    });
+    // Check if valid coordinates are provided
+    if (!isNaN(customerLat) && !isNaN(customerLng) && (customerLat !== 0 || customerLng !== 0)) {
+        var customerLocation = { lat: customerLat, lng: customerLng };
+
+        // Initialize Google Map
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: customerLocation,
+        });
+
+        // Place a marker at the customer's location
+        new google.maps.Marker({
+          position: customerLocation,
+          map: map,
+          title: '{{ customer.name }}',
+        });
+    } else {
+        // Show an error message if coordinates are missing or invalid
+        document.getElementById('map-error').classList.remove('d-none');
+        document.getElementById('map').classList.add('d-none');
+    }
   }
 
+  // Load the Google Maps API script dynamically with your API key
   var script = document.createElement('script');
   script.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap";
   script.async = true;

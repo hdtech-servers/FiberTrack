@@ -45,6 +45,12 @@ def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
     return render(request, 'customer_detail.html', {'customer': customer})
 
+def customer_delete(request, customer_id):
+    customer = get_object_or_404(Customer, customer_id=customer_id)
+    customer.delete()
+    return redirect('customer_list')
+
+
 # Add New Customer
 def customer_add(request):
     if request.method == "POST":
@@ -59,17 +65,19 @@ def customer_add(request):
 
 # Edit Existing Customer
 def customer_edit(request, customer_id):
+    # Retrieve the customer object based on customer_id
     customer = get_object_or_404(Customer, customer_id=customer_id)
-    if request.method == "POST":
+
+    if request.method == 'POST':
         form = CustomerForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
-            messages.success(request, "Customer updated successfully!")
             return redirect('customer_detail', customer_id=customer.customer_id)
     else:
         form = CustomerForm(instance=customer)
-    return render(request, 'customer_form.html', {'form': form})
 
+    # Pass the customer and form to the template
+    return render(request, 'customer_edit.html', {'form': form, 'customer': customer})
 # Import Customers from CSV
 def customer_import(request):
     if request.method == "POST":
@@ -105,14 +113,17 @@ def customer_import(request):
 
 # Export Customers to CSV
 def customer_export(request):
+    # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="customers.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Name', 'Contact Number', 'Email', 'PPPoE Username', 'PPPoE Password', 'Billing Address', 'Latitude', 'Longitude'])
+    # Write the header row
+    writer.writerow(['Customer ID', 'Name', 'Contact Number', 'Email', 'PPPoE Username', 'Billing Address'])
 
-    customers = Customer.objects.all().values_list('name', 'contact_number', 'email', 'pppoe_username', 'pppoe_password', 'billing_address', 'latitude', 'longitude')
+    # Write data rows
+    customers = Customer.objects.all()
     for customer in customers:
-        writer.writerow(customer)
+        writer.writerow([customer.customer_id, customer.name, customer.contact_number, customer.email, customer.pppoe_username, customer.billing_address])
 
     return response
