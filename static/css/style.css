@@ -106,7 +106,6 @@ body {
 /* Main Content */
 .main-content {
     margin-left: 65px; /* Reduced margin */
-    margin-top: 60px; /* Adjusted for navbar */
     padding: 15px; /* Reduced padding */
     transition: margin-left 0.3s ease-in-out;
 }

@@ -1,21 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import OrganizationSettings
 from .forms import OrganizationSettingsForm
 
 
-def settings_view(request):
-    settings = OrganizationSettings.objects.first()
-
-    if request.method == 'POST':
-        form = OrganizationSettingsForm(request.POST, request.FILES, instance=settings)
-        if form.is_valid():
-            form.save()
-            return redirect('settings_view')
-    else:
-        form = OrganizationSettingsForm(instance=settings)
-
-    return render(request, 'settings/settings_form.html', {'form': form})
-
+@login_required(login_url='/authapp/login/')
 def view_edit_organization(request):
     # Fetch the first OrganizationSettings instance (assuming there's only one)
     organization_settings = OrganizationSettings.objects.first()

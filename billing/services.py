@@ -2,7 +2,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from .models import Invoice, Payment
-from customer.models import Customer
+from customers.models import Customer
 from settings.models import OrganizationSettings
 
 class MpesaService:

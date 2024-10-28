@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'customers',
     'inventory',
     'settings',
+    'billing',
+    'authapp',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,14 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Auto-logout after 5 minutes of inactivity (300 seconds)
+SESSION_COOKIE_AGE = 300  # 5 minutes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed
+SESSION_SAVE_EVERY_REQUEST = True  # Session is refreshed with every request
+
+
+# Redirect to the login page you defined in your authapp
+LOGIN_URL = '/authapp/login/'
+
+# Redirect to the login page after a logout
+LOGOUT_REDIRECT_URL = '/authapp/login/'

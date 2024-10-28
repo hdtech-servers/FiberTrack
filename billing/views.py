@@ -1,51 +1,193 @@
-import json
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Invoice, Payment
-from .forms import PaymentForm
-from django.contrib import messages
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .services import MpesaService
-
-# List invoices
-def invoice_list(request):
-    invoices = Invoice.objects.all().order_by('-created_at')
-    return render(request, 'billing/invoice_list.html', {'invoices': invoices})
-
-# Invoice details
-def invoice_detail(request, pk):
-    invoice = get_object_or_404(Invoice, pk=pk)
-    payments = Payment.objects.filter(invoice=invoice)
-    return render(request, 'billing/invoice_detail.html', {'invoice': invoice, 'payments': payments})
-
-# Add payment
-def add_payment(request, pk):
-    invoice = get_object_or_404(Invoice, pk=pk)
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            payment = form.save(commit=False)
-            payment.invoice = invoice
-            payment.save()
-            messages.success(request, 'Payment added successfully.')
-            return redirect('invoice_detail', pk=invoice.pk)
-    else:
-        form = PaymentForm()
-
-    return render(request, 'billing/add_payment.html', {'form': form, 'invoice': invoice})
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.http import HttpResponse
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from reportlab.pdfgen import canvas
+from .models import Invoice, Quotation, Payment, SubscriptionPlan, CustomItem
+from .forms import InvoiceForm, QuotationForm, PaymentForm, SubscriptionPlanForm, CustomItemForm
 
 
-@csrf_exempt
-def mpesa_payment_callback(request):
-    if request.method == 'POST':
-        mpesa_service = MpesaService()
-        data = json.loads(request.body)
+# Invoice Views
+class InvoiceListView(LoginRequiredMixin, ListView):
+    model = Invoice
+    template_name = 'billing/invoice_list.html'
+    paginate_by = 10
+    login_url = '/authapp/login/'
 
-        # Process the payment notification
-        result = mpesa_service.handle_incoming_payment(data)
+class InvoiceCreateView(LoginRequiredMixin, CreateView):
+    model = Invoice
+    form_class = InvoiceForm
+    template_name = 'billing/invoice_form.html'
+    success_url = reverse_lazy('invoice_list')
+    login_url = '/authapp/login/'
 
-        # Send back the result to Mpesa or your internal logs
-        return JsonResponse(result)
+class InvoiceUpdateView(LoginRequiredMixin, UpdateView):
+    model = Invoice
+    form_class = InvoiceForm
+    template_name = 'billing/invoice_form.html'
+    success_url = reverse_lazy('invoice_list')
+    login_url = '/authapp/login/'
 
-    return JsonResponse({"error": "Invalid request"}, status=400)
+class InvoiceDeleteView(LoginRequiredMixin, DeleteView):
+    model = Invoice
+    template_name = 'billing/invoice_confirm_delete.html'
+    success_url = reverse_lazy('invoice_list')
+    login_url = '/authapp/login/'
+
+
+# Quotation Views
+class QuotationListView(LoginRequiredMixin, ListView):
+    model = Quotation
+    template_name = 'billing/quotation_list.html'
+    paginate_by = 10
+    login_url = '/authapp/login/'
+
+class QuotationCreateView(LoginRequiredMixin, CreateView):
+    model = Quotation
+    form_class = QuotationForm
+    template_name = 'billing/quotation_form.html'
+    success_url = reverse_lazy('quotation_list')
+    login_url = '/authapp/login/'
+
+class QuotationUpdateView(LoginRequiredMixin, UpdateView):
+    model = Quotation
+    form_class = QuotationForm
+    template_name = 'billing/quotation_form.html'
+    success_url = reverse_lazy('quotation_list')
+    login_url = '/authapp/login/'
+
+class QuotationDeleteView(LoginRequiredMixin, DeleteView):
+    model = Quotation
+    template_name = 'billing/quotation_confirm_delete.html'
+    success_url = reverse_lazy('quotation_list')
+    login_url = '/authapp/login/'
+
+
+# Payment Views
+class PaymentListView(LoginRequiredMixin, ListView):
+    model = Payment
+    template_name = 'billing/payment_list.html'
+    paginate_by = 10
+    login_url = '/authapp/login/'
+
+class PaymentCreateView(LoginRequiredMixin, CreateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name = 'billing/payment_form.html'
+    success_url = reverse_lazy('payment_list')
+    login_url = '/authapp/login/'
+
+class PaymentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name = 'billing/payment_form.html'
+    success_url = reverse_lazy('payment_list')
+    login_url = '/authapp/login/'
+
+class PaymentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Payment
+    template_name = 'billing/payment_confirm_delete.html'
+    success_url = reverse_lazy('payment_list')
+    login_url = '/authapp/login/'
+
+
+# Subscription Plan Views
+class SubscriptionPlanListView(LoginRequiredMixin, ListView):
+    model = SubscriptionPlan
+    template_name = 'billing/subscription_plan_list.html'
+    paginate_by = 10
+    login_url = '/authapp/login/'
+
+class SubscriptionPlanCreateView(LoginRequiredMixin, CreateView):
+    model = SubscriptionPlan
+    form_class = SubscriptionPlanForm
+    template_name = 'billing/subscription_plan_form.html'
+    success_url = reverse_lazy('subscription_plan_list')
+    login_url = '/authapp/login/'
+
+class SubscriptionPlanUpdateView(LoginRequiredMixin, UpdateView):
+    model = SubscriptionPlan
+    form_class = SubscriptionPlanForm
+    template_name = 'billing/subscription_plan_form.html'
+    success_url = reverse_lazy('subscription_plan_list')
+    login_url = '/authapp/login/'
+
+class SubscriptionPlanDeleteView(LoginRequiredMixin, DeleteView):
+    model = SubscriptionPlan
+    template_name = 'billing/subscription_plan_confirm_delete.html'
+    success_url = reverse_lazy('subscription_plan_list')
+    login_url = '/authapp/login/'
+
+
+# Custom Item Views
+class CustomItemListView(LoginRequiredMixin, ListView):
+    model = CustomItem
+    template_name = 'billing/custom_item_list.html'
+    paginate_by = 10
+    login_url = '/authapp/login/'
+
+class CustomItemCreateView(LoginRequiredMixin, CreateView):
+    model = CustomItem
+    form_class = CustomItemForm
+    template_name = 'billing/custom_item_form.html'
+    success_url = reverse_lazy('custom_item_list')
+    login_url = '/authapp/login/'
+
+class CustomItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = CustomItem
+    form_class = CustomItemForm
+    template_name = 'billing/custom_item_form.html'
+    success_url = reverse_lazy('custom_item_list')
+    login_url = '/authapp/login/'
+
+class CustomItemDeleteView(LoginRequiredMixin, DeleteView):
+    model = CustomItem
+    template_name = 'billing/custom_item_confirm_delete.html'
+    success_url = reverse_lazy('custom_item_list')
+    login_url = '/authapp/login/'
+
+
+# PDF Generation Views
+@login_required(login_url='/authapp/login/')
+def generate_invoice_pdf(request, invoice_id):
+    invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
+
+    # Create PDF response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{invoice.invoice_id}.pdf"'
+
+    # Create a PDF document
+    p = canvas.Canvas(response)
+    p.drawString(100, 750, f"Invoice ID: {invoice.invoice_id}")
+    p.drawString(100, 730, f"Customer: {invoice.customer.name}")
+    p.drawString(100, 710, f"Amount Due: {invoice.amount_due}")
+    p.drawString(100, 690, f"Status: {invoice.status}")
+
+    # Finalize the PDF
+    p.showPage()
+    p.save()
+
+    return response
+
+@login_required(login_url='/authapp/login/')
+def generate_quotation_pdf(request, quotation_id):
+    quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
+
+    # Create PDF response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="quotation_{quotation.quotation_id}.pdf"'
+
+    # Create a PDF document
+    p = canvas.Canvas(response)
+    p.drawString(100, 750, f"Quotation ID: {quotation.quotation_id}")
+    p.drawString(100, 730, f"Customer: {quotation.customer.name}")
+    p.drawString(100, 710, f"Amount Due: {quotation.amount_due}")
+    p.drawString(100, 690, f"Status: {quotation.status}")
+
+    # Finalize the PDF
+    p.showPage()
+    p.save()
+
+    return response

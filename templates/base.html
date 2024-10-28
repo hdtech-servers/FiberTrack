@@ -15,7 +15,7 @@
 </head>
 <body>
     <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
             <!-- Toggle Button for Sidebar (Small Screens) -->
             <button class="toggle-btn" id="toggle-btn">
@@ -39,18 +39,18 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         {% if user.is_authenticated %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                            <a class="dropdown-item" href="{% url 'profile' %}">
                                 <i class="fas fa-user-edit"></i> Edit Profile
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                            <a class="dropdown-item" href="{% url 'logout' %}">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </li>
                         {% else %}
                         <li>
-                            <a class="dropdown-item" href="{% url 'customer_list' %}">
+                            <a class="dropdown-item" href="{% url 'login' %}">
                                 <i class="fas fa-sign-in-alt"></i> Login
                             </a>
                         </li>
@@ -67,9 +67,9 @@
             <i class="fas fa-home"></i>
             <span class="tooltip-text">Dashboard</span>
         </a>
-        <a href="{% url 'customer_list' %}">
+        <a href="{% url 'invoice_list' %}">
             <i class="fas fa-money-bill-wave"></i>
-            <span class="tooltip-text">Payments</span>
+            <span class="tooltip-text">Billing</span>
         </a>
         <a href="{% url 'customer_list' %}">
             <i class="fas fa-receipt"></i>
@@ -87,9 +87,13 @@
             <i class="fas fa-boxes"></i>
             <span class="tooltip-text">Inventory</span>
         </a>
-         <a>
+        <a href="{% url 'user_list' %}">
+            <i class="fas fa-boxes"></i>
+            <span class="tooltip-text">Auth app</span>
+        </a>
+        <a>
             <i class="fas fa-grip-lines"></i>
-            <span class="tooltip-text">Settings</span>
+            <span class="tooltip-text"></span>
         </a>
         <a href="{% url 'view_edit_organization' %}">
             <i class="fas fa-cogs"></i>
@@ -116,6 +120,23 @@
             sidebar.classList.toggle('hide');
             mainContent.classList.toggle('hide');
         });
+
+        // Auto logout script after 5 minutes (300000 ms) of inactivity
+        let timer;
+        const logoutAfterInactivity = () => {
+            window.location.href = "{% url 'logout' %}";  // Redirect to logout
+        };
+
+        const resetTimer = () => {
+            clearTimeout(timer);
+            timer = setTimeout(logoutAfterInactivity, 300000);  // 5 minutes
+        };
+
+        // Detect activity
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeydown = resetTimer;
+        document.ontouchstart = resetTimer;
     </script>
 </body>
 </html>

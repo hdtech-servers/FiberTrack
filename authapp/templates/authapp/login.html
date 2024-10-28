@@ -1,0 +1,137 @@
+<!-- templates/authapp/login.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FiberTrack</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <style>
+        body {
+            background-color: #0b1e31; /* Dark Blue */
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background-color: #112b45; /* Slightly lighter Dark Blue */
+            padding: 2rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #ff3b3f; /* Red */
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .form-control {
+            background-color: #0e2438; /* Darker input background */
+            border: 1px solid #1c4a6e; /* Dark Blue border */
+            color: #fff;
+            padding: 0.75rem;
+            border-radius: 5px;
+        }
+
+        .form-control:focus {
+            border-color: #ff3b3f; /* Red focus */
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #ff3b3f; /* Red */
+            border-color: #ff3b3f;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #e33b3f; /* Slightly darker red */
+            border-color: #e33b3f;
+        }
+
+        .alert-danger {
+            background-color: #ff3b3f;
+            border-color: #ff1a1f;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .alert-danger li {
+            list-style: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .login-footer {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #a9a9a9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login to FiberTrack</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" required class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" required class="form-control" placeholder="">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <!-- Display error messages if any -->
+            {% if messages %}
+                <ul class="alert alert-danger">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

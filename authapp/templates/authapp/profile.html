@@ -1,0 +1,9 @@
+<!-- templates/authapp/profile.html -->
+<h2>Your Profile</h2>
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>First Name: {{ user.first_name }}</p>
+<p>Last Name: {{ user.last_name }}</p>
+
+<a href="{% url 'password_change' %}" class="btn btn-warning">Change Password</a>
+<a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>

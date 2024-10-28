@@ -6,7 +6,7 @@ class OrganizationSettingsForm(forms.ModelForm):
     class Meta:
         model = OrganizationSettings
         fields = [
-            'name', 'logo', 'address', 'mpesa_consumer_key', 'mpesa_consumer_secret',
+            'name', 'logo', 'address', 'contact_number', 'email', 'mpesa_consumer_key', 'mpesa_consumer_secret',
             'mpesa_short_code', 'mpesa_initiator_username', 'mpesa_security_credential',
             'mpesa_passkey', 'mpesa_callback_url', 'mpesa_environment',  # Mpesa environment added
             'smtp_host', 'smtp_port', 'smtp_username', 'smtp_password',
@@ -23,6 +23,12 @@ class OrganizationSettingsForm(forms.ModelForm):
 
             # Address: textarea
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter the address'}),
+
+            # Address: textarea
+            'email': forms.Textarea(attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'Enter Email'}),
+
+            # Address: textarea
+            'phone': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter Phone Number'}),
 
             # Mpesa Fields: text inputs for API keys, shortcode
             'mpesa_consumer_key': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mpesa Consumer Key'}),

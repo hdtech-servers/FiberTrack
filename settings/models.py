@@ -5,6 +5,8 @@ class OrganizationSettings(models.Model):
     name = models.CharField(max_length=255)
     logo = models.ImageField(upload_to='organization_logos/', null=True, blank=True)
     address = models.TextField()
+    contact_number = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
 
     # Mpesa Daraja API Settings
     mpesa_consumer_key = models.CharField(max_length=255, null=True, blank=True)
