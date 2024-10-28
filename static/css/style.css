@@ -155,3 +155,69 @@ body {
     top: 56px;
     background-color: var(--dark-blue);
 }
+
+/* Custom input style */
+form input, form select, form textarea {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus, form select:focus, form textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 10px rgba(128, 189, 255, 0.5);
+}
+
+button {
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Custom checkbox and radio */
+input[type="checkbox"], input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:checked, input[type="radio"]:checked {
+    background-color: #007bff;
+}
+
+/* Custom file input */
+.custom-file-input::before {
+    content: 'Choose file...';
+    display: inline-block;
+    background: #007bff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-input:hover::before {
+    background-color: #0056b3;
+}
+
+/* Add icons to the buttons */
+button.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.btn-icon i {
+    margin-right: 5px;
+}

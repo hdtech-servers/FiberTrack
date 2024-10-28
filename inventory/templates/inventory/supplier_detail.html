@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Supplier Detail Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Supplier Details</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Supplier Name:</dt>
+                        <dd class="col-sm-8">{{ supplier.name }}</dd>
+
+                        <dt class="col-sm-4">Contact Information:</dt>
+                        <dd class="col-sm-8">{{ supplier.contact_info|default:"N/A" }}</dd>
+
+                        <dt class="col-sm-4">Email Address:</dt>
+                        <dd class="col-sm-8">{{ supplier.email|default:"N/A" }}</dd>
+
+                        <dt class="col-sm-4">Phone Number:</dt>
+                        <dd class="col-sm-8">{{ supplier.phone|default:"N/A" }}</dd>
+
+                        <dt class="col-sm-4">Address:</dt>
+                        <dd class="col-sm-8">{{ supplier.address|default:"N/A" }}</dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <a href="{% url 'supplier_edit' supplier.pk %}" class="btn btn-outline-primary me-2">Edit</a>
+                    <a href="{% url 'supplier_list' %}" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

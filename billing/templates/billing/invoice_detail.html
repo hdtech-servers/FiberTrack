@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Invoice Details{% endblock %}
+
+{% block content %}
+<h1>Invoice #{{ invoice.id }}</h1>
+<p>Customer: {{ invoice.customer }}</p>
+<p>Amount Due: {{ invoice.amount_due }}</p>
+<p>Status: {{ invoice.status }}</p>
+<p>Due Date: {{ invoice.due_date }}</p>
+
+<h2>Payments</h2>
+<ul>
+    {% for payment in payments %}
+    <li>{{ payment.payment_method }} - {{ payment.amount_paid }} on {{ payment.payment_date }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'add_payment' invoice.id %}">Add Payment</a>
+{% endblock %}

@@ -13,8 +13,8 @@
 
         <!-- Add inventory item button -->
         <div>
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal" title="Add Inventory">
-                <i class="fas fa-plus"></i> Add
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
+                <i class="fas fa-plus"></i> Add Inventory
             </button>
         </div>
     </div>
@@ -24,22 +24,25 @@
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-light">
                 <tr>
-                    <th scope="col" class="sortable" data-sort="name">Item Name</th>
-                    <th scope="col" class="sortable" data-sort="quantity">Quantity</th>
-                    <th scope="col" class="sortable" data-sort="cost">Cost</th>
-                    <th scope="col" class="sortable" data-sort="supplier">Supplier</th>
-                    <th scope="col" class="text-center">Actions</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                    <th>Supplier</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody id="inventory-list">
                 {% for item in items %}
-                <tr class="clickable-row" data-href="{% url 'inventory_detail' item.pk %}">
+                <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.cost }}</td>
                     <td>{{ item.supplier.name }}</td>
                     <td class="text-center">
                         <!-- Edit and Delete actions -->
+                        <a href="{% url 'inventory_detail' item.pk %}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-eye"></i> View
+                        </a>
                         <a href="{% url 'inventory_edit' item.pk %}" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-edit"></i> Edit
                         </a>
@@ -101,52 +104,58 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="inventory-form" method="post" action="{% url 'inventory_add' %}" class="needs-validation" novalidate>
+        <form method="post" action="{% url 'inventory_add' %}" id="inventory-form" class="needs-validation" novalidate>
           {% csrf_token %}
 
+          <!-- Item Name -->
           <div class="mb-3">
             <label for="id_name" class="form-label">Item Name</label>
-            {{ form.name }}  <!-- The form field is rendered here -->
+            {{ form.name }}
             <div class="invalid-feedback">
               {% for error in form.name.errors %}{{ error }}{% endfor %}
             </div>
           </div>
 
+          <!-- Description -->
           <div class="mb-3">
             <label for="id_description" class="form-label">Description</label>
-            {{ form.description }}  <!-- The form field is rendered here -->
+            {{ form.description }}
             <div class="invalid-feedback">
               {% for error in form.description.errors %}{{ error }}{% endfor %}
             </div>
           </div>
 
+          <!-- Quantity -->
           <div class="mb-3">
             <label for="id_quantity" class="form-label">Quantity</label>
-            {{ form.quantity }}  <!-- The form field is rendered here -->
+            {{ form.quantity }}
             <div class="invalid-feedback">
               {% for error in form.quantity.errors %}{{ error }}{% endfor %}
             </div>
           </div>
 
+          <!-- Cost -->
           <div class="mb-3">
             <label for="id_cost" class="form-label">Cost</label>
-            {{ form.cost }}  <!-- The form field is rendered here -->
+            {{ form.cost }}
             <div class="invalid-feedback">
               {% for error in form.cost.errors %}{{ error }}{% endfor %}
             </div>
           </div>
 
+          <!-- Supplier -->
           <div class="mb-3">
             <label for="id_supplier" class="form-label">Supplier</label>
-            {{ form.supplier }}  <!-- The form field is rendered here -->
+            {{ form.supplier }}
             <div class="invalid-feedback">
               {% for error in form.supplier.errors %}{{ error }}{% endfor %}
             </div>
           </div>
 
+          <!-- Low Stock Alert Threshold -->
           <div class="mb-3">
             <label for="id_low_stock_alert_threshold" class="form-label">Low Stock Alert Threshold</label>
-            {{ form.low_stock_alert_threshold }}  <!-- The form field is rendered here -->
+            {{ form.low_stock_alert_threshold }}
             <div class="invalid-feedback">
               {% for error in form.low_stock_alert_threshold.errors %}{{ error }}{% endfor %}
             </div>
@@ -173,47 +182,15 @@
 (function () {
   'use strict';
   var forms = document.querySelectorAll('.needs-validation');
-
   Array.prototype.slice.call(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
       if (!form.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
       }
-
       form.classList.add('was-validated');
     }, false);
   });
 })();
-</script>
-
-<!-- Clickable rows to navigate to item detail page -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", function() {
-            window.location.href = row.getAttribute("data-href");
-        });
-    });
-});
-</script>
-
-<!-- Sortable Columns -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-
-    const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
-        v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-
-    document.querySelectorAll('.sortable').forEach(th => th.addEventListener('click', function() {
-        const table = th.closest('table');
-        Array.from(table.querySelectorAll('tbody > tr'))
-            .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-            .forEach(tr => table.querySelector('tbody').appendChild(tr));
-    }));
-});
 </script>
 {% endblock %}

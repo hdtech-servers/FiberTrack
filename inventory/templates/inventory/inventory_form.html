@@ -1,9 +1,108 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>{% if object %}Edit Inventory{% else %}Add Inventory{% endif %}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Inventory Form Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% if object %}Edit Inventory Item{% else %}Add Inventory Item{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Form Start -->
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Display non-field errors -->
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Item Name -->
+                        <div class="form-floating mb-3">
+                            {{ form.name }}
+                            <label for="id_name">Item Name</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-floating mb-3">
+                            {{ form.description }}
+                            <label for="id_description">Description</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.description.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="form-floating mb-3">
+                            {{ form.quantity }}
+                            <label for="id_quantity">Quantity</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.quantity.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Cost -->
+                        <div class="form-floating mb-3">
+                            {{ form.cost }}
+                            <label for="id_cost">Cost</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.cost.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Supplier -->
+                        <div class="form-floating mb-3">
+                            {{ form.supplier }}
+                            <label for="id_supplier">Supplier</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.supplier.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Low Stock Alert Threshold -->
+                        <div class="form-floating mb-3">
+                            {{ form.low_stock_alert_threshold }}
+                            <label for="id_low_stock_alert_threshold">Low Stock Alert Threshold</label>
+                            <div class="invalid-feedback">
+                                {% for error in form.low_stock_alert_threshold.errors %}{{ error }}{% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'inventory_list' %}" class="btn btn-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                    <!-- Form End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+  var forms = document.querySelectorAll('.needs-validation');
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>
 {% endblock %}
