@@ -20,7 +20,7 @@
             <button class="btn btn-danger me-2" id="deleteSelectedBtn" disabled data-bs-toggle="modal" data-bs-target="#deleteModal">
                 <i class="fas fa-trash"></i>
             </button>
-            <div class="form-inline me-2">
+            <div class="me-2">
                 <input type="text" id="live-search" placeholder="Search products by name or barcode" class="form-control rounded-pill" style="width: 300px;">
             </div>
             <div class="dropdown">
@@ -95,7 +95,7 @@
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="productFormModal" method="post" action="{% url 'add_product' %}">
+                    <form method="post" action="{% url 'add_product' %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="barcode">Barcode:</label>
@@ -122,25 +122,9 @@
                             <input type="number" name="stock_quantity" id="stock_quantity" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="low_stock_threshold">Low Stock Threshold:</label>
-                            <input type="number" name="low_stock_threshold" id="low_stock_threshold" class="form-control">
-                        </div>
-                        <div class="form-group">
                             <label for="expiry_date">Expiry Date:</label>
                             <input type="date" name="expiry_date" id="expiry_date" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="packaging_type">Packaging Type:</label>
-                            <input type="text" name="packaging_type" id="packaging_type" class="form-control" placeholder="e.g., Bags, Bottles, Boxes">
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category:</label>
-                            <select name="category" id="category" class="form-control">
-                                <option value="">Select a Category</option>
-                                {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
-                                {% endfor %}
-                            </select>
                         <button type="submit" class="btn btn-primary w-100">Add Product</button>
                     </form>
                 </div>
@@ -180,7 +164,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Are you sure you want to delete the selected products?</p>
-                    <form id="bulkDeleteForm" method="post" action="{% url 'delete_selected_products' %}">
+                    <form method="post" action="{% url 'delete_selected_products' %}">
                         {% csrf_token %}
                         <input type="hidden" name="selected_products" id="selectedProductsInput">
                         <button type="submit" class="btn btn-danger w-100">Yes, Delete</button>
@@ -191,23 +175,13 @@
     </div>
 </div>
 {% endblock %}
+
 {% block extra_js %}
 <script>
-    // Function to open the Add Product modal
-    function openProductModal() {
-        $('#productModal').modal('show');
-    }
-
-    // Function to open the Import Products modal
-    function openImportProductModal() {
-        $('#importProductModal').modal('show');
-    }
-
     // Function to open the Delete Selected modal
     function openDeleteModal() {
         const selectedProductIds = Array.from(document.querySelectorAll('.product-checkbox:checked'))
-            .map(checkbox => checkbox.value)
-            .filter(id => id !== "");
+            .map(checkbox => checkbox.value);
 
         if (selectedProductIds.length === 0) {
             alert("No products selected.");
@@ -215,7 +189,8 @@
         }
 
         document.getElementById('selectedProductsInput').value = selectedProductIds.join(',');
-        $('#deleteModal').modal('show');
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
     }
 
     // Enable or disable the delete and print barcode buttons based on selections
@@ -269,53 +244,8 @@
             const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
             const barcode = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
 
-            if (name.includes(query) || barcode.includes(query)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            row.style.display = name.includes(query) || barcode.includes(query) ? '' : 'none';
         });
     });
-
-    // Sort table by column
-    let sortDirections = {};  // Track sort directions for each column
-
-    function sortTable(columnIndex, dataType) {
-        const table = document.getElementById("productTable");
-        const rows = Array.from(table.rows).slice(1);  // Exclude the header row
-        let sortedRows;
-
-        // Toggle sort direction: If not set, default to ascending
-        if (!sortDirections[columnIndex]) {
-            sortDirections[columnIndex] = 'asc';
-        } else {
-            sortDirections[columnIndex] = sortDirections[columnIndex] === 'asc' ? 'desc' : 'asc';
-        }
-
-        const sortDirection = sortDirections[columnIndex];
-
-        if (dataType === 'string') {
-            sortedRows = rows.sort((a, b) => {
-                const textA = a.cells[columnIndex].innerText.toLowerCase();
-                const textB = b.cells[columnIndex].innerText.toLowerCase();
-                return sortDirection === 'asc' ? textA.localeCompare(textB) : textB.localeCompare(textA);
-            });
-        } else if (dataType === 'number') {
-            sortedRows = rows.sort((a, b) => {
-                const numA = parseFloat(a.cells[columnIndex].innerText) || 0;
-                const numB = parseFloat(b.cells[columnIndex].innerText) || 0;
-                return sortDirection === 'asc' ? numA - numB : numB - numA;
-            });
-        } else if (dataType === 'date') {
-            sortedRows = rows.sort((a, b) => {
-                const dateA = new Date(a.cells[columnIndex].innerText);
-                const dateB = new Date(b.cells[columnIndex].innerText);
-                return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-            });
-        }
-
-        const tbody = table.querySelector("tbody");
-        sortedRows.forEach(row => tbody.appendChild(row));
-    }
 </script>
 {% endblock %}

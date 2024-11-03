@@ -1,23 +1,12 @@
-
 {% block content %}
 <style>
+    :root {
+        --primary-color: #003366; /* Dark Blue */
+        --secondary-color: #8B0000; /* Dark Red */
+        --hover-color: #4d4dff; /* Hover color */
+    }
+
     /* Inventory Navbar Styles */
-    .nav-item a {
-        color: #fff;
-        text-decoration: none;
-        padding: 1px;
-        display: block;
-    }
-
-    .nav-item a:hover {
-        color: #fff;
-    }
-
-    .nav-text {
-        display: inline-block;
-        margin-left: 10px;
-    }
-
     .navbar-inventory {
         background-color: var(--primary-color);
         padding: 10px;
@@ -31,7 +20,21 @@
 
     .navbar-inventory .nav-item a {
         color: #fff;
+        text-decoration: none;
         font-weight: bold;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+    }
+
+    .navbar-inventory .nav-item a:hover {
+        background-color: var(--hover-color);
+        color: #fff;
+    }
+
+    .nav-text {
+        margin-left: 10px;
     }
 </style>
 
@@ -45,11 +48,10 @@
         </li>
         <li class="nav-item">
             <a href="{% url 'expenses_category_list' %}" title="Categories">
-            <i class="fas fa-list"></i>
+                <i class="fas fa-list"></i>
                 <span class="nav-text">Categories</span>
             </a>
         </li>
-
     </ul>
 </div>
 
