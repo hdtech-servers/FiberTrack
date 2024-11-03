@@ -7,7 +7,7 @@ from django.contrib.auth import update_session_auth_hash, authenticate, login, l
 from .forms import CustomUserCreationForm, UserProfileForm
 
 # User List (Admin Only)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def user_list(request):
     # Fetch all users
     users = User.objects.all()
@@ -23,10 +23,10 @@ def user_list(request):
         form = CustomUserCreationForm()
 
     # Render the user list with the form
-    return render(request, 'authapp/user_list.html', {'users': users, 'form': form})
+    return render(request, 'auth_app/user_list.html', {'users': users, 'form': form})
 
 # Add User (Admin Only)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def add_user(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -36,11 +36,11 @@ def add_user(request):
             return redirect('user_list')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'authapp/user_list.html', {'form': form})
+    return render(request, 'auth_app/user_list.html', {'form': form})
 
 
 # Edit User Profile (User)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def edit_profile(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
@@ -49,15 +49,15 @@ def edit_profile(request):
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
-    return render(request, 'authapp/edit_profile.html', {'form': form})
+    return render(request, 'auth_app/edit_profile.html', {'form': form})
 
 # View User Profile (User)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def profile(request):
-    return render(request, 'authapp/profile.html')
+    return render(request, 'auth_app/profile.html')
 
 # Change Password (User)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -67,17 +67,17 @@ def change_password(request):
             return redirect('profile')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'authapp/change_password.html', {'form': form})
+    return render(request, 'auth_app/change_password.html', {'form': form})
 
 # Delete User (Admin Only - Soft Delete Approach)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
         user.is_active = False  # Soft delete
         user.save()
         return redirect('user_list')
-    return render(request, 'authapp/confirm_delete.html', {'user': user})
+    return render(request, 'auth_app/confirm_delete.html', {'user': user})
 
 
 # Custom Login View
@@ -91,17 +91,17 @@ def custom_login(request):
             return redirect('customer_list')  # Redirect to profile page after login
         else:
             messages.error(request, 'Invalid username or password')
-    return render(request, 'authapp/login.html')
+    return render(request, 'auth_app/login.html')
 
 
 # Custom Logout View
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def custom_logout(request):
     logout(request)
     return redirect('login')  # Redirect to login page after logout
 
 # Edit User (Admin)
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
@@ -111,10 +111,10 @@ def edit_user(request, user_id):
             return redirect('user_list')
     else:
         form = UserProfileForm(instance=user)
-    return render(request, 'authapp/edit_user.html', {'form': form, 'user': user})
+    return render(request, 'auth_app/edit_user.html', {'form': form, 'user': user})
 
 
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def user_detail(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    return render(request, 'authapp/user_detail.html', {'user': user})
+    return render(request, 'auth_app/user_detail.html', {'user': user})

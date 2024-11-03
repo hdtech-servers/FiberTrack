@@ -4,10 +4,13 @@ from .views import (
     QuotationListView, QuotationCreateView, QuotationUpdateView, QuotationDeleteView, generate_quotation_pdf,
     PaymentListView, PaymentCreateView, PaymentUpdateView, PaymentDeleteView,
     SubscriptionPlanListView, SubscriptionPlanCreateView, SubscriptionPlanUpdateView, SubscriptionPlanDeleteView,
-    CustomItemListView, CustomItemCreateView, CustomItemUpdateView, CustomItemDeleteView
+    CustomItemListView, CustomItemCreateView, CustomItemUpdateView, CustomItemDeleteView, BillingDashboardView, generate_report
 )
 
 urlpatterns = [
+    # dashboard urls
+    path('', BillingDashboardView.as_view(), name='billing_dashboard'),
+
     # Invoice URLs
     path('invoices/', InvoiceListView.as_view(), name='invoice_list'),
     path('invoices/create/', InvoiceCreateView.as_view(), name='invoice_create'),
@@ -39,4 +42,7 @@ urlpatterns = [
     path('custom-items/create/', CustomItemCreateView.as_view(), name='custom_item_create'),
     path('custom-items/<str:pk>/update/', CustomItemUpdateView.as_view(), name='custom_item_update'),
     path('custom-items/<str:pk>/delete/', CustomItemDeleteView.as_view(), name='custom_item_delete'),
+
+    path('generate-report/', generate_report, name='generate_report'),
+
 ]

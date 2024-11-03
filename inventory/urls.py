@@ -1,21 +1,22 @@
 from django.urls import path
-from .views import (
-    InventoryListView, InventoryCreateView, InventoryUpdateView, InventoryDetailView, InventoryDeleteView,
-    SupplierListView, SupplierCreateView, SupplierUpdateView, SupplierDetailView, SupplierDeleteView
-)
+from . import views
 
 urlpatterns = [
-    # Inventory URLs
-    path('products/', InventoryListView.as_view(), name='inventory_list'),
-    path('product/add/', InventoryCreateView.as_view(), name='inventory_add'),
-    path('product/<int:pk>/', InventoryDetailView.as_view(), name='inventory_detail'),
-    path('product/<int:pk>/edit/', InventoryUpdateView.as_view(), name='inventory_edit'),
-    path('product/<int:pk>/delete/', InventoryDeleteView.as_view(), name='inventory_delete'),
+    # Category URLs
+    path('categories/', views.category_list, name='category_list'),
+    path('categories/add/', views.add_category, name='add_category'),
+    path('categories/<int:pk>/edit/', views.edit_category, name='edit_category'),
 
-    # Supplier URLs
-    path('suppliers/', SupplierListView.as_view(), name='supplier_list'),
-    path('supplier/add/', SupplierCreateView.as_view(), name='supplier_add'),
-    path('supplier/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
-    path('supplier/<int:pk>/edit/', SupplierUpdateView.as_view(), name='supplier_edit'),
-    path('supplier/<int:pk>/delete/', SupplierDeleteView.as_view(), name='supplier_delete'),
+    # Product URLs
+    path('', views.product_list, name='product_list'),
+    path('products/add/', views.add_product, name='add_product'),
+    path('products/<int:pk>/edit/', views.edit_product, name='edit_product'),
+    path('products/<int:pk>/delete/', views.delete_product, name='delete_product'),
+    path('products/delete/', views.delete_selected_products, name='delete_selected_products'),
+    path('products/export/', views.export_products, name='export_products'),
+    path('products/import/', views.import_products, name='import_products'),
+    path('products/print-barcodes/', views.print_barcodes, name='print_barcodes'),
+
+    # Live Search (Updated to case-insensitive search)
+    path('products/live-search/', views.product_live_search, name='product_live_search'),
 ]

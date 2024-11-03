@@ -67,7 +67,7 @@
             <i class="fas fa-home"></i>
             <span class="tooltip-text">Dashboard</span>
         </a>
-        <a href="{% url 'invoice_list' %}">
+        <a href="{% url 'billing_dashboard' %}">
             <i class="fas fa-money-bill-wave"></i>
             <span class="tooltip-text">Billing</span>
         </a>
@@ -83,17 +83,21 @@
             <i class="fas fa-ticket-alt"></i>
             <span class="tooltip-text">Tickets</span>
         </a>
-        <a href="{% url 'inventory_list' %}">
+        <a href="{% url 'product_list' %}">
             <i class="fas fa-boxes"></i>
             <span class="tooltip-text">Inventory</span>
         </a>
-        <a href="{% url 'user_list' %}">
-            <i class="fas fa-boxes"></i>
-            <span class="tooltip-text">Auth app</span>
+        <a href="{% url 'list_expenses' %}">
+            <i class="fas fa-dollar"></i>
+            <span class="tooltip-text">expences</span>
         </a>
         <a>
             <i class="fas fa-grip-lines"></i>
             <span class="tooltip-text"></span>
+        </a>
+        <a href="{% url 'user_list' %}">
+            <i class="fas fa-user-cog"></i>
+            <span class="tooltip-text">Auth app</span>
         </a>
         <a href="{% url 'view_edit_organization' %}">
             <i class="fas fa-cogs"></i>

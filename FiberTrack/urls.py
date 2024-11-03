@@ -25,7 +25,11 @@ urlpatterns = [
     path('inventory/', include('inventory.urls')),
     path('settings/', include('settings.urls')),
     path('billing/', include('billing.urls')),
-    path('authapp/', include('authapp.urls')),
+    path('auth_app/', include('auth_app.urls')),
+    path('orders/', include('orders.urls')),
+    path('suppliers/', include('suppliers.urls')),
+    path('expences/', include('expenses.urls')),
+    path('auth_app/', include('auth_app.urls')),
 
 ]
 

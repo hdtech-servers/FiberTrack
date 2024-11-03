@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,7 +8,8 @@ from .forms import CustomerForm, CustomerImportForm
 import csv
 from django.http import HttpResponse
 
-# List of Customers
+
+@login_required(login_url='/auth_app/login/')
 def customer_list(request):
     # Get the search query from the GET request (case-insensitive)
     search_query = request.GET.get('q', '').strip()
@@ -40,18 +42,21 @@ def customer_list(request):
 
     return render(request, 'customer_list.html', context)
 
-# Customer Details
+
+@login_required(login_url='/auth_app/login/')
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
     return render(request, 'customer_detail.html', {'customer': customer})
 
+
+@login_required(login_url='/auth_app/login/')
 def customer_delete(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
     customer.delete()
     return redirect('customer_list')
 
 
-# Add New Customer
+@login_required(login_url='/auth_app/login/')
 def customer_add(request):
     if request.method == "POST":
         form = CustomerForm(request.POST)
@@ -63,7 +68,8 @@ def customer_add(request):
         form = CustomerForm()
     return render(request, 'customer_form.html', {'form': form})
 
-# Edit Existing Customer
+
+@login_required(login_url='/auth_app/login/')
 def customer_edit(request, customer_id):
     # Retrieve the customer object based on customer_id
     customer = get_object_or_404(Customer, customer_id=customer_id)
@@ -78,7 +84,9 @@ def customer_edit(request, customer_id):
 
     # Pass the customer and form to the template
     return render(request, 'customer_edit.html', {'form': form, 'customer': customer})
-# Import Customers from CSV
+
+
+@login_required(login_url='/auth_app/login/')
 def customer_import(request):
     if request.method == "POST":
         form = CustomerImportForm(request.POST, request.FILES)
@@ -111,7 +119,9 @@ def customer_import(request):
         form = CustomerImportForm()
     return render(request, 'customer_list.html', {'form': form})
 
-# Export Customers to CSV
+
+
+@login_required(login_url='/auth_app/login/')
 def customer_export(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')

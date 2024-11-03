@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     'inventory',
     'settings',
     'billing',
-    'authapp',
+    'auth_app',
+    'hr',
+    'orders',
+    'expenses',
+    'suppliers',
 ]
 
 MIDDLEWARE = [
@@ -149,8 +153,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is cl
 SESSION_SAVE_EVERY_REQUEST = True  # Session is refreshed with every request
 
 
-# Redirect to the login page you defined in your authapp
-LOGIN_URL = '/authapp/login/'
+# Redirect to the login page you defined in your auth_app
+LOGIN_URL = '/auth_app/login/'
 
 # Redirect to the login page after a logout
-LOGOUT_REDIRECT_URL = '/authapp/login/'
+LOGOUT_REDIRECT_URL = '/auth_app/login/'

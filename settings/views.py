@@ -4,7 +4,7 @@ from .models import OrganizationSettings
 from .forms import OrganizationSettingsForm
 
 
-@login_required(login_url='/authapp/login/')
+@login_required(login_url='/auth_app/login/')
 def view_edit_organization(request):
     # Fetch the first OrganizationSettings instance (assuming there's only one)
     organization_settings = OrganizationSettings.objects.first()

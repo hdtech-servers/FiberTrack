@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #1e3a5f;">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="{% url 'billing_dashboard' %}" data-bs-toggle="tooltip" title="Dashboard">
+      <i class="fas fa-home"></i>
+    </a>
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="{% url 'invoice_list' %}" data-bs-toggle="tooltip" title="Invoices">
+            <i class="fas fa-file-invoice"></i>
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="{% url 'quotation_list' %}" data-bs-toggle="tooltip" title="Quotations">
+            <i class="fas fa-file-alt"></i>
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="{% url 'payment_list' %}" data-bs-toggle="tooltip" title="Payments">
+            <i class="fas fa-dollar-sign"></i>
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="{% url 'subscription_plan_list' %}" data-bs-toggle="tooltip" title="Subscription Plans">
+            <i class="fas fa-wifi"></i>
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link text-white" href="{% url 'custom_item_list' %}" data-bs-toggle="tooltip" title="Custom Items">
+            <i class="fas fa-cogs"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Custom Tooltip CSS -->
+<style>
+    .tooltip.bs-tooltip-top .tooltip-inner {
+        background-color: #1e3a5f; /* Dark Blue Background */
+        color: #ffffff; /* White Text */
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .tooltip.bs-tooltip-top .tooltip-arrow {
+        border-top-color: #1e3a5f;
+    }
+
+    .tooltip.bs-tooltip-top {
+        box-shadow: 0px 0px 5px 2px #b71c1c; /* Red Shadow */
+    }
+</style>
+
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
