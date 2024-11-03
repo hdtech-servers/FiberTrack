@@ -1,0 +1,539 @@
+Watching for file changes with StatReloader
+Waiting for apps ready_event.
+Main Django thread has terminated before apps are ready.
+Apps ready_event triggered. Sending autoreload_started signal.
+Watching dir D:\Optinet\FiberTrack\templates with glob **/*.
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\manager.py first seen with mtime 1729889176.4689565
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\i18n.py first seen with mtime 1729889177.016721
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\options.py first seen with mtime 1729889171.9324706
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\dates.py first seen with mtime 1729889177.0297234
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\__init__.py first seen with mtime 1729889176.4180207
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\tree.py first seen with mtime 1729889177.004752
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py first seen with mtime 1729713945.1938393
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\utils.py first seen with mtime 1729889171.9344275
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\_compression.py first seen with mtime 1729713952.7655041
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\apps\config.py first seen with mtime 1729889171.2864132
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\asgiref\current_thread_executor.py first seen with mtime 1729889170.8326323
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\parser.py first seen with mtime 1729713942.014185
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ipaddress.py first seen with mtime 1729713944.6004653
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\platform.py first seen with mtime 1729713945.5989156
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\base.py first seen with mtime 1729889176.4555573
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\__init__.py first seen with mtime 1729889177.012732
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\sessions\apps.py first seen with mtime 1729889175.5507553
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\re\__init__.py first seen with mtime 1729713945.7208257
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\helpers.py first seen with mtime 1729889171.9300716
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\decoder.py first seen with mtime 1729713944.603448
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\aligned_indent.py first seen with mtime 1729889169.4459608
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\constants.py first seen with mtime 1729889176.456931
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\utils.py first seen with mtime 1729889176.9269593
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\message.py first seen with mtime 1729713941.9711096
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\uploadedfile.py first seen with mtime 1729889176.2571535
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\locks.py first seen with mtime 1729889176.254159
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\config.py first seen with mtime 1729713945.1860094
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\staticfiles\checks.py first seen with mtime 1729889176.2062876
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\signals.py first seen with mtime 1729889176.478864
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\resources\_adapters.py first seen with mtime 1729713944.4651022
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_subprocess.py first seen with mtime 1729713940.8136668
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\winterm.py first seen with mtime 1730628517.84395
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\__init__.py first seen with mtime 1729713942.0342276
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\mail\utils.py first seen with mtime 1729889176.2721753
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loaders\app_directories.py first seen with mtime 1729889176.9339397
+File D:\Optinet\FiberTrack\hr\__init__.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\datastructures.py first seen with mtime 1729889176.9723394
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\enum.py first seen with mtime 1729713943.140934
+File D:\Optinet\FiberTrack\auth_app\__init__.py first seen with mtime 1730125128.2111952
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\sql.py first seen with mtime 1729889169.427519
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\__init__.py first seen with mtime 1729889169.409422
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\log.py first seen with mtime 1729889176.993785
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\security\__init__.py first seen with mtime 1729889176.2481747
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\html.py first seen with mtime 1729889176.9877975
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py first seen with mtime 1729713940.8379993
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loaders\base.py first seen with mtime 1729889176.9349382
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\keywords.py first seen with mtime 1729889169.4215093
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\streams.py first seen with mtime 1729713940.845349
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\text.py first seen with mtime 1729889176.5144846
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_queue.pyd first seen with mtime 1729713940.1357546
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\gzip.py first seen with mtime 1729713943.1739264
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\servers\basehttp.py first seen with mtime 1729889176.3189847
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\views\__init__.py first seen with mtime 1729889172.5772498
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\serializers\json.py first seen with mtime 1729889176.3140345
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\engine\__init__.py first seen with mtime 1729889169.4357507
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\apps\registry.py first seen with mtime 1729889171.2874126
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\fields.py first seen with mtime 1729889176.700874
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\_encoded_words.py first seen with mtime 1729713942.0221984
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\selector_events.py first seen with mtime 1729713940.8398905
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\iterators.py first seen with mtime 1729713941.9674668
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\messages.py first seen with mtime 1729889176.2421916
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\utils.py first seen with mtime 1729889176.4387112
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\operations\base.py first seen with mtime 1729889176.4438913
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\subprocess.py first seen with mtime 1729713940.8483417
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\wsgiref\simple_server.py first seen with mtime 1729713952.434883
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\protocols.py first seen with mtime 1729713940.8337774
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\base\validation.py first seen with mtime 1729889176.3459175
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\aliases.py first seen with mtime 1729713942.1648633
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\__init__.py first seen with mtime 1729889176.2212489
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\select.pyd first seen with mtime 1729713939.3793654
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\conf.py first seen with mtime 1729889176.956525
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\message.py first seen with mtime 1729713941.9777627
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\math.py first seen with mtime 1729889176.5124893
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\resolvers.py first seen with mtime 1729889176.9588742
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\signals.py first seen with mtime 1729889172.8485317
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\boundfield.py first seen with mtime 1729889176.6978765
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\lorem_ipsum.py first seen with mtime 1729889176.9947786
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\asgiref\local.py first seen with mtime 1729889170.8336303
+File D:\Optinet\FiberTrack\hr\apps.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\auth_app\apps.py first seen with mtime 1730262373.0505197
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\contenttypes\__init__.py first seen with mtime 1729889173.1430411
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\__init__.py first seen with mtime 1729713934.4010184
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\tokenize.py first seen with mtime 1729713951.97118
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\base.py first seen with mtime 1729889176.2611995
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\__init__.py first seen with mtime 1729889177.027691
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\decimal.py first seen with mtime 1729713941.3974345
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\mixins.py first seen with mtime 1729713940.8284788
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\constants.py first seen with mtime 1729713940.8161073
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\formatter.py first seen with mtime 1729889169.4185162
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\utils.py first seen with mtime 1729713942.0200884
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\multipart.py first seen with mtime 1729713941.9787586
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\widgets.py first seen with mtime 1729889176.717865
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\exceptions.py first seen with mtime 1729713940.820725
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\mixins.py first seen with mtime 1729889176.264136
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\related_lookups.py first seen with mtime 1729889176.5046685
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\reprlib.py first seen with mtime 1729713945.705897
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\traceback.py first seen with mtime 1729713951.9997394
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\deprecation.py first seen with mtime 1729889176.9801066
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\utils.py first seen with mtime 1729889169.4327712
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\contenttypes\checks.py first seen with mtime 1729889173.1461573
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\decorators\cache.py first seen with mtime 1729889177.020711
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\__init__.py first seen with mtime 1729889176.4509447
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\defaultfilters.py first seen with mtime 1729889176.91699
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\conf\locale\__init__.py first seen with mtime 1729889171.2974944
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\views\autocomplete.py first seen with mtime 1729889172.5782475
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\cache\backends\base.py first seen with mtime 1729889176.231223
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\__init__.py first seen with mtime 1729889176.9538908
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\base\__init__.py first seen with mtime 1729889176.3309693
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\hmac.py first seen with mtime 1729713943.1806264
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\__init__.py first seen with mtime 1729889176.2521641
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\resources\__init__.py first seen with mtime 1729713944.4712148
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\http.py first seen with mtime 1729889176.9897914
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\edit.py first seen with mtime 1729889177.0316832
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\reverse_related.py first seen with mtime 1729889176.505511
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\renderers.py first seen with mtime 1729889176.7118378
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\_header_value_parser.py first seen with mtime 1729713942.0269992
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\charset.py first seen with mtime 1729713941.9503574
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\__init__.py first seen with mtime 1729889171.9203308
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py first seen with mtime 1729889176.5027366
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\__init__.py first seen with mtime 1729713941.2117457
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\crispy_forms\__init__.py first seen with mtime 1730089092.7892556
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\dispatch\dispatcher.py first seen with mtime 1729889176.6918921
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ctypes\_endian.py first seen with mtime 1729713941.2727904
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\engine\filter_stack.py first seen with mtime 1729889169.437737
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\__init__.py first seen with mtime 1729713943.2277896
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\mixins.py first seen with mtime 1729889176.513486
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\engine\statement_splitter.py first seen with mtime 1729889169.4421153
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\datetime.py first seen with mtime 1729889176.5115457
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\storage\__init__.py first seen with mtime 1729889174.83804
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\cache.py first seen with mtime 1729889176.939543
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\security\sessions.py first seen with mtime 1729889176.2511697
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\quoprimime.py first seen with mtime 1729713942.0174856
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\_base.py first seen with mtime 1729713941.171006
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\text.py first seen with mtime 1729889177.000767
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\__init__.py first seen with mtime 1729889172.8335712
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\timesince.py first seen with mtime 1729889177.0027573
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\aggregates.py first seen with mtime 1729889176.4519427
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\bisect.py first seen with mtime 1729713941.120749
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_futures.py first seen with mtime 1729713940.812672
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\argparse.py first seen with mtime 1729713940.7856715
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\mail\message.py first seen with mtime 1729889176.2711124
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\module_loading.py first seen with mtime 1729889176.9963918
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\utils.py first seen with mtime 1729889176.4808612
+File D:\Optinet\FiberTrack\orders\apps.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\management\__init__.py first seen with mtime 1729889176.2830794
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\compatibility\__init__.py first seen with mtime 1729889176.2472174
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\utils.py first seen with mtime 1729889176.9608707
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\duration.py first seen with mtime 1729889176.9813063
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\decorators\debug.py first seen with mtime 1729889177.023701
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\gettext.py first seen with mtime 1729713943.1656363
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\http\multipartparser.py first seen with mtime 1729889176.8940487
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\datastructures.py first seen with mtime 1729889176.619714
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py first seen with mtime 1729713940.809647
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\utils.py first seen with mtime 1729889176.2591436
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\checks.py first seen with mtime 1729889172.8385594
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\policy.py first seen with mtime 1729713942.0161798
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\threading.py first seen with mtime 1729713951.808998
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\state.py first seen with mtime 1729889176.4377813
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\formsets.py first seen with mtime 1729889176.7059507
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\proactor_events.py first seen with mtime 1729713940.8315105
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\resources\abc.py first seen with mtime 1729713944.4604962
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\quopri.py first seen with mtime 1729713945.7021782
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_zoneinfo.pyd first seen with mtime 1729713940.1628158
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_decimal.pyd first seen with mtime 1729713940.098591
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\deconstruct.py first seen with mtime 1729889176.976827
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\hashable.py first seen with mtime 1729889176.9867997
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\engine.py first seen with mtime 1729889176.9209774
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\encoder.py first seen with mtime 1729713944.606475
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\handlers\exception.py first seen with mtime 1729889176.268123
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\handlers\__init__.py first seen with mtime 1729889176.265131
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\unicodedata.pyd first seen with mtime 1729713940.0654156
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\caches.py first seen with mtime 1729889176.240197
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\__init__.py first seen with mtime 1729889176.6959226
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\tz.py first seen with mtime 1729889176.9428792
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\locale.py first seen with mtime 1729713945.182584
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\files.py first seen with mtime 1729889176.485031
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\forms.py first seen with mtime 1729889176.7039008
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\types.py first seen with mtime 1729713952.136005
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\staticfiles\__init__.py first seen with mtime 1729889176.2052927
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\mixins.py first seen with mtime 1729889176.4913654
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\pathlib.py first seen with mtime 1729713945.5782108
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\numberformat.py first seen with mtime 1729889176.9967763
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\pprint.py first seen with mtime 1729713945.6089869
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\database.py first seen with mtime 1729889176.240197
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\smartif.py first seen with mtime 1729889176.925962
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\decorators.py first seen with mtime 1729889171.9254556
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\expressions.py first seen with mtime 1729889176.4640837
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\enums.py first seen with mtime 1729889176.461913
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\wsgiref\headers.py first seen with mtime 1729713952.4328167
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\utf_8.py first seen with mtime 1729713942.466343
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\struct.py first seen with mtime 1729713951.780943
+File D:\Optinet\FiberTrack\manage.py first seen with mtime 1729889206.5513043
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\postgresql\base.py first seen with mtime 1729889176.3899672
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\uuid.py first seen with mtime 1729713952.3676817
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\constants.py first seen with mtime 1729889174.8330474
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\__init__.py first seen with mtime 1729713944.532287
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\inspect.py first seen with mtime 1729889176.9907925
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\re\_compiler.py first seen with mtime 1729713945.7125518
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\_virtualenv.py first seen with mtime 1729889140.0890343
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\crypto.py first seen with mtime 1729889176.970876
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\coroutines.py first seen with mtime 1729713940.8173041
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\files.py first seen with mtime 1729889176.2411928
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\socketserver.py first seen with mtime 1729713951.7491324
+File D:\Optinet\FiberTrack\FiberTrack\__init__.py first seen with mtime 1729889206.6217844
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\conf\urls\__init__.py first seen with mtime 1729889171.9182415
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\parse.py first seen with mtime 1729713952.287301
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\dates.py first seen with mtime 1729889176.9748328
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\management\__init__.py first seen with mtime 1729889173.124151
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\zoneinfo\__init__.py first seen with mtime 1729713952.7296584
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\keyword.py first seen with mtime 1729713944.6421368
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\l10n.py first seen with mtime 1729889176.9411743
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\models.py first seen with mtime 1729889176.7098422
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\staticfiles\apps.py first seen with mtime 1729889176.2052927
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\translation\trans_real.py first seen with mtime 1729889177.0117364
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\conf\__init__.py first seen with mtime 1729889171.2884104
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\defaulttags.py first seen with mtime 1729889176.9199803
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\cli.py first seen with mtime 1729889169.4132996
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\management\color.py first seen with mtime 1729889176.285077
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\debug.py first seen with mtime 1729889177.0147288
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextvars.py first seen with mtime 1729713941.2234247
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\__init__.py first seen with mtime 1729713941.1730003
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py first seen with mtime 1729713951.7842352
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\inspect.py first seen with mtime 1729713944.593505
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\__init__.py first seen with mtime 1729889176.321146
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\query.py first seen with mtime 1729889176.6278553
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\templatetags\__init__.py first seen with mtime 1729889172.5701864
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\translation\__init__.py first seen with mtime 1729889177.0077436
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\middleware\__init__.py first seen with mtime 1729889176.8980427
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\feedparser.py first seen with mtime 1729713941.95766
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\forms\utils.py first seen with mtime 1729889176.7148924
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\_weakrefset.py first seen with mtime 1729713952.7995484
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\indexes.py first seen with mtime 1729889176.4659042
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\queue.py first seen with mtime 1729713945.6999352
+File D:\Optinet\FiberTrack\customers\__init__.py first seen with mtime 1729890704.555621
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\staticfiles\utils.py first seen with mtime 1729889176.212269
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\decorators\csrf.py first seen with mtime 1729889177.022703
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\typing.py first seen with mtime 1729713952.144445
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\shortcuts.py first seen with mtime 1729889171.2844183
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\trsock.py first seen with mtime 1729713940.8602273
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\model_checks.py first seen with mtime 1729889176.2432096
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\management\commands\__init__.py first seen with mtime 1729889176.289066
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\context.py first seen with mtime 1729889176.9150362
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\zoneinfo\_tzpath.py first seen with mtime 1729713952.724671
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\glob.py first seen with mtime 1729713943.167633
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loaders\filesystem.py first seen with mtime 1729889176.9369316
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_lzma.pyd first seen with mtime 1729713940.1211152
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\converters.py first seen with mtime 1729889176.956879
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\datetime.py first seen with mtime 1729713941.3702483
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\api.py first seen with mtime 1729889174.831054
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\abc.py first seen with mtime 1729713944.4119406
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\urllib\__init__.py first seen with mtime 1729713936.9084725
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\locks.py first seen with mtime 1729713940.825482
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py first seen with mtime 1729713940.8187287
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\asgiref\__init__.py first seen with mtime 1729889170.83064
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\resources\_legacy.py first seen with mtime 1729713944.4692934
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\exceptions.py first seen with mtime 1729889171.9264486
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\__init__.py first seen with mtime 1729889176.484039
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\base.py first seen with mtime 1729889176.9140358
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\http\request.py first seen with mtime 1729889176.8960934
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\transaction.py first seen with mtime 1729889176.3229778
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\ipv6.py first seen with mtime 1729889176.9917915
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\sslproto.py first seen with mtime 1729713940.8423557
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\safestring.py first seen with mtime 1729889176.998767
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\__init__.py first seen with mtime 1729889174.8300562
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\sites.py first seen with mtime 1729889171.9334307
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\initialise.py first seen with mtime 1730628517.8411891
+File D:\Optinet\FiberTrack\customers\apps.py first seen with mtime 1729890704.555621
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\lookups.py first seen with mtime 1729889176.4678917
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\connection.py first seen with mtime 1729889176.970093
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\header.py first seen with mtime 1729713941.9624035
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\exceptions.py first seen with mtime 1729889176.921974
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\html\entities.py first seen with mtime 1729713943.1848383
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\deletion.py first seen with mtime 1729889176.4599197
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\validators.py first seen with mtime 1729889176.2282312
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py first seen with mtime 1729713940.853547
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\contenttypes\management\__init__.py first seen with mtime 1729889173.3631992
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\reindent.py first seen with mtime 1729889169.4519534
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\signal.py first seen with mtime 1729713945.7803726
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loaders\cached.py first seen with mtime 1729889176.9359381
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py first seen with mtime 1729713941.1693952
+File D:\Optinet\FiberTrack\expenses\__init__.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\dateparse.py first seen with mtime 1729889176.973834
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\utils.py first seen with mtime 1729889176.3243656
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\others.py first seen with mtime 1729889169.4480412
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\collections\__init__.py first seen with mtime 1729713941.1448894
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\queues.py first seen with mtime 1729713940.8355875
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\temp.py first seen with mtime 1729889176.2561543
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\filesystem.py first seen with mtime 1729889176.2621393
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\futures.py first seen with mtime 1729713940.8244877
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\getpass.py first seen with mtime 1729713943.163598
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\contenttypes\apps.py first seen with mtime 1729889173.1450343
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_ctypes.pyd first seen with mtime 1729713940.091568
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\password_validation.py first seen with mtime 1729889172.8475347
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\__init__.py first seen with mtime 1729889176.9618669
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\library.py first seen with mtime 1729889176.921974
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\calendar.py first seen with mtime 1729713941.125527
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\taskgroups.py first seen with mtime 1729713940.8505695
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\decorators\common.py first seen with mtime 1729889177.0217054
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\contenttypes\models.py first seen with mtime 1729889173.1496859
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\subqueries.py first seen with mtime 1729889176.629687
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\wsgiref\util.py first seen with mtime 1729713952.4378996
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\lzma.py first seen with mtime 1729713945.2309191
+File D:\Optinet\FiberTrack\inventory\__init__.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\crispy_bootstrap5\__init__.py first seen with mtime 1730090221.998433
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\comparison.py first seen with mtime 1729889176.5094962
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loaders\__init__.py first seen with mtime 1729889176.932944
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\cache\__init__.py first seen with mtime 1729889176.2292278
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\text.py first seen with mtime 1729713941.9810097
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ctypes\wintypes.py first seen with mtime 1729713941.2686727
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\apps.py first seen with mtime 1729889174.8320506
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_tasks.py first seen with mtime 1729713940.8146644
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\static.py first seen with mtime 1729889176.9419215
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\mimetypes.py first seen with mtime 1729713945.239745
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\bz2.py first seen with mtime 1729713941.1235323
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\http\__init__.py first seen with mtime 1729889176.8910563
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\cookies.py first seen with mtime 1729713943.2228005
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\generator.py first seen with mtime 1729713941.9604087
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\operations\__init__.py first seen with mtime 1729889176.4417865
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\token.py first seen with mtime 1729713951.970181
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\options.py first seen with mtime 1729889176.4718843
+File D:\Optinet\FiberTrack\expenses\apps.py first seen with mtime 1728551480.0
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\headerregistry.py first seen with mtime 1729713941.9654691
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\utils.py first seen with mtime 1729889174.8370388
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\handlers\wsgi.py first seen with mtime 1729889176.268123
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\sysconfig.py first seen with mtime 1729713951.7913346
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\re\_constants.py first seen with mtime 1729713945.7150238
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\pickle.py first seen with mtime 1729713945.5868313
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\dis.py first seen with mtime 1729713941.4034529
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\__init__.py first seen with mtime 1729889169.4440885
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_uuid.pyd first seen with mtime 1729713940.1596034
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\constants.py first seen with mtime 1729889176.6170685
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\scanner.py first seen with mtime 1729713944.6084998
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\__init__.py first seen with mtime 1729713940.8697257
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\paginator.py first seen with mtime 1729889176.2232437
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\choices.py first seen with mtime 1729889176.9688492
+File D:\Optinet\FiberTrack\inventory\apps.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\security\base.py first seen with mtime 1729889176.249174
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\security\csrf.py first seen with mtime 1729889176.2501743
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\http\response.py first seen with mtime 1729889176.897041
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\__init__.py first seen with mtime 1729889176.260143
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\warnings.py first seen with mtime 1729713952.4200222
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\engine\grouping.py first seen with mtime 1729889169.4396818
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\static.py first seen with mtime 1729889177.017717
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\defaults.py first seen with mtime 1729889177.0157225
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\collections\abc.py first seen with mtime 1729713941.1435888
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\tokens.py first seen with mtime 1729889169.4569333
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\exceptions.py first seen with mtime 1729889169.4157834
+File D:\Optinet\FiberTrack\billing\__init__.py first seen with mtime 1730087588.057961
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\checks.py first seen with mtime 1729889171.9233234
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\templates.py first seen with mtime 1729889176.2451842
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\errors.py first seen with mtime 1729713941.9561336
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\weakref.py first seen with mtime 1729713952.4231913
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\async_checks.py first seen with mtime 1729889176.2391994
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\move.py first seen with mtime 1729889176.255157
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\apps.py first seen with mtime 1729889172.8355682
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\_os.py first seen with mtime 1729889176.9618669
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\_policybase.py first seen with mtime 1729713942.0322337
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\middleware\csrf.py first seen with mtime 1729889176.904023
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\cache\backends\__init__.py first seen with mtime 1729889176.231223
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\cache\utils.py first seen with mtime 1729889176.230226
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\operations\special.py first seen with mtime 1729889176.4484148
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\conf\global_settings.py first seen with mtime 1729889171.2894094
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\serializers\base.py first seen with mtime 1729889176.3130002
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\proxy.py first seen with mtime 1729889176.4922018
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\encoders.py first seen with mtime 1729713941.9547668
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loader.py first seen with mtime 1729889176.9230049
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\numbers.py first seen with mtime 1729713945.5600955
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\operations\models.py first seen with mtime 1729889176.447419
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\related.py first seen with mtime 1729889176.5005198
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\dispatch\__init__.py first seen with mtime 1729889176.6899016
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\constraints.py first seen with mtime 1729889176.4579275
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\autoreload.py first seen with mtime 1729889176.965921
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\operations\fields.py first seen with mtime 1729889176.444896
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\__init__.py first seen with mtime 1729713942.4747455
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_asyncio.pyd first seen with mtime 1729713940.0833476
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\asgiref\sync.py first seen with mtime 1729889170.8377895
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\base.py first seen with mtime 1729713941.9756956
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\__init__.py first seen with mtime 1729889176.5075042
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\regex_helper.py first seen with mtime 1729889176.9977736
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\decorators.py first seen with mtime 1729889172.842548
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\random.py first seen with mtime 1729713945.7041748
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\resources\_common.py first seen with mtime 1729713944.467297
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\client.py first seen with mtime 1729713943.2163634
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\encoding.py first seen with mtime 1729889176.981813
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\operator.py first seen with mtime 1729713945.5645182
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\wsgiref\handlers.py first seen with mtime 1729713952.4298272
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\html\__init__.py first seen with mtime 1729713943.1896465
+File D:\Optinet\FiberTrack\billing\apps.py first seen with mtime 1730087588.015802
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\middleware\cache.py first seen with mtime 1729889176.9000874
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\format_helpers.py first seen with mtime 1729713940.8217115
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\socket.py first seen with mtime 1729713951.747125
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\textwrap.py first seen with mtime 1729713951.804703
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\wsgi.py first seen with mtime 1729889176.2282312
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\base.py first seen with mtime 1729889176.954885
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\functools.py first seen with mtime 1729713943.1570947
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\pkgutil.py first seen with mtime 1729713945.5959246
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\dataclasses.py first seen with mtime 1729713941.365014
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\_parseaddr.py first seen with mtime 1729713942.029199
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\signals.py first seen with mtime 1729889176.3289585
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\string.py first seen with mtime 1729713951.776389
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\base\base.py first seen with mtime 1729889176.3331108
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\windows_utils.py first seen with mtime 1729713940.8671944
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\importlib\_abc.py first seen with mtime 1729713944.524557
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ctypes\__init__.py first seen with mtime 1729713941.2746303
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ast.py first seen with mtime 1729713940.8050826
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\base.py first seen with mtime 1729889176.2521641
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\base64mime.py first seen with mtime 1729713941.9483619
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\heapq.py first seen with mtime 1729713943.1776338
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\cache\backends\filebased.py first seen with mtime 1729889176.2342148
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\transports.py first seen with mtime 1729713940.8581958
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\query_utils.py first seen with mtime 1729889176.47687
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\urls\exceptions.py first seen with mtime 1729889176.9578764
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\fnmatch.py first seen with mtime 1729713943.1490734
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\detail.py first seen with mtime 1729889177.0306847
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\__init__.py first seen with mtime 1729889176.610864
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\termcolors.py first seen with mtime 1729889176.9997654
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\re\_casefix.py first seen with mtime 1729713945.709053
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\widgets.py first seen with mtime 1729889171.9354959
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\hashlib.py first seen with mtime 1729713943.1759222
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\json.py first seen with mtime 1729889176.4892068
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\autoreload.py first seen with mtime 1729889176.9122612
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\http\cookie.py first seen with mtime 1729889176.8930538
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\filters.py first seen with mtime 1729889171.9274466
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\http\server.py first seen with mtime 1729713943.2257943
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\contentmanager.py first seen with mtime 1729713941.9527545
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\messages\storage\base.py first seen with mtime 1729889174.8390336
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\output.py first seen with mtime 1729889169.4499488
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_hashlib.pyd first seen with mtime 1729713940.1149433
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\tokens.py first seen with mtime 1729889169.429821
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\templatetags\admin_urls.py first seen with mtime 1729889172.5742593
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\staggered.py first seen with mtime 1729713940.844352
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\handlers.py first seen with mtime 1729713945.1903563
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\dateformat.py first seen with mtime 1729889176.9728422
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\backends\base.py first seen with mtime 1729889176.9289534
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\sql\where.py first seen with mtime 1729889176.6869044
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\backends\django.py first seen with mtime 1729889176.929952
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\management\base.py first seen with mtime 1729889176.284079
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\serializers\__init__.py first seen with mtime 1729889176.3121018
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\cache.py first seen with mtime 1729889176.967133
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\copy.py first seen with mtime 1729713941.225719
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\__init__.py first seen with mtime 1729889176.2382007
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\postgresql\__init__.py first seen with mtime 1729889176.3869767
+File D:\Optinet\FiberTrack\settings\__init__.py first seen with mtime 1730088439.9616704
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\memory.py first seen with mtime 1729889176.264136
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\fields\generated.py first seen with mtime 1729889176.4872632
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py first seen with mtime 1729713941.221325
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\__init__.py first seen with mtime 1729889171.2812643
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\servers\__init__.py first seen with mtime 1729889176.3179884
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\timeouts.py first seen with mtime 1729713940.8562026
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\log.py first seen with mtime 1729713940.8274786
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\__init__.py first seen with mtime 1729889176.325973
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\windows_events.py first seen with mtime 1729713940.865029
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\ansitowin32.py first seen with mtime 1730628517.8377705
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\handlers\base.py first seen with mtime 1729889176.267123
+File D:\Optinet\FiberTrack\suppliers\__init__.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\query.py first seen with mtime 1729889176.4748738
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py first seen with mtime 1729713942.189905
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\asyncio.py first seen with mtime 1729889176.96486
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\serializers\python.py first seen with mtime 1729889176.315133
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\urls.py first seen with mtime 1729889176.246183
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\json\__init__.py first seen with mtime 1729713944.6104994
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_bz2.pyd first seen with mtime 1729713940.0883534
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\_compat_pickle.py first seen with mtime 1729713952.7633028
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\_markupbase.py first seen with mtime 1729713952.7677224
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\storage\handler.py first seen with mtime 1729889176.2621393
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\exceptions.py first seen with mtime 1729889176.422076
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\win32.py first seen with mtime 1730628517.842949
+File D:\Optinet\FiberTrack\orders\__init__.py first seen with mtime 1728551480.0
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\zoneinfo\_common.py first seen with mtime 1729713952.719796
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\actions.py first seen with mtime 1729889171.9223473
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\linecache.py first seen with mtime 1729713945.1736135
+File D:\Optinet\FiberTrack\settings\apps.py first seen with mtime 1730088439.9545937
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\version.py first seen with mtime 1729889177.0057485
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\decorators\__init__.py first seen with mtime 1729889177.019716
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\base64.py first seen with mtime 1729713941.1167588
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\filters\right_margin.py first seen with mtime 1729889169.4541035
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\compatibility\django_4_0.py first seen with mtime 1729889176.2481747
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\sqlparse\lexer.py first seen with mtime 1729889169.4245002
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\_distutils_hack\__init__.py first seen with mtime 1729889145.6084151
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\staticfiles\finders.py first seen with mtime 1729889176.2072845
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\translation.py first seen with mtime 1729889176.246183
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\timezone.py first seen with mtime 1729889177.0038912
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\management\commands\runserver.py first seen with mtime 1729889176.3020306
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\__init__.py first seen with mtime 1729889171.9213297
+File D:\Optinet\FiberTrack\suppliers\apps.py first seen with mtime 1728551480.0
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\uploadhandler.py first seen with mtime 1729889176.2581875
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\ssl.py first seen with mtime 1729713951.7699554
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\wsgiref\__init__.py first seen with mtime 1729713952.4418118
+File D:\Optinet\FiberTrack\FiberTrack\settings.py first seen with mtime 1730631785.6769269
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\copyreg.py first seen with mtime 1729713941.226717
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\tempfile.py first seen with mtime 1729713951.8026721
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\loader_tags.py first seen with mtime 1729889176.923971
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\checks\registry.py first seen with mtime 1729889176.2442367
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\list.py first seen with mtime 1729889177.0326784
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\shutil.py first seen with mtime 1729713945.7780008
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\__init__.py first seen with mtime 1730628517.828139
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\utils.py first seen with mtime 1729889176.3299632
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\functional.py first seen with mtime 1729889176.9858038
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_socket.pyd first seen with mtime 1729713940.1411486
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\backends\__init__.py first seen with mtime 1729889176.9279566
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\__init__.py first seen with mtime 1729889176.9110029
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\formats.py first seen with mtime 1729889176.9848092
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\threads.py first seen with mtime 1729713940.8552034
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\i18n.py first seen with mtime 1729889176.9409223
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\signing.py first seen with mtime 1729889176.2262561
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\utils\decorators.py first seen with mtime 1729889176.978822
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\migrations\migration.py first seen with mtime 1729889176.4303293
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\sessions\__init__.py first seen with mtime 1729889175.5488727
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\re\_parser.py first seen with mtime 1729713945.7182474
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\backends\base\operations.py first seen with mtime 1729889176.3419778
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_overlapped.pyd first seen with mtime 1729713940.1321032
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\auth\hashers.py first seen with mtime 1729889172.8445427
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\db\models\functions\window.py first seen with mtime 1729889176.608763
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\templatetags\__init__.py first seen with mtime 1729889176.9379323
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\difflib.py first seen with mtime 1729713941.400425
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\mail\__init__.py first seen with mtime 1729889176.2691202
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\selectors.py first seen with mtime 1729713945.766011
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\graphlib.py first seen with mtime 1729713943.171762
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\colorama\ansi.py first seen with mtime 1730628517.8357759
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\secrets.py first seen with mtime 1729713945.766011
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\opcode.py first seen with mtime 1729713945.5620906
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\html\parser.py first seen with mtime 1729713943.1878319
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\conf\urls\static.py first seen with mtime 1729889171.9193027
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\apps\__init__.py first seen with mtime 1729889171.2854857
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\apps.py first seen with mtime 1729889171.9223473
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\email\mime\nonmultipart.py first seen with mtime 1729713941.9798932
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\template\response.py first seen with mtime 1729889176.924965
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\contrib\admin\models.py first seen with mtime 1729889171.9304686
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\files\images.py first seen with mtime 1729889176.25316
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\exceptions.py first seen with mtime 1729889176.2222452
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\views\generic\base.py first seen with mtime 1729889177.0286894
+File D:\Optinet\FiberTrack\venv\Lib\site-packages\django\core\signals.py first seen with mtime 1729889176.224269
+File C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\DLLs\_ssl.pyd first seen with mtime 1729713940.152855
+File D:\Optinet\FiberTrack\templates\base.html first seen with mtime 1730628187.405151
