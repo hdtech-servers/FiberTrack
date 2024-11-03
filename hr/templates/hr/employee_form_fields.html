@@ -1,0 +1,92 @@
+<div class="form-group">
+    <label for="first_name">First Name:</label>
+    <input type="text" name="first_name" value="{{ employee.first_name }}" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="last_name">Last Name:</label>
+    <input type="text" name="last_name" value="{{ employee.last_name }}" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" name="email" value="{{ employee.email }}" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="phone">Phone:</label>
+    <input type="text" name="phone" value="{{ employee.phone }}" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="address">Address:</label>
+    <textarea name="address" class="form-control">{{ employee.address }}</textarea>
+</div>
+<div class="form-group">
+    <label for="national_id">National ID:</label>
+    <input type="text" name="national_id" value="{{ employee.national_id }}" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="emergency_contact_name">Emergency Contact Name:</label>
+    <input type="text" name="emergency_contact_name" value="{{ employee.emergency_contact_name }}" class="form-control">
+</div>
+<div class="form-group">
+    <label for="emergency_contact_phone">Emergency Contact Phone:</label>
+    <input type="text" name="emergency_contact_phone" value="{{ employee.emergency_contact_phone }}" class="form-control">
+</div>
+
+<!-- Employment Information Fields -->
+<div class="form-group">
+    <label for="department">Department:</label>
+    <select name="department" class="form-control">
+        {% for department in departments %}
+            <option value="{{ department.id }}" {% if department.id == employee.department.id %}selected{% endif %}>
+                {{ department.name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+<div class="form-group">
+    <label for="job_title">Job Title:</label>
+    <input type="text" name="job_title" value="{{ employee.job_title }}" class="form-control">
+</div>
+<div class="form-group">
+    <label for="hire_date">Hire Date:</label>
+    <input type="date" name="hire_date" value="{{ employee.hire_date }}" class="form-control">
+</div>
+<div class="form-group">
+    <label for="salary">Salary:</label>
+    <input type="number" name="salary" value="{{ employee.salary }}" class="form-control">
+</div>
+<div class="form-group form-check">
+    <input type="checkbox" name="is_active" class="form-check-input" {% if employee.is_active %}checked{% endif %}>
+    <label class="form-check-label" for="is_active">Is Active</label>
+</div>
+
+<!-- Bank Details -->
+<div class="form-group">
+    <label for="bank">Bank:</label>
+    <input type="text" name="bank" value="{{ employee.bank }}" class="form-control">
+</div>
+<div class="form-group">
+    <label for="branch">Branch:</label>
+    <input type="text" name="branch" value="{{ employee.branch }}" class="form-control">
+</div>
+<div class="form-group">
+    <label for="account_number">Account Number:</label>
+    <input type="text" name="account_number" value="{{ employee.account_number }}" class="form-control">
+</div>
+
+<!-- Document Uploads -->
+<div class="form-group">
+    <label for="profile_photo">Profile Photo:</label>
+    <input type="file" name="profile_photo" class="form-control-file">
+</div>
+<div class="form-group">
+    <label for="id_scan_front">ID Scan (Front):</label>
+    <input type="file" name="id_scan_front" class="form-control-file">
+</div>
+<div class="form-group">
+    <label for="id_scan_back">ID Scan (Back):</label>
+    <input type="file" name="id_scan_back" class="form-control-file">
+</div>
+<div class="form-group">
+    <label for="additional_documents">Additional Documents:</label>
+    <input type="file" name="additional_documents" class="form-control-file">
+</div>

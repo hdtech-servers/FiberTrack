@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'hr/hr_navbar.html' %}
+
+<div>
+    <h1>Deductions
+     <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addDeductionModal" style="border-radius: 50%; padding: 0.75rem;">
+        <i class="fas fa-plus"></i>
+    </button>
+    </h1>
+
+
+    <!-- Deductions Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="bg-success text-white">
+                <tr>
+                    <th>Employee</th>
+                    <th>Reason</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deduction in deductions %}
+                <tr>
+                    <td>{{ deduction.employee.first_name }} {{ deduction.employee.last_name }}</td>
+                    <td>{{ deduction.reason }}</td>
+                    <td>{{ deduction.amount }}</td>
+                    <td>
+                        <!-- Delete button triggers modal -->
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteDeductionModal-{{ deduction.id }}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Delete Deduction Modal -->
+                <div class="modal fade" id="deleteDeductionModal-{{ deduction.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteDeductionModalLabel-{{ deduction.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="deleteDeductionModalLabel-{{ deduction.id }}">Delete Deduction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this deduction for {{ deduction.reason }}?
+                            </div>
+                            <div class="modal-footer">
+                                <form method="post" action="{% url 'deduction_delete' deduction.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Deduction Modal -->
+<div class="modal fade" id="addDeductionModal" tabindex="-1" role="dialog" aria-labelledby="addDeductionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="addDeductionModalLabel">Add New Deduction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'deduction_add' %}">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Add Deduction</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

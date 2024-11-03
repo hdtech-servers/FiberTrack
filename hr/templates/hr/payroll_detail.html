@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Payslip for {{ payroll.employee.first_name }} {{ payroll.employee.last_name }} ({{ payroll.date }})</h2>
+<ul>
+    <li><strong>Basic Salary:</strong> {{ payroll.basic_salary }}</li>
+    <li><strong>Bonus:</strong> {{ payroll.bonus }}</li>
+    <li><strong>Deductions:</strong> {{ payroll.deductions.count }}</li>
+    <li><strong>Net Salary:</strong> {{ payroll.net_salary }}</li>
+</ul>
+
+<h3>Deductions</h3>
+<ul>
+    {% for deduction in payroll.deductions.all %}
+    <li>{{ deduction.reason }}: {{ deduction.amount }}</li>
+    {% endfor %}
+</ul>
+
+<a href="#" class="btn btn-success" onclick="window.print()">Print Payslip</a>
+{% endblock %}
+

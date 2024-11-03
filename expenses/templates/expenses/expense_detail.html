@@ -1,0 +1,11 @@
+    {% include 'expenses/expenses_navbar.html' %}
+
+<h1>Expense Details</h1>
+<p>Category: {{ expense.category.name }}</p>
+<p>Date: {{ expense.date }}</p>
+<p>Amount: {{ expense.amount }}</p>
+<p>Payment Method: {{ expense.payment_method }}</p>
+<p>Supplier: {{ expense.supplier }}</p>
+<p>Description: {{ expense.description }}</p>
+
+<a href="{% url 'expense_delete' expense.id %}">Delete</a>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Payroll List</h2>
+<a href="{% url 'payroll_add' %}" class="btn btn-success">Add Payroll</a>
+<a href="{% url 'payroll_bulk_process' %}" class="btn btn-info">Process Payroll for All Employees</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Basic Salary</th>
+            <th>Bonus</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payroll in payrolls %}
+        <tr>
+            <td>{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}</td>
+            <td>{{ payroll.date }}</td>
+            <td>{{ payroll.basic_salary }}</td>
+            <td>{{ payroll.bonus }}</td>
+            <td>{{ payroll.deductions.count }}</td>
+            <td>{{ payroll.net_salary }}</td>
+            <td>
+                <a href="{% url 'payroll_detail' payroll.id %}" class="btn btn-primary">View Payslip</a>
+                <a href="{% url 'payroll_delete' payroll.id %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

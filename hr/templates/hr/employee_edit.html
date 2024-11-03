@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+            {% include 'hr/hr_navbar.html' %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success">Edit Employee: {{ employee.first_name }} {{ employee.last_name }}</h1>
+        <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Employee List
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Edit Employee Information</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{% url 'employee_edit' employee.id %}">
+                {% csrf_token %}
+
+                <!-- Personal Information -->
+                <h5 class="text-primary mb-3">Personal Information</h5>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="first_name">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="last_name">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="phone">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    {{ form.address }}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="national_id">National ID</label>
+                        {{ form.national_id }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="emergency_contact_name">Emergency Contact Name</label>
+                        {{ form.emergency_contact_name }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="emergency_contact_phone">Emergency Contact Phone</label>
+                        {{ form.emergency_contact_phone }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="department">Department</label>
+                        {{ form.department }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="job_title">Job Title</label>
+                        {{ form.job_title }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="hire_date">Hire Date</label>
+                        {{ form.hire_date }}
+                    </div>
+                </div>
+
+                <!-- Bank Details -->
+                <h5 class="text-primary mb-3 mt-4">Bank Information</h5>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="bank">Bank</label>
+                        {{ form.bank }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="branch">Branch</label>
+                        {{ form.branch }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="account_number">Account Number</label>
+                        {{ form.account_number }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="salary">Salary</label>
+                        {{ form.salary }}
+                    </div>
+                </div>
+
+                <!-- Document Uploads -->
+                <h5 class="text-primary mb-3 mt-4">Document Uploads</h5>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="profile_photo">Profile Photo</label>
+                        {{ form.profile_photo }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="id_scan_front">ID Scan (Front)</label>
+                        {{ form.id_scan_front }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="id_scan_back">ID Scan (Back)</label>
+                        {{ form.id_scan_back }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="additional_documents">Additional Documents</label>
+                        {{ form.additional_documents }}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success mr-2 rounded-pill">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="{% url 'employee_list' %}" class="btn btn-secondary rounded-pill">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

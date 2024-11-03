@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Expense Dashboard{% endblock %}
+{% include 'expenses/expenses_navbar.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Expense Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Expenses</h5>
+                    <p class="card-text">KSh {{ total_expenses }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h5>Latest Expenses</h5>
+            <ul class="list-group">
+                {% for expense in latest_expenses %}
+                <li class="list-group-item">
+                    {{ expense.date }} - {{ expense.category.name }} - KSh {{ expense.amount }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h4>Categories</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

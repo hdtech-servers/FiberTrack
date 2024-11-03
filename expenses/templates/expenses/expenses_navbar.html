@@ -1,0 +1,56 @@
+
+{% block content %}
+<style>
+    /* Inventory Navbar Styles */
+    .nav-item a {
+        color: #fff;
+        text-decoration: none;
+        padding: 1px;
+        display: block;
+    }
+
+    .nav-item a:hover {
+        color: #fff;
+    }
+
+    .nav-text {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .navbar-inventory {
+        background-color: var(--primary-color);
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .navbar-inventory .nav-item {
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .navbar-inventory .nav-item a {
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
+
+<div class="navbar-inventory">
+    <ul class="nav">
+        <li class="nav-item">
+            <a href="{% url 'list_expenses' %}" title="Expenses">
+                <i class="fas fa-money-check-alt"></i>
+                <span class="nav-text">Expenses</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'expenses_category_list' %}" title="Categories">
+            <i class="fas fa-list"></i>
+                <span class="nav-text">Categories</span>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+{% endblock %}

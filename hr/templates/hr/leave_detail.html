@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+            {% include 'hr/hr_navbar.html' %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success">Leave Request Details</h1>
+        <a href="{% url 'leave_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Leave List
+        </a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Leave Details</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Employee:</strong> {{ leave.employee.first_name }} {{ leave.employee.last_name }}</p>
+            <p><strong>Start Date:</strong> {{ leave.start_date|date:"Y-m-d" }}</p>
+            <p><strong>End Date:</strong> {{ leave.end_date|date:"Y-m-d" }}</p>
+            <p><strong>Reason:</strong> {{ leave.reason }}</p>
+            <p><strong>Status:</strong>
+                {% if leave.approved %}
+                    <span class="badge badge-success">Approved</span>
+                {% else %}
+                    <span class="badge badge-warning">Pending</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex justify-content-end">
+        {% if not leave.approved %}
+        <button class="btn btn-info mr-2" data-toggle="modal" data-target="#approveLeaveModal">
+            <i class="fas fa-check"></i> Approve
+        </button>
+        {% endif %}
+        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#editLeaveModal">
+            <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteLeaveModal">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    </div>
+</div>
+
+<!-- Edit Leave Modal -->
+<div class="modal fade" id="editLeaveModal" tabindex="-1" role="dialog" aria-labelledby="editLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="editLeaveModalLabel">Edit Leave Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'leave_edit' leave.id %}">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="employee">Employee</label>
+                        {{ form.employee }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="start_date">Start Date</label>
+                            {{ form.start_date }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="end_date">End Date</label>
+                            {{ form.end_date }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">Reason</label>
+                        {{ form.reason }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Leave Modal -->
+<div class="modal fade" id="deleteLeaveModal" tabindex="-1" role="dialog" aria-labelledby="deleteLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteLeaveModalLabel">Delete Leave Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this leave request?
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{% url 'leave_delete' leave.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approve Leave Modal -->
+<div class="modal fade" id="approveLeaveModal" tabindex="-1" role="dialog" aria-labelledby="approveLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="approveLeaveModalLabel">Approve Leave Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve this leave request?
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{% url 'leave_approve' leave.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-info">Yes, Approve</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
