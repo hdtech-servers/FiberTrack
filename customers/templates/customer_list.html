@@ -41,7 +41,7 @@
                 {% for customer in customers %}
                 <tr class="clickable-row" data-href="{% url 'customer_detail' customer.customer_id %}">
                     <td>{{ customer.customer_id }}</td>
-                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.first_name }} {{ customer.last_name }}</td>
                     <td>{{ customer.contact_number }}</td>
                     <td>{{ customer.pppoe_username }}</td>
                     <td class="text-center">
@@ -61,7 +61,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Are you sure you want to delete the customer <strong>{{ customer.name }}</strong>?
+                                        Are you sure you want to delete the customer <strong>{{ customer.first_name }} {{ customer.last_name }}</strong>?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -119,23 +119,31 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Include FontAwesome for icons and Bootstrap JS for modals -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Clickable rows to navigate to customer detail page -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", function() {
-            window.location.href = row.getAttribute("data-href");
-        });
+    const tableBody = document.getElementById("customer-list");
+
+    tableBody.addEventListener("click", function(event) {
+        const clickedElement = event.target;
+        const row = clickedElement.closest(".clickable-row");
+
+        if (row) {
+            if (clickedElement.closest(".btn")) {
+                return;
+            }
+
+            const url = row.getAttribute("data-href");
+            if (url) {
+                window.location.href = url;
+            }
+        }
     });
 });
 </script>
 
-<!-- Sortable Columns -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
@@ -153,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-<!-- Live Search Script -->
 <script>
 document.getElementById('search-input').addEventListener('input', function() {
     const query = this.value.toLowerCase();

@@ -50,10 +50,10 @@ body {
     height: 100vh;
     background-color: var(--dark-blue);
     position: fixed;
-    top: 56px;
+    top: 40px;
     left: 0;
     width: 60px; /* Reduced width for icon-only view */
-    padding-top: 20px;
+    padding-top: 10px;
     overflow-x: hidden;
     transition: all 0.3s ease-in-out;
 }
@@ -68,7 +68,7 @@ body {
     display: block;
     text-align: center;
     padding: 15px 0;
-    font-size: 0.8rem; /* Reduced font size */
+    font-size: 0.6rem; /* Reduced font size */
     position: relative;
 }
 
@@ -81,8 +81,8 @@ body {
 
 /* Sidebar Icon Styling */
 .sidebar i {
-    font-size: 1rem; /* Reduced icon size */
-    margin-bottom: 5px;
+    font-size: 0.9rem; /* Reduced icon size */
+    margin-bottom: 1px;
 }
 
 /* Tooltip text style */

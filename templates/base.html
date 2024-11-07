@@ -5,14 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-
-
     <title>FiberTrack</title>
 
-
-    <!-- Link to external CSS -->
+    <!-- CSS Links -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -20,20 +16,11 @@
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <!-- Toggle Button for Sidebar (Small Screens) -->
-            <button class="toggle-btn" id="toggle-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Logo -->
+            <button class="toggle-btn" id="toggle-btn"><i class="fas fa-bars"></i></button>
             <a class="navbar-brand" href="{% url 'customer_list' %}">FiberTrack</a>
-
-            <!-- Search Bar -->
             <form class="d-flex mx-auto" role="search">
                 <input class="form-control me-2 search-bar" type="search" placeholder="Search..." aria-label="Search">
             </form>
-
-            <!-- User Profile Dropdown -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,22 +28,10 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         {% if user.is_authenticated %}
-                        <li>
-                            <a class="dropdown-item" href="{% url 'profile' %}">
-                                <i class="fas fa-user-edit"></i> Edit Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'logout' %}">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                         {% else %}
-                        <li>
-                            <a class="dropdown-item" href="{% url 'login' %}">
-                                <i class="fas fa-sign-in-alt"></i> Login
-                            </a>
-                        </li>
+                        <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -66,87 +41,60 @@
 
     <!-- Sidebar for large and small screens -->
     <div class="sidebar" id="sidebar">
-        <a href="{% url 'customer_list' %}">
-            <i class="fas fa-home"></i>
-            <span class="tooltip-text">Dashboard</span>
-        </a>
-        <a href="{% url 'billing_dashboard' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            <span class="tooltip-text">Billing</span>
-        </a>
-        <a href="{% url 'customer_list' %}">
-            <i class="fas fa-receipt"></i>
-            <span class="tooltip-text">Expenses</span>
-        </a>
-        <a href="{% url 'customer_list' %}">
-            <i class="fas fa-users"></i>
-            <span class="tooltip-text">Customers</span>
-        </a>
-        <a href="{% url 'customer_list' %}">
-            <i class="fas fa-ticket-alt"></i>
-            <span class="tooltip-text">Tickets</span>
-        </a>
-        <a href="{% url 'product_list' %}">
-            <i class="fas fa-boxes"></i>
-            <span class="tooltip-text">Inventory</span>
-        </a>
-        <a href="{% url 'list_expenses' %}">
-            <i class="fas fa-dollar"></i>
-            <span class="tooltip-text">expences</span>
-        </a>
-        <a>
-            <i class="fas fa-grip-lines"></i>
-            <span class="tooltip-text"></span>
-        </a>
-        <a href="{% url 'user_list' %}">
-            <i class="fas fa-user-cog"></i>
-            <span class="tooltip-text">Auth app</span>
-        </a>
-        <a href="{% url 'hr_dashboard' %}">
-            <i class="fas fa-users"></i>
-            <span class="tooltip-text">hr</span>
-        </a>        <a href="{% url 'view_edit_organization' %}">
-            <i class="fas fa-cogs"></i>
-            <span class="tooltip-text">Settings</span>
-        </a>
+        <a href="{% url 'customer_list' %}"><i class="fas fa-home"></i><span class="tooltip-text">Dashboard</span></a>
+        <a href="{% url 'billing_dashboard' %}"><i class="fas fa-money-bill-wave"></i><span class="tooltip-text">Billing</span></a>
+        <a href="{% url 'customer_list' %}"><i class="fas fa-receipt"></i><span class="tooltip-text">Expenses</span></a>
+        <a href="{% url 'customer_list' %}"><i class="fas fa-users"></i><span class="tooltip-text">Customers</span></a>
+        <a href="{% url 'customer_list' %}"><i class="fas fa-ticket-alt"></i><span class="tooltip-text">Tickets</span></a>
+        <a href="{% url 'product_list' %}"><i class="fas fa-boxes"></i><span class="tooltip-text">Inventory</span></a>
+        <a href="{% url 'list_expenses' %}"><i class="fas fa-dollar"></i><span class="tooltip-text">Expenses</span></a>
+        <a href="{% url 'user_list' %}"><i class="fas fa-user-cog"></i><span class="tooltip-text">Auth app</span></a>
+        <a href="{% url 'hr_dashboard' %}"><i class="fas fa-users"></i><span class="tooltip-text">HR</span></a>
+        <a href="{% url 'view_edit_organization' %}"><i class="fas fa-cogs"></i><span class="tooltip-text">Settings</span></a>
     </div>
 
     <!-- Main content area -->
     <div class="main-content" id="main-content">
-        {% block content %}
-        <!-- Content goes here -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
+    <!-- External JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Custom JavaScript -->
     <script>
-        // Toggle sidebar visibility
-        const toggleBtn = document.getElementById('toggle-btn');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('toggle-btn');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('hide');
-            mainContent.classList.toggle('hide');
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hide');
+                mainContent.classList.toggle('hide');
+                console.log('Sidebar toggled');
+            });
+
+            // Auto logout script after 5 minutes of inactivity
+            let timer;
+            const logoutAfterInactivity = () => {
+                window.location.href = "{% url 'logout' %}";
+            };
+
+            const resetTimer = () => {
+                clearTimeout(timer);
+                timer = setTimeout(logoutAfterInactivity, 300000);
+                console.log('Timer reset');
+            };
+
+            // Detect activity
+            resetTimer();
+            document.onmousemove = resetTimer;
+            document.onkeydown = resetTimer;
+            document.ontouchstart = resetTimer;
         });
-
-        // Auto logout script after 5 minutes (300000 ms) of inactivity
-        let timer;
-        const logoutAfterInactivity = () => {
-            window.location.href = "{% url 'logout' %}";  // Redirect to logout
-        };
-
-        const resetTimer = () => {
-            clearTimeout(timer);
-            timer = setTimeout(logoutAfterInactivity, 300000);  // 5 minutes
-        };
-
-        // Detect activity
-        window.onload = resetTimer;
-        document.onmousemove = resetTimer;
-        document.onkeydown = resetTimer;
-        document.ontouchstart = resetTimer;
     </script>
+
+    <!-- Extra JS Block for Page-Specific Scripts -->
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

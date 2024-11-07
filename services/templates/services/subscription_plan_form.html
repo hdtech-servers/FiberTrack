@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% include 'billing/billing_navbar.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save Plan</button>
+    </form>
+    <a href="{% url 'services:subscription_plan_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+{% endblock %}

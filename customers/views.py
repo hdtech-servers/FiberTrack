@@ -7,6 +7,7 @@ from .models import Customer
 from .forms import CustomerForm, CustomerImportForm
 import csv
 from django.http import HttpResponse
+from settings.models import OrganizationSettings
 
 
 @login_required(login_url='/auth_app/login/')
@@ -46,7 +47,22 @@ def customer_list(request):
 @login_required(login_url='/auth_app/login/')
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
-    return render(request, 'customer_detail.html', {'customer': customer})
+
+    # Fetch organization settings to access the Google Maps API key
+    organization_settings = OrganizationSettings.objects.first()
+
+    # Example recent activity data (customize based on your data model)
+    recent_activity = [
+        {"description": "Payment received", "date": customer.date_created, "amount": 50},
+        {"description": "Invoice generated", "date": customer.date_created}
+    ]
+
+    context = {
+        'customer': customer,
+        'organization_settings': organization_settings,
+        'recent_activity': recent_activity
+    }
+    return render(request, 'customer_detail.html', context)
 
 
 @login_required(login_url='/auth_app/login/')

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Subscription Plans{% endblock %}
+
+{% block content %}
+    {% include 'billing/billing_navbar.html' %}
+<div class="container mt-4">
+    <!-- Filter and Search Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <form method="get" class="d-flex w-50" id="filter-form">
+            <!-- Plan Type Filter -->
+            <select name="plan_type" class="form-select me-2" onchange="document.getElementById('filter-form').submit()">
+                <option value="all" {% if plan_type_filter == 'all' %}selected{% endif %}>All</option>
+                <option value="pppoe" {% if plan_type_filter == 'pppoe' %}selected{% endif %}>PPPoE</option>
+                <option value="hotspot" {% if plan_type_filter == 'hotspot' %}selected{% endif %}>Hotspot</option>
+            </select>
+
+            <!-- Search Bar (auto-submit on input change) -->
+            <input type="text" name="q" class="form-control me-2" placeholder="Search plans..." value="{{ query }}" id="search-input">
+        </form>
+
+        <!-- Add Subscription Plan Button (opens modal) -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPlanModal">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- Editable Items Per Page -->
+    <div class="mb-2">
+        <form method="get" class="d-flex align-items-center">
+            <label for="per_page" class="me-2">Items per page:</label>
+            <select name="per_page" id="per_page" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="25" {% if per_page == 25 %}selected{% endif %}>25</option>
+                <option value="50" {% if per_page == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
+            </select>
+            <input type="hidden" name="plan_type" value="{{ plan_type_filter }}">
+            <input type="hidden" name="q" value="{{ query }}">
+        </form>
+    </div>
+
+    <!-- Subscription Plan Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th onclick="sortTable(0, 'string')">Name</th>
+                    <th onclick="sortTable(1, 'string')">Upload Speed</th>
+                    <th onclick="sortTable(2, 'string')">Download Speed</th>
+                    <th onclick="sortTable(3, 'number')">Price (KES)</th>
+                    <th onclick="sortTable(4, 'number')">Duration</th>
+                    <th onclick="sortTable(5, 'string')">Type</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in page_obj %}
+                <tr class="clickable-row" data-href="{% url 'services:subscription_plan_detail' plan.pk %}">
+                    <td>{{ plan.name }}</td>
+                    <td>{{ plan.upload_speed }}</td>
+                    <td>{{ plan.download_speed }}</td>
+                    <td>KES {{ plan.price|floatformat:2 }}</td>
+                    <td>{{ plan.duration }} {{ plan.get_time_unit_display }}</td>
+                    <td>{{ plan.get_plan_type_display }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'services:subscription_plan_edit' plan.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'services:subscription_plan_delete' plan.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No subscription plans found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1&per_page={{ per_page }}&plan_type={{ plan_type_filter }}&q={{ query }}">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&per_page={{ per_page }}&plan_type={{ plan_type_filter }}&q={{ query }}">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&per_page={{ per_page }}&plan_type={{ plan_type_filter }}&q={{ query }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&per_page={{ per_page }}&plan_type={{ plan_type_filter }}&q={{ query }}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<!-- Add Plan Modal -->
+<div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPlanModalLabel">Add New Subscription Plan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'services:subscription_plan_create' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success mt-3">Save Plan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Make table rows clickable and redirect to detail page
+    document.addEventListener("DOMContentLoaded", function() {
+        const rows = document.querySelectorAll(".clickable-row");
+        rows.forEach(row => {
+            row.addEventListener("click", function() {
+                const href = row.getAttribute("data-href");
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Sort Table Function
+    function sortTable(column, type) {
+        const table = document.querySelector("tbody");
+        const rows = Array.from(table.querySelectorAll("tr"));
+        const sortedRows = rows.sort((a, b) => {
+            const aText = a.cells[column].innerText.trim();
+            const bText = b.cells[column].innerText.trim();
+
+            if (type === 'number') {
+                return parseFloat(aText.replace('KES ', '')) - parseFloat(bText.replace('KES ', ''));
+            }
+            return aText.localeCompare(bText, undefined, { sensitivity: 'base' });
+        });
+
+        rows.forEach(row => table.removeChild(row)); // Clear table
+        sortedRows.forEach(row => table.appendChild(row)); // Append sorted rows
+    }
+
+    // Trigger search automatically on input change
+    document.getElementById('search-input').addEventListener('input', function() {
+        document.getElementById('filter-form').submit();
+    });
+</script>
+{% endblock %}

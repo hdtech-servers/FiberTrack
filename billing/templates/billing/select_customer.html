@@ -1,0 +1,78 @@
+<!-- templates/billing/select_customer.html -->
+{% extends "base.html" %}
+
+{% block title %}Select Customer{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Select a Customer for Quotation</h2>
+
+    <!-- Live Search Input -->
+    <div class="mb-3">
+        <input type="text" id="customerSearch" class="form-control" placeholder="Search customers by name or contact">
+    </div>
+
+    <form method="post" id="customerSelectForm">
+        {% csrf_token %}
+        <table class="table table-bordered mt-3" id="customerTable">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr class="customer-row">
+                    <td>{{ customer.id }}</td>
+                    <td class="first-name">{{ customer.first_name }}</td>
+                    <td class="last-name">{{ customer.last_name }}</td>
+                    <td class="contact">{{ customer.contact_number }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary select-button" data-id="{{ customer.id }}">Select</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No customers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("customerSearch");
+        const rows = document.querySelectorAll(".customer-row");
+
+        // Function to filter table rows based on search input
+        searchInput.addEventListener("input", function() {
+            const searchValue = searchInput.value.toLowerCase();
+            rows.forEach(row => {
+                const firstName = row.querySelector(".first-name").textContent.toLowerCase();
+                const lastName = row.querySelector(".last-name").textContent.toLowerCase();
+                const contact = row.querySelector(".contact").textContent.toLowerCase();
+
+                if (firstName.includes(searchValue) || lastName.includes(searchValue) || contact.includes(searchValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+
+        // Redirect to create quotation page when a customer is selected
+        document.querySelectorAll(".select-button").forEach(button => {
+            button.addEventListener("click", function() {
+                const customerId = this.getAttribute("data-id");
+                window.location.href = `{% url 'create_quotation' 0 %}`.replace('/0/', `/${customerId}/`);
+            });
+        });
+    });
+</script>
+{% endblock %}

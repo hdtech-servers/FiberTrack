@@ -1,62 +1,98 @@
 {% extends 'base.html' %}
 
-{% block title %}Customer Details{% endblock %}
+{% block title %}Customer Detail{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <!-- Customer Information Card -->
-        <div class="col-lg-8 col-md-12 mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Customer Information</h5>
-                </div>
+<div class="container-fluid mt-4">
+    <!-- Breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'customer_list' %}">Customers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ customer.first_name }} {{ customer.last_name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Customer Info & Actions -->
+    <div class="row g-4">
+        <!-- Left Section: Customer Details -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-6"><strong>Customer ID:</strong> {{ customer.customer_id }}</div>
-                        <div class="col-6"><strong>Name:</strong> {{ customer.name }}</div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-6"><strong>Contact Number:</strong> {{ customer.contact_number }}</div>
-                        <div class="col-6"><strong>Email:</strong> {{ customer.email }}</div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-6"><strong>PPPoE Username:</strong> {{ customer.pppoe_username }}</div>
-                        <div class="col-6"><strong>PPPoE Password:</strong> {{ customer.pppoe_password }}</div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12"><strong>Billing Address:</strong> {{ customer.billing_address }}</div>
+                    <h5 class="card-title">{{ customer.first_name }} {{ customer.last_name }}</h5>
+                    <p class="text-muted mb-1">Customer ID: {{ customer.customer_id }}</p>
+                    <hr>
+                    <p><strong>Contact:</strong> {{ customer.contact_number }}</p>
+                    <p><strong>Email:</strong> <a href="mailto:{{ customer.email }}">{{ customer.email }}</a></p>
+                    <p><strong>Billing Address:</strong> {{ customer.billing_address }}</p>
+                    <p><strong>PPPoE Username:</strong> {{ customer.pppoe_username }}</p>
+                    <p><strong>Account Balance:</strong> {{ customer.account }}</p>
+                    <hr>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'customer_edit' customer.customer_id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteCustomerModal">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Customer Location and Google Maps -->
-        <div class="col-lg-4 col-md-12 mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Customer Location</h5>
-                </div>
+        <!-- Right Section: Google Maps & Widgets -->
+        <div class="col-lg-6">
+            <!-- Google Map -->
+            <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <div id="map" style="height: 300px;"></div> <!-- Google Map Placeholder -->
-                    <div class="mt-3 text-muted">
-                        <p><strong>Latitude:</strong> {{ customer.latitude }}</p>
-                        <p><strong>Longitude:</strong> {{ customer.longitude }}</p>
-                    </div>
-                    <div id="map-error" class="text-danger d-none">Unable to load the map.</div>
+                    <h5 class="card-title">Location</h5>
+                    <div id="map" style="height: 300px; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Widgets Section -->
+    <div class="row g-4 mt-4">
+        <!-- Account Overview Widget -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h6 class="card-title">Account Overview</h6>
+                    <p><strong>Credit:</strong> {{ customer.account.credit }}</p>
+                    <p><strong>Outstanding:</strong> {{ customer.account.outstanding }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="col-lg-8 col-md-12">
-            <div class="d-flex justify-content-between">
-                <a href="{% url 'customer_edit' customer.customer_id %}" class="btn btn-outline-primary">
-                    <i class="fas fa-edit"></i> Edit Customer
-                </a>
-                <a href="{% url 'customer_list' %}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left"></i> Back to Customer List
-                </a>
+        <!-- Recent Activity Widget -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Recent Activity</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Payment received - $50 on {{ customer.date_created }}</li>
+                        <li class="list-group-item">Invoice generated on {{ customer.date_created }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="deleteCustomerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCustomerModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <strong>{{ customer.first_name }} {{ customer.last_name }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'customer_delete' customer.customer_id %}" class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
     </div>
@@ -64,45 +100,40 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Google Maps Script -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYMNeSpUgIvH6OV8pl8-czhLcvHpaxQQ&callback=initMap" async defer></script>
 <script>
-  function initMap() {
-    // Default to a fallback location if no coordinates are provided
-    var defaultLat = 0;
-    var defaultLng = 0;
+    function initMap() {
+        const defaultLocation = { lat: -1.286389, lng: 36.817223 };  // Optinet Global Links
+        const customerLatitude = {{ customer.latitude|default:"null" }};
+        const customerLongitude = {{ customer.longitude|default:"null" }};
 
-    // Get customer coordinates
-    var customerLat = parseFloat('{{ customer.latitude|default:defaultLat }}');
-    var customerLng = parseFloat('{{ customer.longitude|default:defaultLng }}');
+        const location = (customerLatitude && customerLongitude)
+            ? { lat: parseFloat(customerLatitude), lng: parseFloat(customerLongitude) }
+            : defaultLocation;
 
-    // Check if valid coordinates are provided
-    if (!isNaN(customerLat) && !isNaN(customerLng) && (customerLat !== 0 || customerLng !== 0)) {
-        var customerLocation = { lat: customerLat, lng: customerLng };
-
-        // Initialize Google Map
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: customerLocation,
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: location,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,  // Default map type
+            mapTypeControl: true,  // Enable map type control
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.TOP_RIGHT
+            },
+            styles: [
+                { "featureType": "administrative", "elementType": "geometry", "stylers": [{ "visibility": "off" }] },
+                { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+                { "featureType": "road", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
+                { "featureType": "transit", "stylers": [{ "visibility": "off" }] },
+                { "featureType": "water", "stylers": [{ "color": "#0e1626" }] }
+            ]
         });
 
-        // Place a marker at the customer's location
         new google.maps.Marker({
-          position: customerLocation,
-          map: map,
-          title: '{{ customer.name }}',
+            position: location,
+            map: map,
+            title: "{{ customer.first_name }} {{ customer.last_name }}"
         });
-    } else {
-        // Show an error message if coordinates are missing or invalid
-        document.getElementById('map-error').classList.remove('d-none');
-        document.getElementById('map').classList.add('d-none');
     }
-  }
-
-  // Load the Google Maps API script dynamically with your API key
-  var script = document.createElement('script');
-  script.src = "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap";
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
 </script>
 {% endblock %}

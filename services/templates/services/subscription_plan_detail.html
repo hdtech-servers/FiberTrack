@@ -1,0 +1,88 @@
+<!-- services/templates/services/subscription_plan_detail.html -->
+
+{% extends "base.html" %}
+{% include 'billing/billing_navbar.html' %}
+
+{% block title %}Subscription Plan Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>{{ plan.name }}</h2>
+            <!-- Action Buttons for Edit and Delete -->
+            <div>
+                <a href="{% url 'services:subscription_plan_edit' plan.pk %}" class="btn btn-warning me-2">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <!-- Trigger the delete modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePlanModal">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Plan Details -->
+                <div class="col-md-6">
+                    <h5 class="card-title">Plan Information</h5>
+                    <p><strong>Type:</strong> {{ plan.get_plan_type_display }}</p>
+                    <p><strong>Upload Speed:</strong> {{ plan.upload_speed }}</p>
+                    <p><strong>Download Speed:</strong> {{ plan.download_speed }}</p>
+                    <p><strong>Price:</strong> ${{ plan.price }}</p>
+                    <p><strong>Installation Fee:</strong> ${{ plan.installation_fee }}</p>
+                </div>
+                <!-- Duration and Cap Information -->
+                <div class="col-md-6">
+                    <h5 class="card-title">Duration & Data Cap</h5>
+                    <p><strong>Duration:</strong> {{ plan.duration }} {{ plan.get_time_unit_display }}</p>
+                    {% if plan.data_cap %}
+                        <p><strong>Data Cap:</strong> {{ plan.data_cap }}</p>
+                    {% else %}
+                        <p><strong>Data Cap:</strong> Unlimited</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Back to List Button -->
+    <div class="mt-4">
+        <a href="{% url 'services:subscription_plan_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deletePlanModal" tabindex="-1" aria-labelledby="deletePlanModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePlanModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the subscription plan "<strong>{{ plan.name }}</strong>"? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{% url 'services:subscription_plan_delete' plan.pk %}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+        font-weight: bold;
+        color: #444;
+    }
+</style>
+{% endblock %}

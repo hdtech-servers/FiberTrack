@@ -50,10 +50,10 @@ body {
     height: 100vh;
     background-color: var(--dark-blue);
     position: fixed;
-    top: 56px;
+    top: 40px;
     left: 0;
     width: 60px; /* Reduced width for icon-only view */
-    padding-top: 20px;
+    padding-top: 10px;
     overflow-x: hidden;
     transition: all 0.3s ease-in-out;
 }
@@ -68,7 +68,7 @@ body {
     display: block;
     text-align: center;
     padding: 15px 0;
-    font-size: 0.8rem; /* Reduced font size */
+    font-size: 0.6rem; /* Reduced font size */
     position: relative;
 }
 
@@ -81,8 +81,8 @@ body {
 
 /* Sidebar Icon Styling */
 .sidebar i {
-    font-size: 1rem; /* Reduced icon size */
-    margin-bottom: 5px;
+    font-size: 0.9rem; /* Reduced icon size */
+    margin-bottom: 1px;
 }
 
 /* Tooltip text style */
@@ -106,7 +106,6 @@ body {
 /* Main Content */
 .main-content {
     margin-left: 65px; /* Reduced margin */
-    margin-top: 60px; /* Adjusted for navbar */
     padding: 15px; /* Reduced padding */
     transition: margin-left 0.3s ease-in-out;
 }
@@ -155,3 +154,70 @@ body {
     top: 56px;
     background-color: var(--dark-blue);
 }
+
+/* Custom input style */
+form input, form select, form textarea {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus, form select:focus, form textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 10px rgba(128, 189, 255, 0.5);
+}
+
+button {
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Custom checkbox and radio */
+input[type="checkbox"], input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:checked, input[type="radio"]:checked {
+    background-color: #007bff;
+}
+
+/* Custom file input */
+.custom-file-input::before {
+    content: 'Choose file...';
+    display: inline-block;
+    background: #007bff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-input:hover::before {
+    background-color: #0056b3;
+}
+
+/* Add icons to the buttons */
+button.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.btn-icon i {
+    margin-right: 5px;
+}
+

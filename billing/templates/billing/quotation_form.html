@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Quotation for {{ customer.first_name }} {{ customer.last_name }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Quotation Status Field -->
+        <div class="form-group mb-3">
+            <label for="{{ form.status.id_for_label }}">Quotation Status:</label>
+            {{ form.status }}
+        </div>
+
+        <!-- Item Table -->
+        <h4>Items</h4>
+        <table class="table table-bordered" id="itemTable">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Price (KSH)</th>
+                    <th>Total Price (KSH)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in item_formset %}
+                    <tr class="item-row">
+                        <td>{{ form.item_name }}</td>
+                        <td>{{ form.item_description }}</td>
+                        <td>{{ form.quantity }}</td>
+                        <td>{{ form.unit }}</td>
+                        <td>{{ form.price }}</td>
+                        <td class="total-price-cell">0.00</td>
+                        <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-end"><strong>Total Amount Due (KSH):</strong></td>
+                    <td colspan="2"><input type="text" id="totalAmount" readonly class="form-control-plaintext" value="0.00"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <button type="button" class="btn btn-primary" id="addItemRow">Add Item</button>
+
+        <button type="submit" class="btn btn-success mt-3">Create Quotation</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to update the total price for each row
+        function updateTotalPrice(row) {
+            const quantity = parseFloat(row.querySelector('[name$="quantity"]').value) || 0;
+            const price = parseFloat(row.querySelector('[name$="price"]').value) || 0;
+            const totalPrice = quantity * price;
+            row.querySelector('.total-price-cell').textContent = totalPrice.toFixed(2);
+            updateTotalAmount();
+        }
+
+        // Function to update the total amount for all items
+        function updateTotalAmount() {
+            let totalAmount = 0;
+            document.querySelectorAll(".total-price-cell").forEach(cell => {
+                totalAmount += parseFloat(cell.textContent) || 0;
+            });
+            document.getElementById("totalAmount").value = totalAmount.toFixed(2);
+        }
+
+        // Add event listener for the "Add Item" button
+        document.getElementById("addItemRow").addEventListener("click", function () {
+            const tableBody = document.getElementById("itemTable").querySelector("tbody");
+            const newRow = document.createElement("tr");
+            newRow.classList.add("item-row");
+            newRow.innerHTML = `
+                <td><input type="text" name="item_name" class="form-control" required></td>
+                <td><input type="text" name="item_description" class="form-control"></td>
+                <td><input type="number" name="quantity" class="form-control" step="1" min="1" value="1"></td>
+                <td><input type="text" name="unit" class="form-control"></td>
+                <td><input type="number" name="price" class="form-control" step="0.01" value="0.00"></td>
+                <td class="total-price-cell">0.00</td>
+                <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
+            `;
+            tableBody.appendChild(newRow);
+            updateTotalPrice(newRow);
+
+            // Add event listeners for the quantity and price inputs to recalculate total price
+            newRow.querySelector('[name="quantity"]').addEventListener("input", () => updateTotalPrice(newRow));
+            newRow.querySelector('[name="price"]').addEventListener("input", () => updateTotalPrice(newRow));
+        });
+
+        // Delegate click event for "Remove" buttons to handle removing rows
+        document.getElementById("itemTable").addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-row")) {
+                const row = event.target.closest("tr");
+                row.remove();
+                updateTotalAmount();
+            }
+        });
+
+        // Initial update for total prices in case there are pre-existing rows
+        document.querySelectorAll(".item-row").forEach(row => {
+            updateTotalPrice(row);
+            row.querySelector('[name$="quantity"]').addEventListener("input", () => updateTotalPrice(row));
+            row.querySelector('[name$="price"]').addEventListener("input", () => updateTotalPrice(row));
+        });
+    });
+</script>
+{% endblock %}
