@@ -2,9 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from customers.models import Customer
 from services.models import SubscriptionPlan
+from settings.models import OrganizationSettings
 
 # Invoice model
 class Invoice(models.Model):
+    invoice_id = models.CharField(max_length=20, unique=True, blank=True, editable=False)
     customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE, to_field='customer_id')
     subscription_plan = models.ForeignKey('services.SubscriptionPlan', on_delete=models.CASCADE, null=True, blank=True)  # Optional
     amount_due = models.DecimalField(max_digits=10, decimal_places=2)
@@ -16,26 +18,71 @@ class Invoice(models.Model):
         choices=[('Pending', 'Pending'), ('Paid', 'Paid'), ('Overdue', 'Overdue')]
     )
 
+    def save(self, *args, **kwargs):
+        if not self.invoice_id:
+            # Retrieve prefix from settings or use a default
+            prefix = "INV-"
+            try:
+                organization_settings = OrganizationSettings.objects.first()
+                if organization_settings and organization_settings.invoice_prefix:
+                    prefix = organization_settings.invoice_prefix
+            except OrganizationSettings.DoesNotExist:
+                pass  # Fallback to default prefix
+
+            # Generate a six-digit sequential ID with the prefix
+            last_invoice = Invoice.objects.filter(invoice_id__startswith=prefix).order_by('-invoice_id').first()
+            if last_invoice:
+                last_id = int(last_invoice.invoice_id.replace(prefix, ''))
+                new_id = last_id + 1
+            else:
+                new_id = 1
+
+            self.invoice_id = f"{prefix}{new_id:06d}"
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"Invoice {self.id} for Customer {self.customer.customer_id}"
+        return f"Invoice {self.invoice_id} for Customer {self.customer.customer_id}"
 
 
 # Quotation model
 class Quotation(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
-    ]
-
+    quotation_id = models.CharField(max_length=20, unique=True, blank=True, editable=False)
     customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE, to_field='customer_id')
     amount_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    time_added = models.DateTimeField(auto_now_add=True)  # New field
+    status = models.CharField(
+        max_length=10,
+        choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')],
+        default='pending'
+    )
+    time_added = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.quotation_id:
+            # Retrieve prefix from settings or use a default
+            prefix = "QTE-"
+            try:
+                organization_settings = OrganizationSettings.objects.first()
+                if organization_settings and organization_settings.quote_prefix:
+                    prefix = organization_settings.quote_prefix
+            except OrganizationSettings.DoesNotExist:
+                pass  # Fallback to default prefix
+
+            # Generate a six-digit sequential ID with the prefix
+            last_quotation = Quotation.objects.filter(quotation_id__startswith=prefix).order_by('-quotation_id').first()
+            if last_quotation:
+                last_id = int(last_quotation.quotation_id.replace(prefix, ''))
+                new_id = last_id + 1
+            else:
+                new_id = 1
+
+            self.quotation_id = f"{prefix}{new_id:06d}"
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Quotation {self.id} for Customer {self.customer.customer_id}"
+        return f"Quotation {self.quotation_id} for Customer {self.customer.customer_id}"
+
 
 # Custom Item model
 class CustomItem(models.Model):
@@ -81,4 +128,4 @@ class Payment(models.Model):
         super(Payment, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"Payment {self.payment_id} for Invoice {self.invoice.id}"
+        return f"Payment {self.payment_id} for Invoice {self.invoice.invoice_id}"
