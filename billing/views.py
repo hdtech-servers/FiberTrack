@@ -1,4 +1,6 @@
 import traceback
+
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,11 +12,12 @@ from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from django.db.models import Sum, Q
-from reportlab.platypus import Table, TableStyle
+from reportlab.platypus import Table, TableStyle, SimpleDocTemplate, Spacer, Image
+from reportlab.platypus.para import Paragraph
+
 from settings.models import OrganizationSettings
 from customers.models import Customer
 from .models import Invoice, Quotation, Payment, CustomItem
@@ -270,114 +273,90 @@ class QuotationDeleteView(DeleteView):
 
 @login_required(login_url='/auth_app/login/')
 def generate_quotation_pdf(request, quotation_id):
-    try:
-        # Retrieve quotation and organization settings
-        quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
-        organization = OrganizationSettings.objects.first()
+    # Fetch data
+    quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
+    organization = OrganizationSettings.objects.first()
 
-        # Create PDF response
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="quotation_{quotation.quotation_id}.pdf"'
-        buffer = canvas.Canvas(response, pagesize=A4)
-        width, height = A4
-        y_position = height - 50
+    # Create the PDF response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="quotation_{quotation.quotation_id}.pdf"'
 
-        # Register font for custom sizing
-        pdfmetrics.registerFont(TTFont('Helvetica', 'Helvetica.ttf'))
+    # Define the document
+    buffer = SimpleDocTemplate(response, pagesize=A4)
+    styles = getSampleStyleSheet()
+    normal_style = styles["Normal"]
+    bold_style = styles["Heading3"]
 
-        # Add logo if available
-        if organization and organization.logo:
-            try:
-                logo_path = organization.logo.path
-                buffer.drawImage(logo_path, 40, y_position - 70, width=1.5 * inch, height=1.5 * inch, preserveAspectRatio=True)
-                y_position -= 90  # Adjust y-position after logo
-            except Exception as e:
-                print(f"Error loading logo: {e}")
-                traceback.print_exc()
+    # Elements for the PDF
+    elements = []
 
-        # Quotation Header
-        buffer.setFont("Helvetica-Bold", 12)
-        buffer.drawString(40, y_position, f"Quote #{quotation.quotation_id}")
-        buffer.setFont("Helvetica", 10)
-        buffer.drawString(40, y_position - 20, f"Created date: {quotation.time_added.strftime('%d.%m.%Y')}")
-        y_position -= 60
+    # Add header with logo and organization details
+    header_data = [
+        [
+            Paragraph(f"<b>{organization.name or 'Organization Name'}</b>", bold_style),
+            Image(organization.logo.path, width=1.5 * inch, height=0.75 * inch) if organization and organization.logo else ""
+        ],
+        [
+            Paragraph(organization.address or "Address not available", normal_style),
+            ""
+        ],
+        [
+            Paragraph(f"Contact: {organization.contact_number or 'N/A'}", normal_style),
+            ""
+        ],
+        [
+            Paragraph(f"Email: {organization.email or 'N/A'}", normal_style),
+            ""
+        ]
+    ]
 
-        # FROM Section (Organization Info)
-        buffer.setFont("Helvetica-Bold", 10)
-        buffer.drawString(40, y_position, "FROM")
-        y_position -= 15
-        buffer.setFont("Helvetica", 9)
-        if organization:
-            buffer.drawString(40, y_position, organization.name or "Organization Name")
-            y_position -= 12
-            buffer.drawString(40, y_position, organization.address or "Address not available")
-            y_position -= 12
-            buffer.drawString(40, y_position, f"Contact: {organization.contact_number or 'N/A'}")
-            y_position -= 12
-            buffer.drawString(40, y_position, f"Email: {organization.email or 'N/A'}")
-            y_position -= 20
+    header_table = Table(header_data, colWidths=[4.5 * inch, 2 * inch])
+    elements.append(header_table)
+    elements.append(Spacer(1, 0.3 * inch))
 
-        # TO Section (Customer Info)
-        buffer.setFont("Helvetica-Bold", 10)
-        buffer.drawString(width / 2, y_position + 25, "TO")
-        buffer.setFont("Helvetica", 9)
-        customer_info = f"{quotation.customer.first_name} {quotation.customer.last_name}"
-        buffer.drawString(width / 2, y_position, customer_info)
-        buffer.drawString(width / 2, y_position - 15, quotation.customer.billing_address or "Billing address not available")
-        y_position -= 50
+    # Quotation Number and Customer Details aligned beneath logo and organization
+    number_customer_data = [
+        [Paragraph(f"<b>Quotation #{quotation.quotation_id}</b>", normal_style), ""],
+        ["", ""],
+        [
+            Paragraph(f"<b>Customer:</b>", normal_style),
+            Paragraph(f"{quotation.customer.first_name} {quotation.customer.last_name}", normal_style)
+        ],
+        [
+            "",
+            Paragraph(quotation.customer.billing_address or "Billing address not available", normal_style)
+        ]
+    ]
+    number_customer_table = Table(number_customer_data, colWidths=[4.5 * inch, 2 * inch])
+    elements.append(number_customer_table)
+    elements.append(Spacer(1, 0.5 * inch))
 
-        # Table for items
-        data = [["ITEM", "DESCRIPTION", "QTY", "UNIT", "PRICE", "TOTAL"]]
-        for item in quotation.items.all():
-            data.append([
-                item.item_name,
-                item.item_description,
-                item.quantity,
-                item.unit,
-                f"KES {item.price:.2f}",
-                f"KES {item.total_price:.2f}"
-            ])
+    # Table for Items
+    item_data = [["ITEM", "DESCRIPTION", "QTY", "UNIT", "PRICE", "TOTAL"]]
+    for item in quotation.items.all():
+        item_data.append([item.item_name, item.item_description, item.quantity, item.unit,
+                          f"KES {item.price:.2f}", f"KES {item.total_price:.2f}"])
+    item_data.append(["", "", "", "", "SUBTOTAL", f"KES {quotation.amount_due:.2f}"])
+    item_data.append(["", "", "", "", "TOTAL", f"KES {quotation.amount_due:.2f}"])
 
-        # Add subtotal and total
-        data.append(["", "", "", "", "SUBTOTAL", f"KES {quotation.amount_due:.2f}"])
-        data.append(["", "", "", "", "TOTAL", f"KES {quotation.amount_due:.2f}"])
+    # Styling for item table
+    item_table = Table(item_data, colWidths=[1.5 * inch, 2.5 * inch, 0.6 * inch, 0.6 * inch, 1.2 * inch, 1.2 * inch])
+    item_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (2, 1), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige)
+    ]))
+    elements.append(item_table)
+    elements.append(Spacer(1, 0.5 * inch))
 
-        # Create and style the table with a smaller font size
-        table = Table(data, colWidths=[1.2 * inch, 2.3 * inch, 0.7 * inch, 0.7 * inch, 1 * inch, 1 * inch])
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 1), (-1, -1), 8),  # Reduce font size
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
-        ]))
+    # Notes Section as plain text
+    note_text = organization.quote_notes or "Note: Terms and conditions apply."
+    elements.append(Spacer(1, 0.2 * inch))
+    elements.append(Paragraph(f"<b>NOTE:</b> {note_text}", normal_style))
 
-        # Place the table in the PDF
-        table_y_position = y_position - (len(data) * 12)  # Adjust y-position based on table height
-        table.wrapOn(buffer, width, height)
-        table.drawOn(buffer, 40, table_y_position)
-
-        # Add quote notes beneath the table, wrapping long text
-        if organization and organization.quote_notes:
-            buffer.setFont("Helvetica", 8)
-            y_position = table_y_position - 20  # Position the notes just below the table
-            text_object = buffer.beginText(40, y_position)
-            text_object.setTextOrigin(40, y_position)
-            text_object.setLeading(10)  # Set line spacing for wrapping
-            text_object.textLines(organization.quote_notes)  # Automatically wrap long text
-            buffer.drawText(text_object)
-
-        # Save the PDF and return the response
-        buffer.showPage()
-        buffer.save()
-        return response
-
-    except Exception as e:
-        # Handle errors
-        print("Error generating PDF:", e)
-        traceback.print_exc()
-        messages.error(request, "There was an error generating the PDF.")
-        return redirect('quotation_detail', quotation_id=quotation_id)
+    # Build the PDF with elements
+    buffer.build(elements)
+    return response
