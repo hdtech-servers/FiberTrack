@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from customers.models import Customer
-from services.models import SubscriptionPlan  # Import SubscriptionPlan from the services app
-
+from services.models import SubscriptionPlan
 
 # Invoice model
 class Invoice(models.Model):
-    customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE, to_field='customer_id')
     subscription_plan = models.ForeignKey('services.SubscriptionPlan', on_delete=models.CASCADE, null=True, blank=True)  # Optional
     amount_due = models.DecimalField(max_digits=10, decimal_places=2)
     products_total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -18,7 +17,7 @@ class Invoice(models.Model):
     )
 
     def __str__(self):
-        return f"Invoice {self.id} for {self.customer}"
+        return f"Invoice {self.id} for Customer {self.customer.customer_id}"
 
 
 # Quotation model
@@ -29,17 +28,18 @@ class Quotation(models.Model):
         ('rejected', 'Rejected'),
     ]
 
-    customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey('customers.Customer', on_delete=models.CASCADE, to_field='customer_id')
     amount_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    time_added = models.DateTimeField(auto_now_add=True)  # New field
+
 
     def __str__(self):
-        return f"Quotation {self.id} for {self.customer}"
-
+        return f"Quotation {self.id} for Customer {self.customer.customer_id}"
 
 # Custom Item model
 class CustomItem(models.Model):
-    quotation = models.ForeignKey(Quotation, related_name='items', on_delete=models.CASCADE, blank=True, null=True)
+    quotation = models.ForeignKey(Quotation, related_name='items', on_delete=models.CASCADE)
     item_name = models.CharField(max_length=100)
     item_description = models.TextField(blank=True, null=True)
     quantity = models.IntegerField(default=1)

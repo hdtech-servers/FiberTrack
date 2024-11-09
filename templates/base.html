@@ -50,7 +50,7 @@
         <a href="{% url 'list_expenses' %}"><i class="fas fa-dollar"></i><span class="tooltip-text">Expenses</span></a>
         <a href="{% url 'user_list' %}"><i class="fas fa-user-cog"></i><span class="tooltip-text">Auth app</span></a>
         <a href="{% url 'hr_dashboard' %}"><i class="fas fa-users"></i><span class="tooltip-text">HR</span></a>
-        <a href="{% url 'view_edit_organization' %}"><i class="fas fa-cogs"></i><span class="tooltip-text">Settings</span></a>
+        <a href="{% url 'settings_view' %}"><i class="fas fa-cogs"></i><span class="tooltip-text">Settings</span></a>
     </div>
 
     <!-- Main content area -->
@@ -82,7 +82,7 @@
 
             const resetTimer = () => {
                 clearTimeout(timer);
-                timer = setTimeout(logoutAfterInactivity, 300000);
+                timer = setTimeout(logoutAfterInactivity, 1800000);
                 console.log('Timer reset');
             };
 

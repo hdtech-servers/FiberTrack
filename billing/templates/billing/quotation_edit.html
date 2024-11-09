@@ -2,7 +2,7 @@
 {% block title %}Edit Quotation{% endblock %}
 
 {% block content %}
-    {% include 'billing/billing_navbar.html' %}
+{% include 'billing/billing_navbar.html' %}
 
 <div class="container mt-5">
     <h2>Edit Quotation</h2>
@@ -10,7 +10,7 @@
         {% csrf_token %}
         {{ form.as_p }}
 
-        <!-- Item Formset -->
+        <!-- Editable Item Table -->
         <h4>Items</h4>
         <table class="table table-bordered" id="itemTable">
             <thead>
@@ -26,22 +26,22 @@
             </thead>
             <tbody>
                 {% for form in item_formset %}
-                    <tr class="item-row">
-                        <td>{{ form.item_name }}</td>
-                        <td>{{ form.item_description }}</td>
-                        <td><input type="number" name="{{ form.quantity.name }}" class="form-control quantity" value="{{ form.quantity.value|default:0 }}"></td>
-                        <td>{{ form.unit }}</td>
-                        <td><input type="number" name="{{ form.price.name }}" class="form-control price" step="0.01" value="{{ form.price.value|default:0.00 }}"></td>
-                        <td class="total-price-cell">0.00</td>
-                        <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
-                    </tr>
+                <tr class="item-row">
+                    <td>{{ form.item_name }}</td>
+                    <td>{{ form.item_description }}</td>  <!-- Single-line input for description -->
+                    <td>{{ form.quantity }}</td>
+                    <td>{{ form.unit }}</td>
+                    <td>{{ form.price }}</td>
+                    <td class="total-price-cell text-end">0.00</td>
+                    <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <!-- Display Total Amount Due -->
+        <!-- Total Amount -->
         <div class="mb-3">
-            <label for="totalAmount" class="form-label"><strong>Total Quotation Amount Due (KSH):</strong></label>
+            <label for="totalAmount" class="form-label"><strong>Total Amount Due (KSH):</strong></label>
             <input type="text" id="totalAmount" name="amount_due" class="form-control-plaintext" value="{{ form.instance.amount_due }}" readonly>
         </div>
 
@@ -51,17 +51,15 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Function to update the total price for each row
+    document.addEventListener("DOMContentLoaded", function() {
         function updateRowTotal(row) {
-            const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
-            const price = parseFloat(row.querySelector('.price').value) || 0;
+            const quantity = parseFloat(row.querySelector(".quantity").value) || 0;
+            const price = parseFloat(row.querySelector(".price").value) || 0;
             const totalPrice = quantity * price;
-            row.querySelector('.total-price-cell').textContent = totalPrice.toFixed(2);
+            row.querySelector(".total-price-cell").textContent = totalPrice.toFixed(2);
             updateTotalAmount();
         }
 
-        // Function to update the overall total amount
         function updateTotalAmount() {
             let totalAmount = 0;
             document.querySelectorAll(".total-price-cell").forEach(cell => {
@@ -70,31 +68,27 @@
             document.getElementById("totalAmount").value = totalAmount.toFixed(2);
         }
 
-        // Add event listener for "Add Item" button
-        document.getElementById("addItemRow").addEventListener("click", function () {
+        document.getElementById("addItemRow").addEventListener("click", function() {
             const tableBody = document.getElementById("itemTable").querySelector("tbody");
             const newRow = document.createElement("tr");
             newRow.classList.add("item-row");
             newRow.innerHTML = `
-                <td><input type="text" name="item_name" class="form-control" required></td>
-                <td><input type="text" name="item_description" class="form-control"></td>
-                <td><input type="number" name="quantity" class="form-control quantity" step="1" min="1" value="1"></td>
-                <td><input type="text" name="unit" class="form-control"></td>
-                <td><input type="number" name="price" class="form-control price" step="0.01" value="0.00"></td>
-                <td class="total-price-cell">0.00</td>
+                <td><input type="text" name="items-__prefix__-item_name" class="form-control" required></td>
+                <td><input type="text" name="items-__prefix__-item_description" class="form-control"></td>
+                <td><input type="number" name="items-__prefix__-quantity" class="form-control quantity" step="1" min="1" value="1"></td>
+                <td><input type="text" name="items-__prefix__-unit" class="form-control"></td>
+                <td><input type="number" name="items-__prefix__-price" class="form-control price" step="0.01" value="0.00"></td>
+                <td class="total-price-cell text-end">0.00</td>
                 <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
             `;
             tableBody.appendChild(newRow);
 
-            // Add event listeners to new row's inputs to recalculate totals
-            newRow.querySelector('.quantity').addEventListener("input", () => updateRowTotal(newRow));
-            newRow.querySelector('.price').addEventListener("input", () => updateRowTotal(newRow));
-
+            newRow.querySelector(".quantity").addEventListener("input", () => updateRowTotal(newRow));
+            newRow.querySelector(".price").addEventListener("input", () => updateRowTotal(newRow));
             updateRowTotal(newRow);
         });
 
-        // Delegate click event for "Remove" buttons to handle row removal
-        document.getElementById("itemTable").addEventListener("click", function (event) {
+        document.getElementById("itemTable").addEventListener("click", function(event) {
             if (event.target.classList.contains("remove-row")) {
                 const row = event.target.closest("tr");
                 row.remove();
@@ -102,11 +96,10 @@
             }
         });
 
-        // Initial calculation for existing rows
         document.querySelectorAll(".item-row").forEach(row => {
             updateRowTotal(row);
-            row.querySelector('.quantity').addEventListener("input", () => updateRowTotal(row));
-            row.querySelector('.price').addEventListener("input", () => updateRowTotal(row));
+            row.querySelector(".quantity").addEventListener("input", () => updateRowTotal(row));
+            row.querySelector(".price").addEventListener("input", () => updateRowTotal(row));
         });
     });
 </script>

@@ -6,13 +6,19 @@
 
 <div class="container mt-5">
     <h2>Quotation Details</h2>
+
     <p><strong>Quotation ID:</strong> {{ quotation.id }}</p>
     <p><strong>Customer:</strong> {{ quotation.customer.first_name }} {{ quotation.customer.last_name }}</p>
-    <p><strong>Subscription Plan:</strong> {{ quotation.subscription_plan.name }}</p>
     <p><strong>Amount Due (KSH):</strong> {{ quotation.amount_due }}</p>
-    <p><strong>Status:</strong> {{ quotation.get_status_display }}</p>
 
-    <!-- Custom Items Table -->
+    <!-- Form for updating the quotation status -->
+    <form method="post" action="{% url 'quotation_detail' quotation.id %}">
+        {% csrf_token %}
+        <label for="id_status"><strong>Quotation Status:</strong></label>
+        {{ form.status }}  <!-- Status dropdown rendered from form -->
+        <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+    </form>
+
     <h3>Items</h3>
     <table class="table table-bordered">
         <thead>
@@ -39,9 +45,8 @@
         </tbody>
     </table>
 
-    <!-- Edit and Back Button -->
     <div class="mt-3">
-        <a href="{% url 'quotation_update' quotation.pk %}" class="btn btn-primary">Edit Quotation</a>
+    <a href="{% url 'quotation_pdf' quotation.id %}" class="btn btn-primary">Download PDF</a>
         <a href="{% url 'quotation_list' %}" class="btn btn-secondary">Back to Quotations List</a>
     </div>
 </div>

@@ -12,37 +12,34 @@
         <input type="text" id="customerSearch" class="form-control" placeholder="Search customers by name or contact">
     </div>
 
-    <form method="post" id="customerSelectForm">
-        {% csrf_token %}
-        <table class="table table-bordered mt-3" id="customerTable">
-            <thead>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact</th>
-                    <th>Select</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in customers %}
-                <tr class="customer-row">
-                    <td>{{ customer.id }}</td>
-                    <td class="first-name">{{ customer.first_name }}</td>
-                    <td class="last-name">{{ customer.last_name }}</td>
-                    <td class="contact">{{ customer.contact_number }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary select-button" data-id="{{ customer.id }}">Select</button>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No customers found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
+    <table class="table table-bordered mt-3" id="customerTable">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Contact</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr class="customer-row">
+                <td>{{ customer.customer_id }}</td>
+                <td class="first-name">{{ customer.first_name }}</td>
+                <td class="last-name">{{ customer.last_name }}</td>
+                <td class="contact">{{ customer.contact_number }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary select-button" data-id="{{ customer.customer_id }}">Select</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -70,7 +67,8 @@
         document.querySelectorAll(".select-button").forEach(button => {
             button.addEventListener("click", function() {
                 const customerId = this.getAttribute("data-id");
-                window.location.href = `{% url 'create_quotation' 0 %}`.replace('/0/', `/${customerId}/`);
+                const url = "{% url 'create_quotation' customer_id=0 %}".replace("0", customerId);
+                window.location.href = url;
             });
         });
     });

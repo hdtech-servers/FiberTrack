@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
@@ -5,9 +6,14 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
-from django.db.models import Sum
-
+from django.db.models import Sum, Q
+from reportlab.platypus import Table, TableStyle, paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from settings.models import OrganizationSettings
 from customers.models import Customer
 from .models import Invoice, Quotation, Payment, CustomItem
 from services.models import SubscriptionPlan
@@ -77,8 +83,41 @@ class InvoiceDeleteView(LoginRequiredMixin, DeleteView):
 class QuotationListView(LoginRequiredMixin, ListView):
     model = Quotation
     template_name = 'billing/quotation_list.html'
-    paginate_by = 10
     login_url = '/auth_app/login/'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Search filter
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(customer__first_name__icontains=query) |
+                Q(customer__last_name__icontains=query) |
+                Q(id__icontains=query)
+            )
+
+        # Status filter
+        status = self.request.GET.get('status')
+        if status and status != 'all':
+            queryset = queryset.filter(status=status)
+
+        # Sorting
+        sort_by = self.request.GET.get('sort_by', 'id')  # Default sort by 'id'
+        sort_order = self.request.GET.get('sort_order', 'asc')
+        if sort_order == 'desc':
+            sort_by = f'-{sort_by}'
+        queryset = queryset.order_by(sort_by)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        context['status_filter'] = self.request.GET.get('status', 'all')
+        context['sort_by'] = self.request.GET.get('sort_by', 'id')
+        context['sort_order'] = self.request.GET.get('sort_order', 'asc')
+        return context
 
 
 # View to select a customer before creating a quotation
@@ -88,81 +127,124 @@ class CustomerSelectView(ListView):
     context_object_name = 'customers'
 
 
-class QuotationDetailView(DetailView):
-    model = Quotation
+class QuotationDetailView(View):
     template_name = 'billing/quotation_detail.html'
-    context_object_name = 'quotation'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['items'] = self.object.items.all()  # Assuming related_name='items' on CustomItem model
-        return context
+    def get(self, request, pk):
+        quotation = get_object_or_404(Quotation, pk=pk)
+        form = QuotationForm(instance=quotation)
+        form.fields = {'status'}  # Only include the status field in the form
+        return render(request, self.template_name, {
+            'quotation': quotation,
+            'form': form,
+            'items': quotation.items.all(),
+        })
 
+    def post(self, request, pk):
+        quotation = get_object_or_404(Quotation, pk=pk)
+        form = QuotationForm(request.POST, instance=quotation)
 
-# View to create a quotation with items for a selected customer
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Quotation status updated successfully.")
+            return redirect('quotation_detail', pk=pk)
+        else:
+            messages.error(request, "Failed to update quotation status.")
+            return render(request, self.template_name, {
+                'quotation': quotation,
+                'form': form,
+                'items': quotation.items.all(),
+            })
+
 class QuotationCreateView(CreateView):
     model = Quotation
     form_class = QuotationForm
     template_name = 'billing/quotation_form.html'
+    success_url = reverse_lazy('quotation_list')
 
     def dispatch(self, request, *args, **kwargs):
-        self.customer_id = kwargs.get('customer_id')
-        self.customer = get_object_or_404(Customer, pk=self.customer_id)
+        self.customer = get_object_or_404(Customer, customer_id=kwargs.get('customer_id'))
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context['item_formset'] = CustomItemFormSet(self.request.POST)
-        else:
-            context['item_formset'] = CustomItemFormSet()
         context['customer'] = self.customer
+        if self.request.POST:
+            context['item_formset'] = CustomItemFormSet(self.request.POST, prefix="items")  # Set prefix
+        else:
+            context['item_formset'] = CustomItemFormSet(prefix="items")  # Set prefix
         return context
 
     def form_valid(self, form):
         form.instance.customer = self.customer
         response = super().form_valid(form)
-        item_formset = CustomItemFormSet(self.request.POST, instance=self.object)
+
+        item_formset = CustomItemFormSet(self.request.POST, instance=self.object, prefix="items")  # Use prefix
         if item_formset.is_valid():
             item_formset.save()
-        else:
-            return self.form_invalid(form)
-        return response
 
-    def get_success_url(self):
-        return reverse_lazy('quotation_list')
+            total_amount_due = sum(item.total_price for item in self.object.items.all())
+            self.object.amount_due = total_amount_due
+            self.object.save()
+
+            messages.success(self.request, "Quotation created successfully.")
+            return response
+        else:
+            print("Item formset is invalid.")
+            print(item_formset.errors)  # For debugging
+            return self.form_invalid(form)
+
 
 class QuotationUpdateView(UpdateView):
     model = Quotation
     form_class = QuotationForm
     template_name = 'billing/quotation_edit.html'
-    success_url = reverse_lazy('billing:quotation_list')
+    success_url = reverse_lazy('quotation_list')
 
     def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['item_formset'] = CustomItemFormSet(self.request.POST, instance=self.object)
+            context['item_formset'] = CustomItemFormSet(self.request.POST, instance=self.object)
         else:
-            data['item_formset'] = CustomItemFormSet(instance=self.object)
-        return data
+            context['item_formset'] = CustomItemFormSet(instance=self.object)
+        return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         item_formset = context['item_formset']
-        if item_formset.is_valid():
+
+        # Remove empty forms from the formset before validation
+        for item_form in item_formset.forms:
+            if not item_form.cleaned_data.get('item_name') and not item_form.cleaned_data.get('price'):
+                item_formset.forms.remove(item_form)
+
+        if form.is_valid() and item_formset.is_valid():
             self.object = form.save()
             item_formset.instance = self.object
             item_formset.save()
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
 
+            # Calculate and update the total amount due
+            total_amount_due = sum(item.total_price for item in self.object.items.all())
+            self.object.amount_due = total_amount_due
+            self.object.save()
 
-class QuotationDeleteView(LoginRequiredMixin, DeleteView):
+            messages.success(self.request, "Quotation updated successfully.")
+            return redirect(self.success_url)
+
+        # Print errors for debugging
+        if not form.is_valid():
+            print("Quotation form errors:", form.errors)
+        if not item_formset.is_valid():
+            print("Item formset errors:", item_formset.errors)
+            for form in item_formset:
+                print("Individual item errors:", form.errors)
+
+        messages.error(self.request, "There was an error with your submission. Please correct the errors and try again.")
+        return self.form_invalid(form)
+class QuotationDeleteView(DeleteView):
     model = Quotation
     template_name = 'billing/quotation_confirm_delete.html'
-    success_url = reverse_lazy('billing:quotation_list')
-    login_url = '/auth_app/login/'
+    success_url = reverse_lazy('quotation_list')  # Adjust based on your app name
 
 
 # Payment Views
@@ -243,21 +325,67 @@ def generate_invoice_pdf(request, invoice_id):
     return response
 
 
-@login_required(login_url='/auth_app/login/')
-def generate_quotation_pdf(request, quotation_id):
-    quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
+def generate_quotation_pdf(request, pk):
+    # Get quotation data
+    quotation = get_object_or_404(Quotation, pk=pk)
+
+    # Try to get organization settings, or set to None
+    organization = OrganizationSettings.objects.first()
+
+    # Create the HttpResponse object with PDF headers
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="quotation_{quotation.quotation_id}.pdf"'
-    p = canvas.Canvas(response)
-    p.drawString(100, 750, f"Quotation ID: {quotation.quotation_id}")
-    p.drawString(100, 730, f"Customer: {quotation.customer.name}")
-    p.drawString(100, 710, f"Amount Due: {quotation.amount_due}")
-    p.drawString(100, 690, f"Status: {quotation.status}")
-    p.showPage()
-    p.save()
+    response['Content-Disposition'] = f'attachment; filename="quotation_{quotation.id}.pdf"'
+
+    # Create the PDF object
+    buffer = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Add organization details if available
+    if organization:
+        buffer.setFont("Helvetica-Bold", 12)
+        buffer.drawString(40, height - 40, organization.name or "Organization Name")
+        buffer.setFont("Helvetica", 10)
+        buffer.drawString(40, height - 60, f"Address: {organization.address or 'N/A'}")
+        buffer.drawString(40, height - 75, f"Contact: {organization.contact_number or 'N/A'}")
+        buffer.drawString(40, height - 90, f"Email: {organization.email or 'N/A'}")
+    else:
+        buffer.drawString(40, height - 40, "Organization details not available")
+
+    # Draw quotation information
+    buffer.setFont("Helvetica-Bold", 12)
+    buffer.drawString(40, height - 130, f"Quotation ID: {quotation.id}")
+    buffer.drawString(40, height - 145, f"Customer: {quotation.customer.first_name} {quotation.customer.last_name}")
+    buffer.drawString(40, height - 160, f"Amount Due: KSH {quotation.amount_due}")
+
+    # Table for items
+    data = [["Item Name", "Description", "Quantity", "Unit", "Price (KSH)", "Total Price (KSH)"]]
+    for item in quotation.items.all():
+        data.append([
+            item.item_name,
+            item.item_description,
+            item.quantity,
+            item.unit,
+            f"{item.price:.2f}",
+            f"{item.total_price:.2f}"
+        ])
+
+    # Create the table with styling
+    table = Table(data, colWidths=[1.5 * inch, 2 * inch, 1 * inch, 1 * inch, 1 * inch, 1 * inch])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    # Place table in the PDF
+    table.wrapOn(buffer, width, height)
+    table.drawOn(buffer, 40, height - 300)
+
+    # Finalize and save the PDF
+    buffer.showPage()
+    buffer.save()
     return response
-
-
-@login_required(login_url='/auth_app/login/')
-def generate_report(request):
-    return HttpResponse("Report generated successfully.")

@@ -149,7 +149,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Auto-logout after 5 minutes of inactivity (300 seconds)
-SESSION_COOKIE_AGE = 30000  # 5 minutes
+SESSION_COOKIE_AGE = 180000  # 5 minutes
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed
 SESSION_SAVE_EVERY_REQUEST = True  # Session is refreshed with every request
 
