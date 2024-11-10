@@ -1,177 +1,130 @@
+<!-- dashboard.html -->
 {% extends 'base.html' %}
-
 {% block content %}
-        {% include 'billing/billing_navbar.html' %}
 
-<div class="container-fluid">
-    <!-- Summary Section (Key Metrics) -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-darkblue text-dark">
+<div class="container mt-4">
+            {% include 'billing/billing_navbar.html' %}
+    <h1 class="text-center">Billing Dashboard</h1>
+
+    <!-- Key Metrics -->
+    <div class="row text-center mt-5">
+        <div class="col-md-3">
+            <div class="card">
                 <div class="card-body">
                     <h5>Total Revenue</h5>
-                    <p class="display-4">{{ total_revenue }} Ksh</p>
+                    <p class="display-4">KSH {{ total_revenue }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-darkred text-dark">
+        <div class="col-md-3">
+            <div class="card">
                 <div class="card-body">
                     <h5>Outstanding Payments</h5>
-                    <p class="display-4">{{ outstanding_payments }} Ksh</p>
+                    <p class="display-4">KSH {{ outstanding_payments }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-darkblue text-dark">
+        <div class="col-md-3">
+            <div class="card">
                 <div class="card-body">
-                    <h5>Invoices</h5>
+                    <h5>Total Invoices</h5>
                     <p class="display-4">{{ invoice_count }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="card bg-darkred text-dark">
+        <div class="col-md-3">
+            <div class="card">
                 <div class="card-body">
                     <h5>Payments Received</h5>
-                    <p class="display-4">{{ payments_received }} Ksh</p>
+                    <p class="display-4">{{ payments_received_count }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Graphical Visualization Section -->
-    <div class="row mb-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header bg-darkblue text-dark">
-                    <h5>Revenue Over Time</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="revenueChart"></canvas>
-                </div>
-            </div>
+    <!-- Recent Invoices -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h3>Recent Invoices</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Customer</th>
+                        <th>Amount Due</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in recent_invoices %}
+                    <tr>
+                        <td>{{ invoice.invoice_id }}</td>
+                        <td>{{ invoice.customer.first_name }} {{ invoice.customer.last_name }}</td>
+                        <td>KSH {{ invoice.amount_due }}</td>
+                        <td>{{ invoice.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header bg-darkred text-dark">
-                    <h5>Payment Status Breakdown</h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="paymentStatusChart"></canvas>
-                </div>
-            </div>
+
+        <!-- Recent Payments -->
+        <div class="col-md-6">
+            <h3>Recent Payments</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Invoice</th>
+                        <th>Amount Paid</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in recent_payments %}
+                    <tr>
+                        <td>{{ payment.payment_id }}</td>
+                        <td>{{ payment.invoice.invoice_id }}</td>
+                        <td>KSH {{ payment.amount_paid }}</td>
+                        <td>{{ payment.payment_date|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Recent Activity Section -->
-    <div class="row mb-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header bg-darkblue text-dark">
-                    <h5>Recent Invoices</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="text-dark">
-                                <th>Invoice ID</th>
-                                <th>Customer</th>
-                                <th>Amount Due</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for invoice in recent_invoices %}
-                            <tr class="text-dark">
-                                <td>{{ invoice.id }}</td>
-                                <td>{{ invoice.customer.name }}</td>
-                                <td>{{ invoice.amount_due }} Ksh</td>
-                                <td>{{ invoice.status }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header bg-darkred text-dark">
-                    <h5>Recent Payments</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="text-dark">
-                                <th>Payment ID</th>
-                                <th>Invoice ID</th>
-                                <th>Amount Paid</th>
-                                <th>Method</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in recent_payments %}
-                            <tr class="text-dark">
-                                <td>{{ payment.id }}</td>
-                                <td>{{ payment.invoice.id }}</td>
-                                <td>{{ payment.amount_paid }} Ksh</td>
-                                <td>{{ payment.payment_method }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quick Actions Section -->
-    <div class="row">
-        <div class="col-lg-3">
-            <a href="{% url 'invoice_create' %}" class="btn btn-darkblue btn-block text-white">
-                <i class="fas fa-file-invoice"></i> Create Invoice
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'quotation_create' %}" class="btn btn-darkred btn-block text-white">
-                <i class="fas fa-file-alt"></i> Create Quotation
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'payment_create' %}" class="btn btn-darkblue btn-block text-white">
-                <i class="fas fa-dollar-sign"></i> Record Payment
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'generate_report' %}" class="btn btn-darkred btn-block text-white">
-                <i class="fas fa-chart-line"></i> Generate Report
-            </a>
-        </div>
-    </div>
-
-    <!-- Quick Actions Section -->
-    <div class="row">
-        <div class="col-lg-3">
-            <a href="{% url 'invoice_create' %}" class="btn btn-darkblue btn-block">
-                <i class="fas fa-file-invoice"></i> Create Invoice
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'quotation_create' %}" class="btn btn-darkred btn-block">
-                <i class="fas fa-file-alt"></i> Create Quotation
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'payment_create' %}" class="btn btn-darkblue btn-block">
-                <i class="fas fa-dollar-sign"></i> Record Payment
-            </a>
-        </div>
-        <div class="col-lg-3">
-            <a href="{% url 'generate_report' %}" class="btn btn-darkred btn-block">
-                <i class="fas fa-chart-line"></i> Generate Report
-            </a>
+    <!-- Payment Status Chart -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3 class="text-center">Invoice Status Distribution</h3>
+            <canvas id="statusChart"></canvas>
         </div>
     </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    const statusChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Paid', 'Pending', 'Overdue'],
+            datasets: [{
+                data: [{{ paid_count }}, {{ pending_count }}, {{ overdue_count }}],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+</script>
+
 {% endblock %}

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from celery import Celery
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -153,9 +155,30 @@ SESSION_COOKIE_AGE = 180000  # 5 minutes
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed
 SESSION_SAVE_EVERY_REQUEST = True  # Session is refreshed with every request
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+BASE_URL = 'https://system.optinet.co.ke'
+
+# set the default Django settings module for the 'celery' program
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FiberTrack')
+
+app = Celery('your_project_name')
+
+# Using a string here means the worker doesn’t have to serialize
+# the configuration object to child processes.
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+# Load task modules from all registered Django app configs.
+app.autodiscover_tasks()
+@app.task(bind=True)
+def debug_task(self):
+    print(f'Request: {self.request!r}')
 # Redirect to the login page you defined in your auth_app
 LOGIN_URL = '/auth_app/login/'
 
 # Redirect to the login page after a logout
 LOGOUT_REDIRECT_URL = '/auth_app/login/'
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

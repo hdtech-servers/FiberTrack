@@ -1,4 +1,6 @@
 from django import forms
+
+from services.models import SubscriptionPlan
 from .models import Customer
 
 
@@ -6,8 +8,8 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = [
-            'first_name','last_name', 'contact_number', 'email', 'pppoe_username', 'pppoe_password',
-            'billing_address', 'latitude', 'longitude', 'account_balance', 'credit', 'outstanding_amount'
+            'first_name', 'last_name', 'contact_number', 'email', 'pppoe_username', 'pppoe_password',
+            'billing_address', 'coordinates', 'account_balance', 'credit', 'outstanding_amount'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -27,6 +29,21 @@ class CustomerForm(forms.ModelForm):
             cleaned_data['credit'] = 0
             cleaned_data['outstanding_amount'] = -account_balance
 
+        # Validate coordinates format if provided
+        coordinates = cleaned_data.get('coordinates', None)
+        if coordinates:
+            try:
+                lat_str, lon_str = coordinates.split(',')
+                latitude = float(lat_str.strip())
+                longitude = float(lon_str.strip())
+
+                if not (-90 <= latitude <= 90):
+                    self.add_error('coordinates', "Latitude must be between -90 and 90.")
+                if not (-180 <= longitude <= 180):
+                    self.add_error('coordinates', "Longitude must be between -180 and 180.")
+            except ValueError:
+                self.add_error('coordinates', "Coordinates must be in 'latitude,longitude' format.")
+
         return cleaned_data
 
 
@@ -38,3 +55,16 @@ class CustomerImportForm(forms.Form):
 # Export Customers Form (empty, but allows for possible future extension)
 class CustomerExportForm(forms.Form):
     pass
+
+
+class AssignSubscriptionPlanForm(forms.ModelForm):
+    subscription_plan = forms.ModelChoiceField(
+        queryset=SubscriptionPlan.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Assign Subscription Plan"
+    )
+
+    class Meta:
+        model = Customer
+        fields = ['subscription_plan']

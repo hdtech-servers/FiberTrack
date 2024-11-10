@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <!-- Right Section: Google Maps & Widgets -->
+        <!-- Right Section: Google Maps & Subscription Plan Widget -->
         <div class="col-lg-6">
             <!-- Google Map -->
             <div class="card shadow-sm mb-4">
@@ -48,6 +48,29 @@
                     <div id="map" style="height: 300px; border-radius: 10px;"></div>
                 </div>
             </div>
+
+            <!-- Subscription Plan Widget -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Subscription Plan</h5>
+        <p class="text-muted">Current Plan:
+            <strong>
+                {% if customer.subscription_plan %}
+                    {{ customer.subscription_plan.name }}
+                {% else %}
+                    None
+                {% endif %}
+            </strong>
+        </p>
+
+        <form method="post" action="{% url 'customer_detail' customer.customer_id %}">
+            {% csrf_token %}
+            {{ form.subscription_plan.label_tag }}
+            {{ form.subscription_plan }}
+            <button type="submit" class="btn btn-primary mt-3">Update Plan</button>
+        </form>
+    </div>
+</div>
         </div>
     </div>
 
@@ -100,22 +123,35 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxYMNeSpUgIvH6OV8pl8-czhLcvHpaxQQ&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
 <script>
     function initMap() {
-        const defaultLocation = { lat: -1.286389, lng: 36.817223 };  // Optinet Global Links
-        const customerLatitude = {{ customer.latitude|default:"null" }};
-        const customerLongitude = {{ customer.longitude|default:"null" }};
+        // Define default location for fallback
+        const defaultLocation = { lat: -1.286389, lng: 36.817223 };
 
-        const location = (customerLatitude && customerLongitude)
-            ? { lat: parseFloat(customerLatitude), lng: parseFloat(customerLongitude) }
-            : defaultLocation;
+        // Parse the coordinates from the Django template context
+        const coordinates = "{{ customer.coordinates|default:'' }}";
+        let location;
 
+        if (coordinates) {
+            const [lat, lng] = coordinates.split(',').map(coord => parseFloat(coord.trim()));
+
+            // Check if lat and lng are valid numbers
+            if (!isNaN(lat) && !isNaN(lng)) {
+                location = { lat: lat, lng: lng };
+            } else {
+                location = defaultLocation;
+            }
+        } else {
+            location = defaultLocation;
+        }
+
+        // Initialize the map centered on the location
         const map = new google.maps.Map(document.getElementById("map"), {
             center: location,
             zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,  // Default map type
-            mapTypeControl: true,  // Enable map type control
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
                 position: google.maps.ControlPosition.TOP_RIGHT
@@ -129,6 +165,7 @@
             ]
         });
 
+        // Place a marker at the specified location
         new google.maps.Marker({
             position: location,
             map: map,

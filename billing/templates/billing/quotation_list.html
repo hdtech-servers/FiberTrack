@@ -58,6 +58,9 @@
                     <td>{{ quotation.get_status_display }}</td>
                     <td>{{ quotation.time_added|date:"Y-m-d H:i" }}</td>
                     <td class="text-center">
+                        <a href="{% url 'send_quotation_email' quotation.quotation_id %}" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                        </a>
                         <a href="{% url 'quotation_update' quotation.quotation_id %}" class="btn btn-warning btn-sm">Edit</a>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteQuotationModal{{ quotation.quotation_id }}">Delete</button>
 

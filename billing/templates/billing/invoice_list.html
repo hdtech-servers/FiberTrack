@@ -30,6 +30,9 @@
                 <td>{{ invoice.amount_due }}</td>
                 <td>{{ invoice.status }}</td>
                 <td>
+                    <a href="{% url 'initiate_payment' invoice.invoice_id %}" class="btn btn-success">
+                        <i class="fas fa-mobile-alt"></i> Pay with Mpesa
+                    </a>
                     <a href="{% url 'invoice_update' invoice.invoice_id %}" class="btn btn-sm btn-info">
                         <i class="fas fa-edit"></i> Edit
                     </a>

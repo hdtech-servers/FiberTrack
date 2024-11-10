@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Customer
-from .forms import CustomerForm, CustomerImportForm
+from .forms import CustomerForm, CustomerImportForm, AssignSubscriptionPlanForm
 import csv
 from django.http import HttpResponse
 from settings.models import OrganizationSettings
@@ -12,26 +12,23 @@ from settings.models import OrganizationSettings
 
 @login_required(login_url='/auth_app/login/')
 def customer_list(request):
-    # Get the search query from the GET request (case-insensitive)
     search_query = request.GET.get('q', '').strip()
-    per_page = request.GET.get('per_page', 25)  # Get per page option, default to 25
+    per_page = request.GET.get('per_page', 25)
 
     # Filter customers based on the search query
     customers = Customer.objects.all()
-
     if search_query:
         customers = customers.filter(
-            Q(name__icontains=search_query) |
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
             Q(contact_number__icontains=search_query) |
             Q(pppoe_username__icontains=search_query)
         )
 
-    # Pagination
     paginator = Paginator(customers, per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Form for adding customers in the modal
     form = CustomerForm()
 
     context = {
@@ -48,23 +45,31 @@ def customer_list(request):
 def customer_detail(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
 
-    # Fetch organization settings to access the Google Maps API key
+    # Fetch organization settings for the Google Maps API key
     organization_settings = OrganizationSettings.objects.first()
+    google_maps_api_key = organization_settings.google_maps_api_key if organization_settings else ""
 
-    # Example recent activity data (customize based on your data model)
-    recent_activity = [
-        {"description": "Payment received", "date": customer.date_created, "amount": 50},
-        {"description": "Invoice generated", "date": customer.date_created}
-    ]
+    # Handle subscription plan assignment form
+    if request.method == 'POST':
+        form = AssignSubscriptionPlanForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Subscription plan assigned successfully.")
+            return redirect('customer_detail', customer_id=customer.customer_id)
+    else:
+        form = AssignSubscriptionPlanForm(instance=customer)
 
     context = {
         'customer': customer,
+        'google_maps_api_key': google_maps_api_key,
         'organization_settings': organization_settings,
-        'recent_activity': recent_activity
+        'recent_activity': [
+            {"description": "Payment received", "date": customer.date_created, "amount": 50},
+            {"description": "Invoice generated", "date": customer.date_created}
+        ],
+        'form': form,  # Add the form to the context
     }
     return render(request, 'customer_detail.html', context)
-
-
 @login_required(login_url='/auth_app/login/')
 def customer_delete(request, customer_id):
     customer = get_object_or_404(Customer, customer_id=customer_id)
@@ -87,20 +92,42 @@ def customer_add(request):
 
 @login_required(login_url='/auth_app/login/')
 def customer_edit(request, customer_id):
-    # Retrieve the customer object based on customer_id
     customer = get_object_or_404(Customer, customer_id=customer_id)
+
+    # Fetch organization settings for the Google Maps API key
+    organization_settings = OrganizationSettings.objects.first()
+    google_maps_api_key = organization_settings.google_maps_api_key if organization_settings else ""
 
     if request.method == 'POST':
         form = CustomerForm(request.POST, instance=customer)
+
         if form.is_valid():
-            form.save()
+            # Save form fields
+            customer = form.save(commit=False)
+
+            # Get latitude and longitude from the form
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+
+            # Update customer coordinates if provided
+            if latitude and longitude:
+                customer.latitude = latitude
+                customer.longitude = longitude
+
+            # Save the customer instance
+            customer.save()
+
+            messages.success(request, "Customer details updated successfully!")
             return redirect('customer_detail', customer_id=customer.customer_id)
     else:
         form = CustomerForm(instance=customer)
 
-    # Pass the customer and form to the template
-    return render(request, 'customer_edit.html', {'form': form, 'customer': customer})
-
+    context = {
+        'customer': customer,
+        'form': form,
+        'google_maps_api_key': google_maps_api_key,
+    }
+    return render(request, 'customer_edit.html', context)
 
 @login_required(login_url='/auth_app/login/')
 def customer_import(request):
@@ -116,18 +143,16 @@ def customer_import(request):
             reader = csv.reader(decoded_file)
             next(reader)  # Skip header
             for row in reader:
-                name, contact_number, email, pppoe_username, pppoe_password, billing_address, latitude, longitude = row
-                latitude = latitude or None
-                longitude = longitude or None
+                first_name, last_name, contact_number, email, pppoe_username, pppoe_password, billing_address, coordinates = row
                 Customer.objects.create(
-                    name=name,
+                    first_name=first_name,
+                    last_name=last_name,
                     contact_number=contact_number,
                     email=email,
                     pppoe_username=pppoe_username,
                     pppoe_password=pppoe_password,
                     billing_address=billing_address,
-                    latitude=latitude,
-                    longitude=longitude
+                    coordinates=coordinates
                 )
             messages.success(request, "Customers imported successfully!")
             return redirect('customer_list')
@@ -136,20 +161,16 @@ def customer_import(request):
     return render(request, 'customer_list.html', {'form': form})
 
 
-
 @login_required(login_url='/auth_app/login/')
 def customer_export(request):
-    # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="customers.csv"'
 
     writer = csv.writer(response)
-    # Write the header row
-    writer.writerow(['Customer ID', 'Name', 'Contact Number', 'Email', 'PPPoE Username', 'Billing Address'])
+    writer.writerow(['Customer ID', 'First Name', 'Last Name', 'Contact Number', 'Email', 'PPPoE Username', 'Billing Address', 'Coordinates'])
 
-    # Write data rows
     customers = Customer.objects.all()
     for customer in customers:
-        writer.writerow([customer.customer_id, customer.name, customer.contact_number, customer.email, customer.pppoe_username, customer.billing_address])
+        writer.writerow([customer.customer_id, customer.first_name, customer.last_name, customer.contact_number, customer.email, customer.pppoe_username, customer.billing_address, customer.coordinates])
 
     return response

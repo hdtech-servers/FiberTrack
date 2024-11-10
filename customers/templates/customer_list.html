@@ -5,13 +5,13 @@
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Search bar -->
-        <div class="input-group w-50">
+        <!-- Search Form -->
+        <form class="input-group w-50" method="get" action="{% url 'customer_list' %}">
             <span class="input-group-text"><i class="fas fa-search"></i></span>
-            <input type="text" class="form-control" id="search-input" placeholder="Search customers..." value="{{ search_query }}">
-        </div>
+            <input type="text" class="form-control" name="q" placeholder="Search customers..." value="{{ search_query }}">
+        </form>
 
-        <!-- Icons for Add, Import, and Export -->
+        <!-- Action Buttons -->
         <div>
             <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#addCustomerModal" title="Add Customer">
                 <i class="fas fa-user-plus"></i>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <!-- Modern Customer Table -->
+    <!-- Customer Table -->
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle">
             <thead class="table-light">
@@ -85,13 +85,13 @@
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
             {% if customers.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page=1&per_page={{ per_page }}">First</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number }}&per_page={{ per_page }}">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="?page=1&per_page={{ per_page }}" aria-label="First">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number }}&per_page={{ per_page }}" aria-label="Previous">Previous</a></li>
             {% endif %}
             <li class="page-item disabled"><span class="page-link">Page {{ customers.number }} of {{ customers.paginator.num_pages }}</span></li>
             {% if customers.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}&per_page={{ per_page }}">Next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ customers.paginator.num_pages }}&per_page={{ per_page }}">Last</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}&per_page={{ per_page }}" aria-label="Next">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ customers.paginator.num_pages }}&per_page={{ per_page }}" aria-label="Last">Last</a></li>
             {% endif %}
         </ul>
     </nav>

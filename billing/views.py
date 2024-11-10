@@ -1,5 +1,9 @@
+import json
+import logging
 import traceback
-
+from django.conf import settings
+from django.core.mail import EmailMessage, send_mail
+from django.views.decorators.csrf import csrf_exempt
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from django.contrib import messages
@@ -7,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from reportlab.lib import colors
@@ -17,13 +21,11 @@ from reportlab.pdfgen import canvas
 from django.db.models import Sum, Q
 from reportlab.platypus import Table, TableStyle, SimpleDocTemplate, Spacer, Image
 from reportlab.platypus.para import Paragraph
-
 from settings.models import OrganizationSettings
 from customers.models import Customer
 from .models import Invoice, Quotation, Payment, CustomItem
 from .forms import InvoiceForm, QuotationForm, PaymentForm, CustomItemForm, CustomItemFormSet
-from reportlab.pdfbase.ttfonts import TTFont
-
+from .utils import initiate_stk_push
 
 
 # Dashboard View
@@ -33,26 +35,32 @@ class BillingDashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Total revenue from all payments
         context['total_revenue'] = Payment.objects.aggregate(total=Sum('amount_paid'))['total'] or 0
-        context['outstanding_payments'] = Invoice.objects.filter(status='Pending').aggregate(total=Sum('amount_due'))[
-                                              'total'] or 0
+
+        # Total outstanding payments for invoices with 'Pending' or 'Overdue' status
+        context['outstanding_payments'] = \
+        Invoice.objects.filter(status__in=['Pending', 'Overdue']).aggregate(total=Sum('amount_due'))['total'] or 0
+
+        # Count of all invoices
         context['invoice_count'] = Invoice.objects.count()
-        context['payments_received'] = Payment.objects.aggregate(total=Sum('amount_paid'))['total'] or 0
-        context['recent_invoices'] = Invoice.objects.order_by('-created_at')[:5]
+
+        # Payments received count
+        context['payments_received_count'] = Payment.objects.count()
+
+        # Recent invoices
+        context['recent_invoices'] = Invoice.objects.order_by('-due_date')[:5]
+
+        # Recent payments
         context['recent_payments'] = Payment.objects.order_by('-payment_date')[:5]
 
-        revenue_data = Payment.objects.extra(select={'day': "DATE(payment_date)"}).values('day').annotate(
-            total=Sum('amount_paid')).order_by('day')
-        context['revenue_labels'] = [data['day'].strftime('%Y-%m-%d') for data in revenue_data]
-        context['revenue_data'] = [data['total'] for data in revenue_data]
-
-        paid_count = Invoice.objects.filter(status='Paid').count()
-        pending_count = Invoice.objects.filter(status='Pending').count()
-        overdue_count = Invoice.objects.filter(status='Overdue').count()
-        context['payment_status_data'] = [paid_count, pending_count, overdue_count]
+        # Payment status distribution
+        context['paid_count'] = Invoice.objects.filter(status='Paid').count()
+        context['pending_count'] = Invoice.objects.filter(status='Pending').count()
+        context['overdue_count'] = Invoice.objects.filter(status='Overdue').count()
 
         return context
-
 
 # Invoice Views
 class InvoiceListView(LoginRequiredMixin, ListView):
@@ -143,14 +151,16 @@ class QuotationListView(LoginRequiredMixin, ListView):
         return context
 
 
-class CustomerSelectView(ListView):
+class CustomerSelectView(LoginRequiredMixin, ListView):
     model = Customer
     template_name = 'billing/select_customer.html'
     context_object_name = 'customers'
+    login_url = '/auth_app/login/'
 
 
-class QuotationDetailView(View):
+class QuotationDetailView(LoginRequiredMixin, View):
     template_name = 'billing/quotation_detail.html'
+    login_url = '/auth_app/login/'
 
     def get(self, request, quotation_id):
         quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
@@ -179,11 +189,12 @@ class QuotationDetailView(View):
             })
 
 
-class QuotationCreateView(CreateView):
+class QuotationCreateView(LoginRequiredMixin, CreateView):
     model = Quotation
     form_class = QuotationForm
     template_name = 'billing/quotation_form.html'
     success_url = reverse_lazy('quotation_list')
+    login_url = '/auth_app/login/'
 
     def dispatch(self, request, *args, **kwargs):
         self.customer = get_object_or_404(Customer, customer_id=kwargs.get('customer_id'))
@@ -216,11 +227,12 @@ class QuotationCreateView(CreateView):
             return self.form_invalid(form)
 
 
-class QuotationUpdateView(UpdateView):
+class QuotationUpdateView(LoginRequiredMixin, UpdateView):
     model = Quotation
     form_class = QuotationForm
     template_name = 'billing/quotation_edit.html'
     success_url = reverse_lazy('quotation_list')
+    login_url = '/auth_app/login/'
 
     def get_object(self, queryset=None):
         return get_object_or_404(Quotation, quotation_id=self.kwargs.get('quotation_id'))
@@ -262,10 +274,11 @@ class QuotationUpdateView(UpdateView):
         return self.form_invalid(form)
 
 
-class QuotationDeleteView(DeleteView):
+class QuotationDeleteView(LoginRequiredMixin, DeleteView):
     model = Quotation
     template_name = 'billing/quotation_confirm_delete.html'
     success_url = reverse_lazy('quotation_list')
+    login_url = '/auth_app/login/'
 
     def get_object(self, queryset=None):
         return get_object_or_404(Quotation, quotation_id=self.kwargs.get('quotation_id'))
@@ -360,3 +373,100 @@ def generate_quotation_pdf(request, quotation_id):
     # Build the PDF with elements
     buffer.build(elements)
     return response
+
+
+# Initialize logger
+logger = logging.getLogger(__name__)
+
+@login_required(login_url='/auth_app/login/')
+def send_quotation_email_view(request, quotation_id):
+    # Fetch the quotation using quotation_id
+    quotation = get_object_or_404(Quotation, quotation_id=quotation_id)
+    try:
+        send_quotation_email(quotation_id)  # Call send_quotation_email without request
+        messages.success(request, f"Quotation email sent successfully to {quotation.customer.email}.")
+    except Exception as e:
+        # Log error details for debugging
+        logger.error("Failed to send email", exc_info=True)
+        messages.error(request, f"Failed to send email: {str(e)}")
+    return redirect('quotation_list')
+
+def send_quotation_email(quotation_id):
+    try:
+        # Retrieve the specified quotation
+        quotation = Quotation.objects.get(quotation_id=quotation_id)
+        organization_settings = OrganizationSettings.objects.first()
+
+        if not organization_settings:
+            raise ValueError("Organization settings are missing")
+
+        # Set up email configuration from organization settings
+        settings.EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        settings.EMAIL_HOST = organization_settings.smtp_host
+        settings.EMAIL_PORT = organization_settings.smtp_port
+        settings.EMAIL_HOST_USER = organization_settings.smtp_username
+        settings.EMAIL_HOST_PASSWORD = organization_settings.smtp_password
+        settings.EMAIL_USE_TLS = organization_settings.smtp_use_tls
+        settings.EMAIL_USE_SSL = organization_settings.smtp_use_ssl
+
+        # Prepare email details
+        recipient_email = quotation.customer.email
+        subject = f"New Quotation: {quotation.quotation_id}"
+        message = f"Dear {quotation.customer.first_name},\n\nPlease find attached your quotation.\n\nBest regards,\n{organization_settings.name or 'Your Company'}"
+        from_email = organization_settings.smtp_from_email or settings.DEFAULT_FROM_EMAIL
+
+        # Send the email
+        send_mail(
+            subject,
+            message,
+            from_email,
+            [recipient_email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        # Log error details for debugging
+        logger.error("Error in send_quotation_email function", exc_info=True)
+        print(f"Error sending email: {e}")
+        raise  # Re-raise the exception to be caught in the view
+
+
+@login_required(login_url='/auth_app/login/')
+def initiate_payment_view(request, invoice_id):
+    invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
+    response = initiate_stk_push(invoice)
+
+    if response.get('ResponseCode') == '0':
+        return JsonResponse({'success': True, 'message': 'STK Push initiated successfully',
+                             'CheckoutRequestID': response['CheckoutRequestID']})
+    else:
+        return JsonResponse({'success': False, 'message': 'Failed to initiate STK Push', 'error': response})
+
+
+@csrf_exempt
+def mpesa_callback(request):
+    data = json.loads(request.body)
+    result_code = data['Body']['stkCallback']['ResultCode']
+
+    if result_code == 0:
+        callback_metadata = data['Body']['stkCallback']['CallbackMetadata']['Item']
+        transaction_id = [item['Value'] for item in callback_metadata if item['Name'] == 'MpesaReceiptNumber'][0]
+        phone_number = [item['Value'] for item in callback_metadata if item['Name'] == 'PhoneNumber'][0]
+        amount_paid = [item['Value'] for item in callback_metadata if item['Name'] == 'Amount'][0]
+        invoice_id = data['Body']['stkCallback']['MerchantRequestID']  # Use this to link to the invoice
+
+        # Process payment
+        invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
+        Payment.objects.create(
+            invoice=invoice,
+            payment_method="Mpesa",
+            transaction_id=transaction_id,
+            amount_paid=amount_paid,
+            processed_by=request.user
+        )
+
+        # Update invoice status if paid in full
+        if amount_paid >= invoice.amount_due:
+            invoice.status = 'Paid'
+            invoice.save()
+
+    return JsonResponse({"ResultCode": 0, "ResultDesc": "Accepted"})

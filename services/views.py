@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import SubscriptionPlan
 from .forms import SubscriptionPlanForm
 
@@ -29,7 +30,7 @@ def subscription_plan_list(request):
         )
 
     # Pagination
-    paginator = Paginator(plans, per_page)  # Use selected items per page
+    paginator = Paginator(plans, per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -44,12 +45,14 @@ def subscription_plan_list(request):
         'form': form,
     })
 
+
 @login_required(login_url='/auth/login/')
 def subscription_plan_create(request):
     if request.method == 'POST':
         form = SubscriptionPlanForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Subscription plan created successfully.")
             return redirect('services:subscription_plan_list')
     else:
         form = SubscriptionPlanForm()
@@ -63,18 +66,22 @@ def subscription_plan_edit(request, pk):
         form = SubscriptionPlanForm(request.POST, instance=plan)
         if form.is_valid():
             form.save()
+            messages.success(request, "Subscription plan updated successfully.")
             return redirect('services:subscription_plan_list')
     else:
         form = SubscriptionPlanForm(instance=plan)
     return render(request, 'services/subscription_plan_form.html', {'form': form, 'title': 'Edit Subscription Plan'})
+
 
 @login_required(login_url='/auth/login/')
 def subscription_plan_delete(request, pk):
     plan = get_object_or_404(SubscriptionPlan, pk=pk)
     if request.method == 'POST':
         plan.delete()
+        messages.success(request, "Subscription plan deleted successfully.")
         return redirect('services:subscription_plan_list')
     return render(request, 'services/subscription_plan_confirm_delete.html', {'plan': plan})
+
 
 @login_required(login_url='/auth/login/')
 def subscription_plan_detail(request, pk):

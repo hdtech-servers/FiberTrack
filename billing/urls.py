@@ -25,4 +25,8 @@ urlpatterns = [
     path('quotations/<str:quotation_id>/edit/', QuotationUpdateView.as_view(), name='quotation_update'),
     path('quotations/<str:quotation_id>/delete/', QuotationDeleteView.as_view(), name='quotation_delete'),
     path('quotations/<str:quotation_id>/pdf/', views.generate_quotation_pdf, name='quotation_pdf'),
+    path('send-quotation-email/<str:quotation_id>/', views.send_quotation_email_view, name='send_quotation_email'),
+
+    path('invoice/<str:invoice_id>/pay/', views.initiate_payment_view, name='initiate_payment'),
+    path('mpesa/callback/', views.mpesa_callback, name='mpesa_callback'),
 ]
