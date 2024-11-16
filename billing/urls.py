@@ -3,7 +3,8 @@ from . import views
 from .views import (
     InvoiceListView, InvoiceCreateView, InvoiceUpdateView, InvoiceDeleteView, generate_invoice_pdf,
     QuotationListView, QuotationCreateView, QuotationUpdateView, QuotationDeleteView,
-    BillingDashboardView, CustomerSelectView, QuotationDetailView,
+    BillingDashboardView, CustomerSelectView, QuotationDetailView, mpesa_callback, payment_list,
+    initiate_stk_push_from_customer_detail,
 )
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path('quotations/<str:quotation_id>/pdf/', views.generate_quotation_pdf, name='quotation_pdf'),
     path('send-quotation-email/<str:quotation_id>/', views.send_quotation_email_view, name='send_quotation_email'),
 
-    path('invoice/<str:invoice_id>/pay/', views.initiate_payment_view, name='initiate_payment'),
-    path('mpesa/callback/', views.mpesa_callback, name='mpesa_callback'),
+    path('mpesa_callback/', mpesa_callback, name='mpesa_callback'),
+    path('customer/<str:customer_id>/stk_push/', initiate_stk_push_from_customer_detail, name='initiate_stk_push'),
+    path('payments/', payment_list, name='payment_list'),
 ]

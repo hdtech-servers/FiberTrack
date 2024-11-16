@@ -9,6 +9,11 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item me-3">
+                    <a class="nav-link text-white" href="{% url 'payment_list' %}" data-bs-toggle="tooltip" title="Payments">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </a>
+                </li>
+          <li class="nav-item me-3">
           <a class="nav-link text-white" href="{% url 'invoice_list' %}" data-bs-toggle="tooltip" title="Invoices">
             <i class="fas fa-file-invoice"></i>
           </a>

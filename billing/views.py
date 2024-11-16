@@ -3,6 +3,7 @@ import logging
 import traceback
 from django.conf import settings
 from django.core.mail import EmailMessage, send_mail
+from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
@@ -25,6 +26,7 @@ from settings.models import OrganizationSettings
 from customers.models import Customer
 from .models import Invoice, Quotation, Payment, CustomItem
 from .forms import InvoiceForm, QuotationForm, PaymentForm, CustomItemForm, CustomItemFormSet
+from .services import MpesaService
 from .utils import initiate_stk_push
 
 
@@ -461,43 +463,89 @@ def send_quotation_email(quotation_id):
         raise  # Re-raise the exception to be caught in the view
 
 
-@login_required(login_url='/auth_app/login/')
-def initiate_payment_view(request, invoice_id):
-    invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
-    response = initiate_stk_push(invoice)
-
-    if response.get('ResponseCode') == '0':
-        return JsonResponse({'success': True, 'message': 'STK Push initiated successfully',
-                             'CheckoutRequestID': response['CheckoutRequestID']})
-    else:
-        return JsonResponse({'success': False, 'message': 'Failed to initiate STK Push', 'error': response})
-
-
+# Webhook for Paybill Payment Notifications
 @csrf_exempt
 def mpesa_callback(request):
-    data = json.loads(request.body)
-    result_code = data['Body']['stkCallback']['ResultCode']
+    try:
+        data = json.loads(request.body)
+        customer_id = data.get('BillRefNumber')
+        amount = data.get('TransAmount')
+        transaction_id = data.get('TransID')
 
-    if result_code == 0:
-        callback_metadata = data['Body']['stkCallback']['CallbackMetadata']['Item']
-        transaction_id = [item['Value'] for item in callback_metadata if item['Name'] == 'MpesaReceiptNumber'][0]
-        phone_number = [item['Value'] for item in callback_metadata if item['Name'] == 'PhoneNumber'][0]
-        amount_paid = [item['Value'] for item in callback_metadata if item['Name'] == 'Amount'][0]
-        invoice_id = data['Body']['stkCallback']['MerchantRequestID']  # Use this to link to the invoice
+        # Verify if customer exists
+        try:
+            customer = Customer.objects.get(customer_id=customer_id)
 
-        # Process payment
-        invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
-        Payment.objects.create(
-            invoice=invoice,
-            payment_method="Mpesa",
-            transaction_id=transaction_id,
-            amount_paid=amount_paid,
-            processed_by=request.user
-        )
+            # Create payment record
+            payment = Payment.objects.create(
+                customer=customer,
+                payment_method='Mpesa',
+                transaction_id=transaction_id,
+                amount_paid=amount
+            )
 
-        # Update invoice status if paid in full
-        if amount_paid >= invoice.amount_due:
-            invoice.status = 'Paid'
-            invoice.save()
+            # Update customer balance
+            customer.account_balance += amount
+            customer.save()
 
-    return JsonResponse({"ResultCode": 0, "ResultDesc": "Accepted"})
+            # Check if customer has pending invoices and update them
+            pending_invoices = Invoice.objects.filter(customer=customer, status='Pending').order_by('due_date')
+            for invoice in pending_invoices:
+                if amount <= 0:
+                    break
+                if invoice.amount_due <= amount:
+                    amount -= invoice.amount_due
+                    invoice.status = 'Paid'
+                    invoice.save()
+                else:
+                    invoice.amount_due -= amount
+                    invoice.save()
+                    amount = 0
+
+            return JsonResponse({'ResultCode': 0, 'ResultDesc': 'Payment processed successfully'})
+        except Customer.DoesNotExist:
+            # If customer does not exist, initiate refund
+            mpesa_service = MpesaService()
+            refund_response = mpesa_service.initiate_refund(transaction_id, amount)
+            logger.warning(
+                f"Refund initiated for non-existent customer ID {customer_id}. Refund response: {refund_response}")
+            return JsonResponse({'ResultCode': 1, 'ResultDesc': 'Customer not found. Refund initiated.'})
+
+    except Exception as e:
+        logger.error(f"Error processing Mpesa callback: {str(e)}")
+        return JsonResponse({'ResultCode': 1, 'ResultDesc': 'Failed to process payment'})
+
+
+# STK Push Initiation from Customer Detail Page
+@login_required(login_url='/auth_app/login/')
+def initiate_stk_push_from_customer_detail(request, customer_id):
+    customer = get_object_or_404(Customer, customer_id=customer_id)
+
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        if not amount:
+            messages.error(request, "Please specify an amount to push.")
+            return redirect('customer_detail', customer_id=customer_id)
+
+        mpesa_service = MpesaService()
+        response = mpesa_service.initiate_stk_push(customer.contact_number, amount)
+
+        if response.get('ResponseCode') == '0':
+            messages.success(request, "STK Push initiated successfully.")
+        else:
+            messages.error(request, f"Failed to initiate STK Push: {response.get('errorMessage', 'Unknown error')}")
+
+    return redirect('customer_detail', customer_id=customer_id)
+
+
+# Payment List View
+@login_required(login_url='/auth_app/login/')
+# Payment List View
+@login_required(login_url='/auth_app/login/')
+def payment_list(request):
+    payments = Payment.objects.all().order_by('-payment_date')
+    paginator = Paginator(payments, 10)  # Show 10 payments per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    payments = Payment.objects.all().order_by('-payment_date')
+    return render(request, 'billing/payment_list.html', {'payments': page_obj})
