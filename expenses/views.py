@@ -11,7 +11,7 @@ from calendar import month_abbr
 
 from .models import Expense, ExpenseCategory, Budget, ExpenseLog
 from .forms import ExpenseForm, ExpenseCategoryForm, BudgetForm, ExpenseLogFilterForm
-from .services import MPesaService
+from .services import MPesaService, logger
 from django.db.models import Sum, F
 from django.db.models.functions import TruncDay, TruncWeek, TruncMonth
 
@@ -159,7 +159,6 @@ def expense_detail(request, expense_id):
     })
 
 
-@login_required
 def create_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES)
@@ -170,20 +169,19 @@ def create_expense(request):
                 expense.last_updated_by = request.user
                 expense.save()
                 messages.success(request, "Expense created successfully.")
-                return JsonResponse({'success': True})
+                return redirect('expense_list')  # Replace 'expense_list' with your actual list page URL name
             except Exception as e:
-                # Log the error to console or logging system
-                print(f"Error saving expense: {e}")
-                return JsonResponse({'success': False, 'errors': f"Unexpected error: {str(e)}"})
+                messages.error(request, f"Unexpected error: {str(e)}")
+                return redirect('expense_list')
         else:
-            # Log form validation errors
-            print("Form errors:", form.errors)
-            return JsonResponse({'success': False, 'errors': form.errors})
+            # Display form validation errors as messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            return redirect('expense_list')
     else:
         form = ExpenseForm()
     return render_modal_form(request, 'expenses/partial_expense_create.html', form)
-
-
 @login_required
 def update_expense(request, expense_id):
     expense = get_object_or_404(Expense, id=expense_id)
@@ -208,7 +206,8 @@ def delete_expense(request, expense_id):
         expense.delete()
         messages.success(request, "Expense deleted successfully.")
         return JsonResponse({'success': True})
-    return render_modal_form(request, 'expenses/partial_expense_delete.html', {'expense': expense})
+    return JsonResponse({'html_form': render_to_string('expenses/partial_expense_delete.html', {'expense': expense}, request=request)})
+
 
 
 ### Expense Category Views ###
@@ -235,14 +234,23 @@ def create_category(request):
     if request.method == 'POST':
         form = ExpenseCategoryForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Category created successfully.")
-            return JsonResponse({'success': True})
+            try:
+                form.save()
+                messages.success(request, "Category created successfully.")
+                return redirect('expense_category_list')  # Replace 'category_list' with your actual list page URL name
+            except Exception as e:
+                messages.error(request, f"Unexpected error: {str(e)}")
+                return redirect('expense_category_list')
         else:
-            return JsonResponse({'success': False, 'html_form': render_to_string('expenses/partial_category_form.html', {'form': form}, request=request)})
+            # Display form validation errors as messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+            return redirect('expense_category_list')
     else:
         form = ExpenseCategoryForm()
-        return JsonResponse({'html_form': render_to_string('expenses/partial_category_form.html', {'form': form}, request=request)})
+        return render_modal_form(request, 'expenses/partial_category_form.html', form)
+
 
 @login_required
 def update_category(request, category_id):
