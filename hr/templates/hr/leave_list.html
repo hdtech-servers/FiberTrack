@@ -2,106 +2,128 @@
 
 {% block content %}
     {% include 'hr/hr_navbar.html' %}
-<div>
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Leave Requests
-        <button class="btn btn-success ml-3" data-toggle="modal" data-target="#addLeaveModal" style="border-radius: 50%; padding: 0.75rem;">
-            <i class="fas fa-plus"></i>
-        </button>
-        </h1>
-    </div>
 
-    <input type="text" id="searchBar" onkeyup="liveSearch()" placeholder="Search leave requests..." class="form-control mb-3 rounded-pill" style="width: 300px;">
-
-    <!-- Leave Requests Table -->
-    <div class="table-responsive">
-        <table class="table table-hover table-striped mt-3" id="leaveTable">
-            <thead class="bg-success text-white">
-                <tr>
-                    <th onclick="sortTable(0)">Employee <span class="sort-icon"></span></th>
-                    <th onclick="sortTable(1)">Start Date <span class="sort-icon"></span></th>
-                    <th onclick="sortTable(2)">End Date <span class="sort-icon"></span></th>
-                    <th onclick="sortTable(3)">Reason <span class="sort-icon"></span></th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for leave in leaves %}
-                <tr>
-                    <td>{{ leave.employee.first_name }} {{ leave.employee.last_name }}</td>
-                    <td>{{ leave.start_date|date:"Y-m-d" }}</td>
-                    <td>{{ leave.end_date|date:"Y-m-d" }}</td>
-                    <td>{{ leave.reason }}</td>
-                    <td>
-                        {% if leave.approved %}
-                            <span class="badge badge-success">Approved</span>
-                        {% else %}
-                            <span class="badge badge-warning">Pending</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'leave_detail' leave.id %}" class="btn btn-info btn-sm">
-                            <i class="fas fa-eye"></i> View
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Add Leave Modal -->
-<div class="modal fade" id="addLeaveModal" tabindex="-1" role="dialog" aria-labelledby="addLeaveModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="addLeaveModalLabel">Add New Leave Request</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-darkblue">
+                Leave Requests
+                <button class="btn btn-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#addLeaveModal">
+                    <i class="fas fa-plus"></i>
                 </button>
-            </div>
-            <form method="post" action="{% url 'leave_add' %}">
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="employee">Employee</label>
-                        {{ form.employee }}
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="start_date">Start Date</label>
-                            {{ form.start_date }}
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="end_date">End Date</label>
-                            {{ form.end_date }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="reason">Reason</label>
-                        {{ form.reason }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Add Leave</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
+            </h1>
+        </div>
+
+        <!-- Search Bar -->
+        <input type="text" id="searchBar" onkeyup="liveSearch()" placeholder="Search leave requests..." class="form-control mb-3 rounded-pill" style="max-width: 300px;">
+
+        <!-- Leave Requests Table -->
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle" id="leaveTable">
+                <thead class="bg-darkblue text-white">
+                    <tr>
+                        <th onclick="sortTable(0)">Employee <span class="sort-icon"></span></th>
+                        <th onclick="sortTable(1)">Start Date <span class="sort-icon"></span></th>
+                        <th onclick="sortTable(2)">End Date <span class="sort-icon"></span></th>
+                        <th onclick="sortTable(3)">Reason <span class="sort-icon"></span></th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leaves %}
+                    <tr>
+                        <td>{{ leave.employee.first_name }} {{ leave.employee.last_name }}</td>
+                        <td>{{ leave.start_date|date:"Y-m-d" }}</td>
+                        <td>{{ leave.end_date|date:"Y-m-d" }}</td>
+                        <td>{{ leave.reason }}</td>
+                        <td>
+                            {% if leave.approved %}
+                                <span class="badge bg-success">Approved</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'leave_detail' leave.id %}" class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
 
-<script>
-    function liveSearch() {
-        const query = document.getElementById('searchBar').value.toLowerCase();
-        const rows = document.querySelectorAll('#leaveTable tbody tr');
+    <!-- Add Leave Modal -->
+    <div class="modal fade" id="addLeaveModal" tabindex="-1" aria-labelledby="addLeaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="addLeaveModalLabel">Add New Leave Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'leave_add' %}">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="employee" class="form-label">Employee</label>
+                            {{ form.employee }}
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                {{ form.start_date }}
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="end_date" class="form-label">End Date</label>
+                                {{ form.end_date }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reason" class="form-label">Reason</label>
+                            {{ form.reason }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add Leave</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        rows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(query) ? '' : 'none';
-        });
-    }
-</script>
+    <!-- JavaScript for Search and Sort -->
+    <script>
+        // Live Search Functionality
+        function liveSearch() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const rows = document.querySelectorAll('#leaveTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Sort Table Columns
+        function sortTable(columnIndex) {
+            const table = document.getElementById('leaveTable');
+            const rows = Array.from(table.rows).slice(1);
+            const isAscending = table.dataset.sortOrder === 'asc';
+            const direction = isAscending ? 1 : -1;
+
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex].innerText.trim();
+                const cellB = rowB.cells[columnIndex].innerText.trim();
+
+                return cellA.localeCompare(cellB, undefined, { numeric: true }) * direction;
+            });
+
+            rows.forEach(row => table.tBodies[0].appendChild(row));
+            table.dataset.sortOrder = isAscending ? 'desc' : 'asc';
+        }
+    </script>
 {% endblock %}

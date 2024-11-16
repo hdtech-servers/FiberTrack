@@ -6,19 +6,19 @@
         --hover-color: #4d4dff; /* Hover color */
     }
 
-    /* Inventory Navbar Styles */
-    .navbar-inventory {
+    /* Navbar Styles */
+    .navbar-expenses {
         background-color: var(--primary-color);
         padding: 10px;
         border-radius: 5px;
     }
 
-    .navbar-inventory .nav-item {
+    .navbar-expenses .nav-item {
         margin-right: 10px;
         display: inline-block;
     }
 
-    .navbar-inventory .nav-item a {
+    .navbar-expenses .nav-item a {
         color: #fff;
         text-decoration: none;
         font-weight: bold;
@@ -28,7 +28,7 @@
         border-radius: 5px;
     }
 
-    .navbar-inventory .nav-item a:hover {
+    .navbar-expenses .nav-item a:hover {
         background-color: var(--hover-color);
         color: #fff;
     }
@@ -38,21 +38,47 @@
     }
 </style>
 
-<div class="navbar-inventory">
+<div class="navbar-expenses">
     <ul class="nav">
+        <!-- Dashboard Link -->
         <li class="nav-item">
-            <a href="{% url 'list_expenses' %}" title="Expenses">
+            <a href="{% url 'expense_dashboard' %}" title="Dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="nav-text">Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Expenses Link -->
+        <li class="nav-item">
+            <a href="{% url 'expense_list' %}" title="Expenses">
                 <i class="fas fa-money-check-alt"></i>
                 <span class="nav-text">Expenses</span>
             </a>
         </li>
+
+        <!-- Categories Link -->
         <li class="nav-item">
-            <a href="{% url 'expenses_category_list' %}" title="Categories">
+            <a href="{% url 'expense_category_list' %}" title="Categories">
                 <i class="fas fa-list"></i>
                 <span class="nav-text">Categories</span>
             </a>
         </li>
+
+        <!-- Budgets Link -->
+        <li class="nav-item">
+            <a href="{% url 'budget_list' %}" title="Budgets">
+                <i class="fas fa-wallet"></i>
+                <span class="nav-text">Budgets</span>
+            </a>
+        </li>
+
+        <!-- Logs Link -->
+        <li class="nav-item">
+            <a href="{% url 'expense_log_list' %}" title="Expense Logs">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="nav-text">Logs</span>
+            </a>
+        </li>
     </ul>
 </div>
-
 {% endblock %}

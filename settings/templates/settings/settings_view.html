@@ -2,251 +2,193 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center" style="color: #003366;">Organization Settings</h2>
+<div class="container mt-5">
+    <h2 class="text-center" style="color: #003366;">Organization Settings</h2>
 
     <!-- Organization Information Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Organization Information</h4>
-        <p><strong>Name:</strong> {{ organization.name }}</p>
-        <p><strong>Email:</strong> {{ organization.email }}</p>
-        <p><strong>Contact Number:</strong> {{ organization.contact_number }}</p>
-        <p><strong>Address:</strong> {{ organization.address }}</p>
-        <p><strong>Logo:</strong>
-          {% if organization.logo %}
-            <img src="{{ organization.logo.url }}" alt="{{ organization.name }}" class="img-thumbnail" style="border: 2px solid darkred; max-width: 150px;">
-          {% else %}
-            No logo uploaded.
-          {% endif %}
-        </p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrganizationModal">Edit</button>
-      </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Organization Information</h5>
+            <p><strong>Name:</strong> {{ organization.name }}</p>
+            <p><strong>Email:</strong> {{ organization.email }}</p>
+            <p><strong>Contact Number:</strong> {{ organization.contact_number }}</p>
+            <p><strong>Address:</strong> {{ organization.address }}</p>
+            <p><strong>Logo:</strong>
+                {% if organization.logo %}
+                    <img src="{{ organization.logo.url }}" class="img-thumbnail" alt="Organization Logo" style="max-width: 150px;">
+                {% else %}
+                    No logo uploaded.
+                {% endif %}
+            </p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editOrganizationModal">Edit</button>
+        </div>
     </div>
 
-    <!-- Daraja API Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Daraja API Settings</h4>
-        <p><strong>Consumer Key:</strong> {{ organization.mpesa_consumer_key }}</p>
-        <p><strong>Short Code:</strong> {{ organization.mpesa_short_code }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editDarajaModal">Edit</button>
-      </div>
+    <!-- M-Pesa C2B Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">M-Pesa C2B Settings</h5>
+            <p><strong>Consumer Key:</strong> {{ organization.mpesa_consumer_key }}</p>
+            <p><strong>Short Code:</strong> {{ organization.mpesa_short_code }}</p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMpesaC2BModal">Edit</button>
+        </div>
+    </div>
+
+    <!-- M-Pesa B2C Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">M-Pesa B2C Settings</h5>
+            <p><strong>B2C Short Code:</strong> {{ organization.mpesa_b2c_short_code }}</p>
+            <p><strong>Initiator Name:</strong> {{ organization.mpesa_b2c_initiator_name }}</p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMpesaB2CModal">Edit</button>
+        </div>
+    </div>
+
+    <!-- M-Pesa B2B Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">M-Pesa B2B Settings</h5>
+            <p><strong>B2B Short Code:</strong> {{ organization.mpesa_b2b_short_code }}</p>
+            <p><strong>Receiver Party:</strong> {{ organization.mpesa_b2b_receiver_party }}</p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMpesaB2BModal">Edit</button>
+        </div>
     </div>
 
     <!-- Email Server Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">SMTP Email Settings</h4>
-        <p><strong>SMTP Host:</strong> {{ organization.smtp_host }}</p>
-        <p><strong>SMTP Port:</strong> {{ organization.smtp_port }}</p>
-        <p><strong>Username:</strong> {{ organization.smtp_username }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editEmailModal">Edit</button>
-      </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Email Server Settings</h5>
+            <p><strong>SMTP Host:</strong> {{ organization.smtp_host }}</p>
+            <p><strong>SMTP Port:</strong> {{ organization.smtp_port }}</p>
+            <p><strong>Username:</strong> {{ organization.smtp_username }}</p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editEmailServerModal">Edit</button>
+        </div>
     </div>
 
-    <!-- Google API Settings Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Google Maps API</h4>
-        <p><strong>API Key:</strong> {{ organization.google_maps_api_key }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editGoogleApiModal">Edit</button>
-      </div>
+    <!-- Customization Settings Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Customization Settings</h5>
+            <p><strong>Theme:</strong> {{ organization.theme }}</p>
+            <p><strong>Google Maps API Key:</strong> {{ organization.google_maps_api_key }}</p>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCustomizationModal">Edit</button>
+        </div>
     </div>
 
-    <!-- Invoice Settings Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Invoice Settings</h4>
-        <p><strong>Invoice Prefix:</strong> {{ organization.invoice_prefix }}</p>
-        <p><strong>Numbering Format:</strong> {{ organization.invoice_numbering_format }}</p>
-        <p><strong>Notes:</strong> {{ organization.invoice_notes }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editInvoiceModal">Edit</button>
-      </div>
-    </div>
-
-    <!-- Quotation Settings Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Quotation Settings</h4>
-        <p><strong>Quotation Prefix:</strong> {{ organization.quotation_prefix }}</p>
-        <p><strong>Numbering Format:</strong> {{ organization.quotation_numbering_format }}</p>
-        <p><strong>Notes:</strong> {{ organization.quotation_notes }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editQuotationModal">Edit</button>
-      </div>
-    </div>
-
-    <!-- Customer Settings Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Customer Settings</h4>
-        <p><strong>Customer Prefix:</strong> {{ organization.customer_prefix }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCustomerModal">Edit</button>
-      </div>
-    </div>
-
-    <!-- Employee Settings Section -->
-    <div class="card mb-3 shadow">
-      <div class="card-body">
-        <h4 class="card-title" style="color: darkblue;">Employee Settings</h4>
-        <p><strong>Employee Prefix:</strong> {{ organization.employee_prefix }}</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Edit</button>
-      </div>
-    </div>
-
-    <!-- Modals for Editing -->
+    <!-- Modals for Editing Settings -->
 
     <!-- Organization Info Modal -->
     <div class="modal fade" id="editOrganizationModal" tabindex="-1" aria-labelledby="editOrganizationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editOrganizationModalLabel">Edit Organization Information</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" enctype="multipart/form-data" action="{% url 'edit_organization_info' %}">
-              {% csrf_token %}
-              {{ organization_info_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editOrganizationModalLabel">Edit Organization Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'edit_organization_info' %}">
+                        {% csrf_token %}
+                        {{ organization_info_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Daraja API Modal -->
-    <div class="modal fade" id="editDarajaModal" tabindex="-1" aria-labelledby="editDarajaModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editDarajaModalLabel">Edit Daraja API Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_daraja_api' %}">
-              {% csrf_token %}
-              {{ daraja_api_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
+    <!-- Mpesa C2B Modal -->
+    <div class="modal fade" id="editMpesaC2BModal" tabindex="-1" aria-labelledby="editMpesaC2BModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMpesaC2BModalLabel">Edit M-Pesa C2B Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'edit_mpesa_c2b' %}">
+                        {% csrf_token %}
+                        {{ mpesa_c2b_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
+
+    <!-- Mpesa B2C Modal -->
+    <div class="modal fade" id="editMpesaB2CModal" tabindex="-1" aria-labelledby="editMpesaB2CModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMpesaB2CModalLabel">Edit M-Pesa B2C Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'edit_mpesa_b2c' %}">
+                        {% csrf_token %}
+                        {{ mpesa_b2c_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mpesa B2B Modal -->
+    <div class="modal fade" id="editMpesaB2BModal" tabindex="-1" aria-labelledby="editMpesaB2BModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMpesaB2BModalLabel">Edit M-Pesa B2B Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'edit_mpesa_b2b' %}">
+                        {% csrf_token %}
+                        {{ mpesa_b2b_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Email Server Modal -->
-    <div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editEmailModalLabel">Edit Email Server Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_email_server' %}">
-              {% csrf_token %}
-              {{ email_server_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
+    <div class="modal fade" id="editEmailServerModal" tabindex="-1" aria-labelledby="editEmailServerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmailServerModalLabel">Edit Email Server Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'edit_email_server' %}">
+                        {% csrf_token %}
+                        {{ email_server_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Google API Modal -->
-    <div class="modal fade" id="editGoogleApiModal" tabindex="-1" aria-labelledby="editGoogleApiModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editGoogleApiModalLabel">Edit Google API Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_google_api' %}">
-              {% csrf_token %}
-              {{ google_api_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
+    <!-- Customization Modal -->
+    <div class="modal fade" id="editCustomizationModal" tabindex="-1" aria-labelledby="editCustomizationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCustomizationModalLabel">Edit Customization Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'edit_customization_settings' %}">
+                        {% csrf_token %}
+                        {{ customization_form|crispy }}
+                        <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-
-    <!-- Invoice Modal -->
-    <div class="modal fade" id="editInvoiceModal" tabindex="-1" aria-labelledby="editInvoiceModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editInvoiceModalLabel">Edit Invoice Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_invoice_settings' %}">
-              {% csrf_token %}
-              {{ invoice_settings_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quotation Modal -->
-    <div class="modal fade" id="editQuotationModal" tabindex="-1" aria-labelledby="editQuotationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editQuotationModalLabel">Edit Quotation Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_quotation_settings' %}">
-              {% csrf_token %}
-              {{ quotation_settings_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Customer Modal -->
-    <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editCustomerModalLabel">Edit Customer Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_customer_settings' %}">
-              {% csrf_token %}
-              {{ customer_settings_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Employee Modal -->
-    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form method="post" action="{% url 'edit_employee_settings' %}">
-              {% csrf_token %}
-              {{ employee_settings_form|crispy }}
-              <button type="submit" class="btn btn-primary mt-3">Save changes</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
+</div>
 {% endblock %}

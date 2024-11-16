@@ -4,35 +4,37 @@
     {% include 'inventory/inventory_navbar.html' %}
 
     <div>
-        <h1>Create New Order</h1>
+        <h1 class="text-accent">Create New Order</h1>
 
         <form id="order-form" method="post">
             {% csrf_token %}
             <!-- Supplier and Product Search Row -->
-            <div class="form-row">
+            <div class="row g-3">
                 <!-- Supplier Selection Dropdown -->
-                <div class="form-group col-md-6">
+                <div class="col-md-6">
                     {{ form.supplier.label_tag }}
                     {{ form.supplier }}
                 </div>
 
                 <!-- Product Live Search -->
-                <div class="form-group col-md-6">
+                <div class="col-md-6">
                     <label for="product-search">Search Product:</label>
                     <input type="text" id="product-search" class="form-control" placeholder="Start typing to search...">
-                    <ul id="product-results" class="list-group"></ul>
+                    <ul id="product-results" class="list-group position-absolute w-100 mt-1"></ul>
                 </div>
             </div>
 
             <!-- Add New Product Link -->
-            <div class="form-group">
-                <a href="#" class="btn btn-link" data-toggle="modal" data-target="#addProductModal">Can't find the product? Add new</a>
+            <div class="my-3">
+                <a href="#" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                    Can't find the product? Add new
+                </a>
             </div>
 
             <!-- Table for Adding Items -->
-            <table class="table mt-4" id="order-items-table">
+            <table class="table table-hover table-dark mt-4" id="order-items-table">
                 <thead>
-                    <tr>
+                    <tr class="table-primary text-center">
                         <th>Product Name</th>
                         <th>Quantity Ordered</th>
                         <th>Buying Price</th>
@@ -45,7 +47,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                        <td colspan="3" class="text-end"><strong>Total:</strong></td>
                         <td colspan="2"><strong id="order-total">0.00</strong></td>
                     </tr>
                 </tfoot>
@@ -58,48 +60,46 @@
 
     <!-- Modal for Adding New Product -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title text-accent" id="addProductModalLabel">Add New Product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="add-product-form">
                         <!-- Product Fields -->
-                        <div class="form-group">
-                            <label for="product-name">Product Name</label>
+                        <div class="mb-3">
+                            <label for="product-name" class="form-label">Product Name</label>
                             <input type="text" id="product-name" name="name" class="form-control" required>
                         </div>
-                        <div class="form-group">
-                            <label for="product-barcode">Barcode</label>
+                        <div class="mb-3">
+                            <label for="product-barcode" class="form-label">Barcode</label>
                             <input type="text" id="product-barcode" name="barcode" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="product-buying-price">Buying Price</label>
+                        <div class="mb-3">
+                            <label for="product-buying-price" class="form-label">Buying Price</label>
                             <input type="number" id="product-buying-price" name="buying_price" class="form-control" min="0" step="0.01" required>
                         </div>
-                        <div class="form-group">
-                            <label for="product-selling-price">Selling Price</label>
+                        <div class="mb-3">
+                            <label for="product-selling-price" class="form-label">Selling Price</label>
                             <input type="number" id="product-selling-price" name="selling_price" class="form-control" min="0" step="0.01" required>
                         </div>
-                        <div class="form-group">
-                            <label for="product-stock-quantity">Stock Quantity</label>
+                        <div class="mb-3">
+                            <label for="product-stock-quantity" class="form-label">Stock Quantity</label>
                             <input type="number" id="product-stock-quantity" name="stock_quantity" class="form-control" min="0" required>
                         </div>
-                        <div class="form-group">
-                            <label for="product-packaging-type">Packaging Type</label>
+                        <div class="mb-3">
+                            <label for="product-packaging-type" class="form-label">Packaging Type</label>
                             <input type="text" id="product-packaging-type" name="packaging_type" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="product-expiry-date">Expiry Date</label>
+                        <div class="mb-3">
+                            <label for="product-expiry-date" class="form-label">Expiry Date</label>
                             <input type="date" id="product-expiry-date" name="expiry_date" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="product-category">Category</label>
-                            <select id="product-category" name="category" class="form-control" required>
+                        <div class="mb-3">
+                            <label for="product-category" class="form-label">Category</label>
+                            <select id="product-category" name="category" class="form-select" required>
                                 <option value="">-- Select a Category --</option>
                                 {% for category in categories %}
                                     <option value="{{ category.id }}">{{ category.name }}</option>
@@ -107,7 +107,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="save-product" class="btn btn-primary">Save Product</button>
+                        <button type="button" id="save-product" class="btn btn-primary w-100">Save Product</button>
                     </form>
                 </div>
             </div>
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.forEach(item => {
                         const li = document.createElement('li');
                         li.textContent = `${item.name} (In stock: ${item.stock_quantity})`;
-                        li.classList.add('list-group-item', 'list-group-item-action');
+                        li.classList.add('list-group-item', 'list-group-item-action', 'bg-dark', 'text-light');
                         li.dataset.productId = item.id;
                         li.dataset.productName = item.name;
                         li.dataset.buyingPrice = item.buying_price;
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 addProductToOrder(data.id, data.name, data.buying_price);
 
                 // Close the modal after adding the product
-                $('#addProductModal').modal('hide');
+                new bootstrap.Modal(document.getElementById('addProductModal')).hide();
 
                 // Clear the form fields after closing the modal
                 document.getElementById('add-product-form').reset();

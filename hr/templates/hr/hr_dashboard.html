@@ -1,106 +1,138 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        {% include 'hr/hr_navbar.html' %}
+    {% include 'hr/hr_navbar.html' %}
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-success">HR Dashboard</h1>
-    </div>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-darkblue">HR Dashboard</h1>
+        </div>
 
-    <!-- Overview Cards -->
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card bg-light shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Total Employees</h5>
-                    <p class="card-text display-4 text-success">{{ total_employees }}</p>
+        <!-- Overview Cards -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card border-darkblue shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-darkblue">Total Employees</h5>
+                        <p class="card-text display-4 text-darkblue">{{ total_employees }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-warning shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">Employees on Leave</h5>
+                        <p class="card-text display-4 text-warning">{{ employees_on_leave }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-info shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">Approved Leaves</h5>
+                        <p class="card-text display-4 text-info">{{ leave_approved }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card bg-light shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Employees on Leave</h5>
-                    <p class="card-text display-4 text-warning">{{ employees_on_leave }}</p>
+
+        <!-- Charts Row -->
+        <div class="row">
+            <!-- Department Breakdown Chart -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-darkblue text-white">
+                        <h5 class="mb-0">Department Breakdown</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="departmentChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Attendance Summary Chart -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-darkblue text-white">
+                        <h5 class="mb-0">Attendance Summary (Last 7 Days)</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceChart" style="max-height: 300px;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card bg-light shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Approved Leaves</h5>
-                    <p class="card-text display-4 text-info">{{ leave_approved }}</p>
-                </div>
+
+        <!-- Recent Payroll List -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-darkblue text-white">
+                <h5 class="mb-0">Recent Payrolls</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for payroll in recent_payrolls %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <strong>{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}</strong>
+                            <span>KSh {{ payroll.net_salary|floatformat:2 }} - {{ payroll.date|date:"Y-m-d" }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- Department Breakdown Pie Chart -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Department Breakdown</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="departmentChart" width="400" height="200"></canvas>
-        </div>
-    </div>
+    <!-- Chart.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data from the server
+        const departmentData = {{ department_counts|safe }};
+        const attendanceData = {{ attendance_summary|safe }};
 
-    <!-- Attendance Bar Chart -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Attendance Summary (Last 7 Days)</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="attendanceChart" width="400" height="200"></canvas>
-        </div>
-    </div>
+        // Department Chart
+        const departmentLabels = departmentData.map(d => d.name);
+        const departmentValues = departmentData.map(d => d.num_employees);
+        const departmentCtx = document.getElementById('departmentChart').getContext('2d');
+        new Chart(departmentCtx, {
+            type: 'pie',
+            data: {
+                labels: departmentLabels,
+                datasets: [{
+                    data: departmentValues,
+                    backgroundColor: ['#12232E', '#0077B6', '#004E89', '#011F4B', '#013A63', '#1E3A8A']
+                }]
+            }
+        });
 
-    <!-- Recent Payroll List -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Recent Payrolls</h5>
-        </div>
-        <div class="card-body">
-            <ul class="list-group">
-                {% for payroll in recent_payrolls %}
-                <li class="list-group-item">
-                    <strong>{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}:</strong>
-                    KSh {{ payroll.net_salary|floatformat:2 }} - {{ payroll.date|date:"Y-m-d" }}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- Chart.js Scripts -->
-<script>
-    // Department Breakdown Chart
-    var departmentCtx = document.getElementById('departmentChart').getContext('2d');
-    var departmentChart = new Chart(departmentCtx, {
-        type: 'pie',
-        data: {
-            labels: [{% for department in department_counts %}"{{ department.name }}",{% endfor %}],
-            datasets: [{
-                data: [{% for department in department_counts %}{{ department.num_employees }},{% endfor %}],
-                backgroundColor: ['#4CAF50', '#FFC107', '#2196F3', '#FF5722', '#009688', '#3F51B5']
-            }]
-        }
-    });
-
-    // Attendance Summary Chart
-    var attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
-    var attendanceChart = new Chart(attendanceCtx, {
-        type: 'bar',
-        data: {
-            labels: [{% for day in attendance_summary %}"{{ day.date|date:'Y-m-d' }}",{% endfor %}],
-            datasets: [{
-                label: 'Attendance',
-                data: [{% for day in attendance_summary %}{{ day.total }},{% endfor %}],
-                backgroundColor: '#4CAF50'
-            }]
-        }
-    });
-</script>
+        // Attendance Chart
+        const attendanceLabels = attendanceData.map(a => a.date);
+        const attendanceValues = attendanceData.map(a => a.total);
+        const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(attendanceCtx, {
+            type: 'bar',
+            data: {
+                labels: attendanceLabels,
+                datasets: [{
+                    label: 'Attendance',
+                    data: attendanceValues,
+                    backgroundColor: '#12232E'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Attendance Count'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}

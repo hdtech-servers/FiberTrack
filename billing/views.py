@@ -74,7 +74,7 @@ class InvoiceCreateView(LoginRequiredMixin, CreateView):
     model = Invoice
     form_class = InvoiceForm
     template_name = 'billing/invoice_form.html'
-    success_url = reverse_lazy('billing:invoice_list')
+    success_url = reverse_lazy('invoice_list')
     login_url = '/auth_app/login/'
 
 
@@ -112,6 +112,37 @@ def generate_invoice_pdf(request, invoice_id):
     p.showPage()
     p.save()
     return response
+
+
+
+class InvoiceDetailView(View):
+    template_name = 'billing/invoice_detail.html'
+
+    def get(self, request, invoice_id):
+        invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
+        form = InvoiceForm(instance=invoice)
+        form.fields = {'status'}  # Limit fields if necessary
+        return render(request, self.template_name, {
+            'invoice': invoice,
+            'form': form,
+            'items': invoice.items.all(),
+        })
+
+    def post(self, request, invoice_id):
+        invoice = get_object_or_404(Invoice, invoice_id=invoice_id)
+        form = InvoiceForm(request.POST, instance=invoice)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Invoice status updated successfully.")
+            return redirect('invoice_detail', invoice_id=invoice_id)
+        else:
+            messages.error(request, "Failed to update invoice status.")
+            return render(request, self.template_name, {
+                'invoice': invoice,
+                'form': form,
+                'items': invoice.items.all(),
+            })
 
 
 # Quotation Views with Custom Item Inline Support

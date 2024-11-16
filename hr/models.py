@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.db.models import Max
+from settings.models import OrganizationSettings
 
 
 class Department(models.Model):
@@ -41,11 +43,19 @@ class Employee(models.Model):
     additional_documents = models.FileField(upload_to='employee_documents/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Generate employee ID if it's a new employee
         if not self.employee_id:
-            max_id = Employee.objects.aggregate(max_id=models.Max('id'))['max_id']
+            from .models import OrganizationSettings  # Avoid circular imports
+            try:
+                # Fetch the employee prefix from settings
+                organization_settings = OrganizationSettings.objects.first()
+                prefix = organization_settings.employee_prefix if organization_settings and organization_settings.employee_prefix else 'EMP'
+            except OrganizationSettings.DoesNotExist:
+                prefix = 'EMP'  # Default prefix if OrganizationSettings is not configured
+
+            # Generate a new ID
+            max_id = Employee.objects.aggregate(max_id=Max('id'))['max_id']
             new_id = max_id + 1 if max_id else 1
-            self.employee_id = f'HKL{new_id:03d}'
+            self.employee_id = f"{prefix}{new_id:04d}"  # Example: EMP0001
         super().save(*args, **kwargs)
 
     def __str__(self):

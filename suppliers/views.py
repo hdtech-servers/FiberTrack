@@ -28,6 +28,7 @@ def supplier_list(request):
         'edit_supplier_forms': edit_supplier_forms,
     })
 
+
 @login_required(login_url='/auth/login/')
 def add_supplier(request):
     if request.method == 'POST':
@@ -35,6 +36,11 @@ def add_supplier(request):
         if form.is_valid():
             form.save()
             return redirect('supplier_list')
+        else:
+            # Handle form errors in case of invalid data
+            return render(request, 'suppliers/add_supplier.html', {'form': form})
+
+    return render(request, 'suppliers/add_supplier.html', {'form': SupplierForm()})
 
 
 @login_required(login_url='/auth/login/')
@@ -45,10 +51,16 @@ def edit_supplier(request, supplier_id):
         if form.is_valid():
             form.save()
             return redirect('supplier_list')
+        else:
+            # Handle form errors for inline editing
+            if request.is_ajax():
+                return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+
     else:
         form = SupplierForm(instance=supplier)
 
     if request.is_ajax():
+        # Return the supplier data as JSON for AJAX editing
         supplier_data = {
             'name': supplier.name,
             'contact_person': supplier.contact_person,
@@ -58,6 +70,11 @@ def edit_supplier(request, supplier_id):
             'city': supplier.city,
             'country': supplier.country,
             'notes': supplier.notes,
+            'payment_method': supplier.payment_method,
+            'paybill_number': supplier.paybill_number,
+            'account_number': supplier.account_number,
+            'till_number': supplier.till_number,
+            'phone_payment_number': supplier.phone_payment_number,
         }
         return JsonResponse(supplier_data)
 
@@ -71,6 +88,7 @@ def delete_supplier(request, supplier_id):
         supplier.delete()
         return redirect('supplier_list')
     return redirect('supplier_list')
+
 
 @login_required(login_url='/auth/login/')
 def view_supplier(request, supplier_id):

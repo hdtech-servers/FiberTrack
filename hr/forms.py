@@ -44,20 +44,34 @@ class AttendanceForm(forms.ModelForm):
 
 
 class PayrollForm(forms.ModelForm):
-    employee = forms.ModelChoiceField(queryset=Employee.objects.all(),
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
+    employee = forms.ModelChoiceField(
+        queryset=Employee.objects.filter(is_active=True),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Employee"
+    )
+
+    basic_salary = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        label="Basic Salary"
+    )
 
     class Meta:
         model = Payroll
-        fields = ['employee', 'date', 'basic_salary', 'bonus', 'deductions']
+        fields = ['employee', 'basic_salary', 'bonus', 'deductions', 'date']
 
         widgets = {
-            'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'basic_salary': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'bonus': forms.NumberInput(attrs={'class': 'form-control'}),
-            'deductions': forms.NumberInput(attrs={'class': 'form-control'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'deductions': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Automatically populate the basic_salary based on selected employee
+        if 'instance' in kwargs and kwargs['instance']:
+            self.fields['basic_salary'].initial = kwargs['instance'].employee.salary
 
 class DepartmentForm(forms.ModelForm):
     class Meta:

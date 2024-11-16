@@ -5,10 +5,10 @@ urlpatterns = [
     # Employee URLs
     path('employees/', views.employee_list, name='employee_list'),
     path('employees/add/', views.employee_add, name='employee_add'),
-    path('employee/edit/<int:id>/', views.employee_edit, name='employee_edit'),
-    path('employee/delete/<int:id>/', views.employee_delete, name='employee_delete'),
+    path('employee/edit/<str:employee_id>/', views.employee_edit, name='employee_edit'),  # Changed to <str:employee_id>
+    path('employee/delete/<str:employee_id>/', views.employee_delete, name='employee_delete'),
     path('employees/live_search/', views.employee_live_search, name='employee_live_search'),
-    path('employees/<str:employee_id>/', views.employee_detail, name='employee_detail'),
+    path('employees/<str:employee_id>/', views.employee_detail, name='employee_detail'),  # Changed to <str:employee_id>
     path('employees/generate_payslips/', views.generate_payslips, name='generate_payslips'),
 
     # Department URLs
@@ -19,6 +19,8 @@ urlpatterns = [
     # Attendance URLs
     path('attendance/', views.attendance_list, name='attendance_list'),
     path('attendance/add/', views.attendance_add, name='attendance_add'),
+    path('attendance/edit/<int:record_id>/', views.attendance_edit, name='attendance_edit'),
+    path('attendance/delete/<int:record_id>/', views.attendance_delete, name='attendance_delete'),
 
 
     # Leave URLs

@@ -1,0 +1,14 @@
+# Template: make_payment.html
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Make Payment for Expense #{{ expense.id }}</h2>
+  <p><strong>Amount:</strong> {{ expense.amount }}</p>
+  <p><strong>Payment Type:</strong> {{ payment_type }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Initiate Payment</button>
+    <a href="{% url 'expense_detail' expense.id %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

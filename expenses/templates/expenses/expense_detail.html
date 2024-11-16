@@ -1,11 +1,36 @@
-    {% include 'expenses/expenses_navbar.html' %}
+{% extends "base.html" %}
 
-<h1>Expense Details</h1>
-<p>Category: {{ expense.category.name }}</p>
-<p>Date: {{ expense.date }}</p>
-<p>Amount: {{ expense.amount }}</p>
-<p>Payment Method: {{ expense.payment_method }}</p>
-<p>Supplier: {{ expense.supplier }}</p>
-<p>Description: {{ expense.description }}</p>
+{% block content %}
+        {% include 'expenses/expenses_navbar.html' %}
 
-<a href="{% url 'expense_delete' expense.id %}">Delete</a>
+<div class="container mt-4">
+    <h2 class="text-center mb-4" style="color: #003366;">Expense Details</h2>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="card-title" style="color: darkblue;">{{ expense.description }}</h4>
+
+            <p><strong>Category:</strong> {{ expense.category.name }}</p>
+            <p><strong>Amount:</strong> Ksh {{ expense.amount|floatformat:2 }}</p>
+            <p><strong>Supplier:</strong> {{ expense.supplier }}</p>
+            <p><strong>Date:</strong> {{ expense.date|date:"Y-m-d" }}</p>
+            <p><strong>Created By:</strong> {{ expense.created_by.username }}</p>
+            <p><strong>Last Updated:</strong> {{ expense.updated_at|date:"Y-m-d H:i" }}</p>
+
+            {% if expense.receipt %}
+            <div class="mt-4">
+                <h5>Uploaded File</h5>
+                <p>
+                    <a href="{{ expense.receipt.url }}" target="_blank" class="btn btn-info">
+                        Open Full Image
+                    </a>
+                </p>
+                <img src="{{ expense.receipt.url }}" class="img-fluid rounded border" alt="Uploaded Receipt">
+            </div>
+            {% endif %}
+
+            <a href="{% url 'expense_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

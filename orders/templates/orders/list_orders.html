@@ -2,9 +2,91 @@
 
 {% block content %}
     {% include 'inventory/inventory_navbar.html' %}
+
+<style>
+    :root {
+        --primary-color: #1a237e;
+        --accent-color: #fdd835;
+        --background-color: #121212;
+        --text-color: #e0e0e0;
+        --table-bg: #1e1e2f;
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    h1 {
+        color: var(--accent-color);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-success {
+        background-color: var(--accent-color);
+        border: none;
+        color: #000;
+    }
+
+    .btn-success:hover {
+        background-color: #ffeb3b;
+        color: #000;
+    }
+
+    /* Table Styling */
+    .table {
+        background-color: var(--table-bg);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background-color: var(--primary-color);
+        color: var(--text-color);
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(253, 216, 53, 0.2);
+    }
+
+    /* Button Styling */
+    .btn-primary, .btn-warning {
+        border-radius: 30px;
+        padding: 0.3rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+
+    .btn-warning {
+        background-color: #ff9800;
+        color: #fff;
+    }
+
+    /* Pagination */
+    .pagination .page-link {
+        color: var(--accent-color);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+</style>
+
 <div>
     <h1>Orders
-        <a href="{% url 'create_order' %}" style="padding: 0.5rem; border-radius: 50%; color: darkblue" class="btn btn-success ml-3">
+        <a href="{% url 'create_order' %}" class="btn btn-success ms-3 d-inline-flex align-items-center" style="padding: 0.5rem; border-radius: 50%;">
             <i class="fas fa-plus"></i>
         </a>
     </h1>
@@ -12,10 +94,10 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Order Number</th>
-                <th>Supplier</th>
-                <th>Date Created</th>
-                <th>Actions</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Supplier</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -26,9 +108,7 @@
                 <td onclick="window.location.href='{% url 'order_detail' order_number=order.order_number %}'">{{ order.created_at|date:"Y-m-d H:i" }}</td>
                 <td>
                     <a href="{% url 'download_lpo_pdf' order.order_number %}" class="btn btn-sm btn-primary">Download LPO</a>
-                    {% if order.is_received %}
-                        <a href="{% url 'download_receipt_pdf' order.order_number %}" class="btn btn-sm btn-secondary">Download Receipt</a>
-                    {% else %}
+                    {% if not order.is_received %}
                         <a href="{% url 'receive_stock' order.order_number %}" class="btn btn-sm btn-warning">Receive Stock</a>
                     {% endif %}
                 </td>
@@ -37,22 +117,23 @@
         </tbody>
     </table>
 
-    <div class="pagination">
-        <span class="step-links">
+    <!-- Pagination -->
+    <nav aria-label="Order pagination" class="mt-4 d-flex justify-content-center">
+        <ul class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
             {% endif %}
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
+            <li class="page-item active">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
             {% endif %}
-        </span>
-    </div>
+        </ul>
+    </nav>
 </div>
 {% endblock %}

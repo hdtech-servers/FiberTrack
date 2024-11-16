@@ -1,123 +1,131 @@
 {% extends 'base.html' %}
 
+{% load static %} <!-- Load the static tag -->
+
 {% block content %}
-            {% include 'hr/hr_navbar.html' %}
+    {% include 'hr/hr_navbar.html' %}
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-success">Employee Details: {{ employee.first_name }} {{ employee.last_name }}</h1>
-        <a href="{% url 'employee_list' %}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Employee List
-        </a>
-    </div>
-
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Personal Information</h5>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-darkblue">
+                {% if employee.profile_photo %}
+                    <img
+                        src="{{ employee.profile_photo.url }}"
+                        class="rounded-circle"
+                        alt="Profile Photo"
+                        width="50"
+                        height="50">
+                {% else %}
+                    <img
+                        src="{% static 'images/default-avatar.png' %}"
+                        class="rounded-circle"
+                        alt="Default Avatar"
+                        width="50"
+                        height="50">
+                {% endif %}
+                Employee Details: {{ employee.first_name }} {{ employee.last_name }}
+            </h1>
+            <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Employee List
+            </a>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>First Name:</strong> {{ employee.first_name }}</p>
-                    <p><strong>Last Name:</strong> {{ employee.last_name }}</p>
-                    <p><strong>Email:</strong> {{ employee.email }}</p>
-                    <p><strong>Phone:</strong> {{ employee.phone }}</p>
-                    <p><strong>Address:</strong> {{ employee.address }}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>National ID:</strong> {{ employee.national_id }}</p>
-                    <p><strong>Emergency Contact Name:</strong> {{ employee.emergency_contact_name }}</p>
-                    <p><strong>Emergency Contact Phone:</strong> {{ employee.emergency_contact_phone }}</p>
+
+        <!-- Personal Information -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-darkblue text-red">
+                <h5 class="mb-0">Personal Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>First Name:</strong> {{ employee.first_name }}</p>
+                        <p><strong>Last Name:</strong> {{ employee.last_name }}</p>
+                        <p><strong>Email:</strong> {{ employee.email }}</p>
+                        <p><strong>Phone:</strong> {{ employee.phone }}</p>
+                        <p><strong>Address:</strong> {{ employee.address }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>National ID:</strong> {{ employee.national_id }}</p>
+                        <p><strong>Emergency Contact Name:</strong> {{ employee.emergency_contact_name }}</p>
+                        <p><strong>Emergency Contact Phone:</strong> {{ employee.emergency_contact_phone }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Employment Information</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Department:</strong> {{ employee.department.name }}</p>
-                    <p><strong>Job Title:</strong> {{ employee.job_title }}</p>
+        <!-- Employment Information -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-darkblue text-black">
+                <h5 class="mb-0">Employment Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Department:</strong> {{ employee.department.name }}</p>
+                        <p><strong>Job Title:</strong> {{ employee.job_title }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Hire Date:</strong> {{ employee.hire_date|date:"Y-m-d" }}</p>
+                        <p><strong>Salary:</strong> KSh {{ employee.salary|floatformat:2 }}</p>
+                        <p><strong>Status:</strong>
+                            {% if employee.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <p><strong>Hire Date:</strong> {{ employee.hire_date|date:"Y-m-d" }}</p>
-                    <p><strong>Salary:</strong> KSh {{ employee.salary|floatformat:2 }}</p>
-                    <p><strong>Status:</strong>
-                        {% if employee.is_active %}
-                            <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+
+        <!-- Documents Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-darkblue text-black">
+                <h5 class="mb-0">Documents</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        {% if employee.profile_photo %}
+                            <p><strong>Profile Photo:</strong></p>
+                            <img src="{{ employee.profile_photo.url }}" class="img-thumbnail" alt="Profile Photo" width="150">
+                            <a href="{{ employee.profile_photo.url }}" class="btn btn-info mt-2" download>Download Profile Photo</a>
                         {% else %}
-                            <span class="badge badge-danger">Inactive</span>
+                            <p>No profile photo uploaded.</p>
                         {% endif %}
-                    </p>
+                    </div>
+                    <div class="col-md-6">
+                        {% if employee.id_scan_front %}
+                            <p><strong>ID Scan (Front):</strong></p>
+                            <img src="{{ employee.id_scan_front.url }}" class="img-thumbnail" alt="ID Scan Front" width="150">
+                            <a href="{{ employee.id_scan_front.url }}" class="btn btn-info mt-2" download>Download ID Scan (Front)</a>
+                        {% else %}
+                            <p>No ID Scan (Front) uploaded.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        {% if employee.id_scan_back %}
+                            <p><strong>ID Scan (Back):</strong></p>
+                            <img src="{{ employee.id_scan_back.url }}" class="img-thumbnail" alt="ID Scan Back" width="150">
+                            <a href="{{ employee.id_scan_back.url }}" class="btn btn-info mt-2" download>Download ID Scan (Back)</a>
+                        {% else %}
+                            <p>No ID Scan (Back) uploaded.</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if employee.additional_documents %}
+                            <p><strong>Additional Documents:</strong></p>
+                            <a href="{{ employee.additional_documents.url }}" class="btn btn-info" download>Download Document</a>
+                        {% else %}
+                            <p>No additional documents uploaded.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Bank Information</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Bank:</strong> {{ employee.bank }}</p>
-                    <p><strong>Branch:</strong> {{ employee.branch }}</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Account Number:</strong> {{ employee.account_number }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Photo and ID Scans -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Documents</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    {% if employee.profile_photo %}
-                        <p><strong>Profile Photo:</strong></p>
-                        <img src="{{ employee.profile_photo.url }}" class="img-thumbnail" alt="Profile Photo" width="150">
-                    {% else %}
-                        <p>No profile photo uploaded.</p>
-                    {% endif %}
-                </div>
-                <div class="col-md-6">
-                    {% if employee.id_scan_front %}
-                        <p><strong>ID Scan (Front):</strong></p>
-                        <img src="{{ employee.id_scan_front.url }}" class="img-thumbnail" alt="ID Scan Front" width="150">
-                    {% else %}
-                        <p>No ID Scan (Front) uploaded.</p>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    {% if employee.id_scan_back %}
-                        <p><strong>ID Scan (Back):</strong></p>
-                        <img src="{{ employee.id_scan_back.url }}" class="img-thumbnail" alt="ID Scan Back" width="150">
-                    {% else %}
-                        <p>No ID Scan (Back) uploaded.</p>
-                    {% endif %}
-                </div>
-                <div class="col-md-6">
-                    {% if employee.additional_documents %}
-                        <p><strong>Additional Documents:</strong></p>
-                        <a href="{{ employee.additional_documents.url }}" class="btn btn-info" download>Download Document</a>
-                    {% else %}
-                        <p>No additional documents uploaded.</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

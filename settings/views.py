@@ -3,30 +3,29 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import OrganizationSettings
 from .forms import (
-    OrganizationInfoForm, DarajaAPIForm, EmailServerForm, GoogleAPISettingsForm,
-    InvoiceSettingsForm, QuotationSettingsForm, CustomerSettingsForm, EmployeeSettingsForm
+    OrganizationInfoForm, MpesaC2BSettingsForm, MpesaB2CSettingsForm, MpesaB2BSettingsForm,
+    EmailServerSettingsForm, CustomizationSettingsForm
 )
 
-@login_required(login_url='/auth_app/login/')
+@login_required(login_url='/auth/login/')
 def settings_view(request):
+    """Display all settings with forms initialized with existing data."""
     organization_settings = OrganizationSettings.objects.first()
     if not organization_settings:
-        organization_settings = OrganizationSettings.objects.create()
+        organization_settings = OrganizationSettings.objects.create()  # Initialize settings if not present
 
     context = {
         'organization': organization_settings,
         'organization_info_form': OrganizationInfoForm(instance=organization_settings),
-        'daraja_api_form': DarajaAPIForm(instance=organization_settings),
-        'email_server_form': EmailServerForm(instance=organization_settings),
-        'google_api_form': GoogleAPISettingsForm(instance=organization_settings),
-        'invoice_settings_form': InvoiceSettingsForm(instance=organization_settings),
-        'quotation_settings_form': QuotationSettingsForm(instance=organization_settings),
-        'customer_settings_form': CustomerSettingsForm(instance=organization_settings),
-        'employee_settings_form': EmployeeSettingsForm(instance=organization_settings),
+        'mpesa_c2b_form': MpesaC2BSettingsForm(instance=organization_settings),
+        'mpesa_b2c_form': MpesaB2CSettingsForm(instance=organization_settings),
+        'mpesa_b2b_form': MpesaB2BSettingsForm(instance=organization_settings),
+        'email_server_form': EmailServerSettingsForm(instance=organization_settings),
+        'customization_form': CustomizationSettingsForm(instance=organization_settings),
     }
     return render(request, 'settings/settings_view.html', context)
 
-@login_required(login_url='/auth_app/login/')
+@login_required(login_url='/auth/login/')
 def edit_organization_info(request):
     organization_settings = OrganizationSettings.objects.first()
     if request.method == 'POST':
@@ -36,72 +35,52 @@ def edit_organization_info(request):
             messages.success(request, "Organization information updated successfully.")
     return redirect('settings_view')
 
-@login_required(login_url='/auth_app/login/')
-def edit_daraja_api(request):
+@login_required(login_url='/auth/login/')
+def edit_mpesa_c2b(request):
     organization_settings = OrganizationSettings.objects.first()
     if request.method == 'POST':
-        form = DarajaAPIForm(request.POST, instance=organization_settings)
+        form = MpesaC2BSettingsForm(request.POST, instance=organization_settings)
         if form.is_valid():
             form.save()
-            messages.success(request, "Daraja API settings updated successfully.")
+            messages.success(request, "M-Pesa C2B settings updated successfully.")
     return redirect('settings_view')
 
-@login_required(login_url='/auth_app/login/')
+@login_required(login_url='/auth/login/')
+def edit_mpesa_b2c(request):
+    organization_settings = OrganizationSettings.objects.first()
+    if request.method == 'POST':
+        form = MpesaB2CSettingsForm(request.POST, instance=organization_settings)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "M-Pesa B2C settings updated successfully.")
+    return redirect('settings_view')
+
+@login_required(login_url='/auth/login/')
+def edit_mpesa_b2b(request):
+    organization_settings = OrganizationSettings.objects.first()
+    if request.method == 'POST':
+        form = MpesaB2BSettingsForm(request.POST, instance=organization_settings)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "M-Pesa B2B settings updated successfully.")
+    return redirect('settings_view')
+
+@login_required(login_url='/auth/login/')
 def edit_email_server(request):
     organization_settings = OrganizationSettings.objects.first()
     if request.method == 'POST':
-        form = EmailServerForm(request.POST, instance=organization_settings)
+        form = EmailServerSettingsForm(request.POST, instance=organization_settings)
         if form.is_valid():
             form.save()
             messages.success(request, "Email server settings updated successfully.")
     return redirect('settings_view')
 
-@login_required(login_url='/auth_app/login/')
-def edit_google_api(request):
+@login_required(login_url='/auth/login/')
+def edit_customization_settings(request):
     organization_settings = OrganizationSettings.objects.first()
     if request.method == 'POST':
-        form = GoogleAPISettingsForm(request.POST, instance=organization_settings)
+        form = CustomizationSettingsForm(request.POST, instance=organization_settings)
         if form.is_valid():
             form.save()
-            messages.success(request, "Google API settings updated successfully.")
-    return redirect('settings_view')
-
-@login_required(login_url='/auth_app/login/')
-def edit_invoice_settings(request):
-    organization_settings = OrganizationSettings.objects.first()
-    if request.method == 'POST':
-        form = InvoiceSettingsForm(request.POST, instance=organization_settings)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Invoice settings updated successfully.")
-    return redirect('settings_view')
-
-@login_required(login_url='/auth_app/login/')
-def edit_quotation_settings(request):
-    organization_settings = OrganizationSettings.objects.first()
-    if request.method == 'POST':
-        form = QuotationSettingsForm(request.POST, instance=organization_settings)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Quotation settings updated successfully.")
-    return redirect('settings_view')
-
-@login_required(login_url='/auth_app/login/')
-def edit_customer_settings(request):
-    organization_settings = OrganizationSettings.objects.first()
-    if request.method == 'POST':
-        form = CustomerSettingsForm(request.POST, instance=organization_settings)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Customer settings updated successfully.")
-    return redirect('settings_view')
-
-@login_required(login_url='/auth_app/login/')
-def edit_employee_settings(request):
-    organization_settings = OrganizationSettings.objects.first()
-    if request.method == 'POST':
-        form = EmployeeSettingsForm(request.POST, instance=organization_settings)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Employee settings updated successfully.")
+            messages.success(request, "Customization settings updated successfully.")
     return redirect('settings_view')

@@ -2,6 +2,7 @@
 
 {% block content %}
 {% include 'inventory/inventory_navbar.html' %}
+
 <div>
     <h1>
         Suppliers
@@ -71,6 +72,7 @@
             <div class="modal-body">
                 <form method="post" action="{% url 'add_supplier' %}">
                     {% csrf_token %}
+                    <!-- Supplier Information Fields -->
                     <div class="mb-3">
                         <label for="id_name" class="form-label">Name</label>
                         <input type="text" name="name" id="id_name" class="form-control" placeholder="Supplier Name" required>
@@ -103,6 +105,34 @@
                         <label for="id_notes" class="form-label">Notes</label>
                         <textarea name="notes" id="id_notes" class="form-control" placeholder="Additional Notes"></textarea>
                     </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="mb-3">
+                        <label for="id_payment_method" class="form-label">Payment Method</label>
+                        <select name="payment_method" id="id_payment_method" class="form-select">
+                            <option value="">Select Payment Method</option>
+                            <option value="Paybill">Paybill</option>
+                            <option value="Till">Till (Buy Goods)</option>
+                            <option value="Phone">Phone Number</option>
+                        </select>
+                    </div>
+
+                    <!-- Payment Method-Specific Fields -->
+                    <div class="mb-3" id="paybill-fields" style="display: none;">
+                        <label for="id_paybill_number" class="form-label">Paybill Number</label>
+                        <input type="text" name="paybill_number" id="id_paybill_number" class="form-control" placeholder="Paybill Number">
+                        <label for="id_account_number" class="form-label">Account Number</label>
+                        <input type="text" name="account_number" id="id_account_number" class="form-control" placeholder="Account Number">
+                    </div>
+                    <div class="mb-3" id="till-field" style="display: none;">
+                        <label for="id_till_number" class="form-label">Till Number</label>
+                        <input type="text" name="till_number" id="id_till_number" class="form-control" placeholder="Till Number">
+                    </div>
+                    <div class="mb-3" id="phone-field" style="display: none;">
+                        <label for="id_phone_payment_number" class="form-label">Phone Number</label>
+                        <input type="text" name="phone_payment_number" id="id_phone_payment_number" class="form-control" placeholder="Phone Number">
+                    </div>
+
                     <button type="submit" class="btn btn-primary w-100">Add Supplier</button>
                 </form>
             </div>
@@ -162,6 +192,13 @@
             const text = row.innerText.toLowerCase();
             row.style.display = text.includes(filter) ? "" : "none";
         });
+    });
+
+    // Toggle Payment Fields Based on Payment Method
+    document.getElementById("id_payment_method").addEventListener("change", function() {
+        document.getElementById("paybill-fields").style.display = this.value === "Paybill" ? "block" : "none";
+        document.getElementById("till-field").style.display = this.value === "Till" ? "block" : "none";
+        document.getElementById("phone-field").style.display = this.value === "Phone" ? "block" : "none";
     });
 
     // Delete Supplier Modal

@@ -3,19 +3,19 @@
 {% block content %}
     {% include 'hr/hr_navbar.html' %}
 
-    <div>
+    <div class="container mt-5">
+        <!-- Header Section -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 >Attendance
-            <button style="padding: 0.5rem; border-radius: 50%;" class="btn btn-success" data-toggle="modal" data-target="#addAttendanceModal">
-                <i class="fas fa-plus"></i>
+            <h1 class="text-darkblue">Attendance</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAttendanceModal">
+                <i class="fas fa-plus"></i> Add Attendance
             </button>
-            </h1>
-
         </div>
 
+        <!-- Attendance Table -->
         <div class="table-responsive">
-            <table class="table table-hover table-striped mt-3">
-                <thead class="bg-success text-white">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="bg-darkblue text-white">
                     <tr>
                         <th>Employee</th>
                         <th>Date</th>
@@ -24,16 +24,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for record in page_obj %}
+                    {% for record in attendance_records %}
                     <tr>
                         <td>{{ record.employee.first_name }} {{ record.employee.last_name }}</td>
                         <td>{{ record.date }}</td>
-                        <td>{{ record.status }}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editAttendanceModal{{ record.id }}">
+                            <span class="badge {% if record.status == 'Present' %}bg-success{% elif record.status == 'Absent' %}bg-danger{% else %}bg-warning{% endif %}">
+                                {{ record.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAttendanceModal{{ record.id }}">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteAttendanceModal{{ record.id }}">
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAttendanceModal{{ record.id }}">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                         </td>
@@ -45,19 +49,17 @@
                             <div class="modal-content">
                                 <div class="modal-header bg-warning text-white">
                                     <h5 class="modal-title" id="editAttendanceModalLabel{{ record.id }}">Edit Attendance</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form method="post" action="{% url 'attendance_edit' record.id %}">
                                     {% csrf_token %}
                                     <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="date">Date</label>
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Date</label>
                                             <input type="date" name="date" class="form-control" value="{{ record.date }}" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="status">Status</label>
+                                        <div class="mb-3">
+                                            <label for="status" class="form-label">Status</label>
                                             <select name="status" class="form-control">
                                                 <option value="Present" {% if record.status == 'Present' %}selected{% endif %}>Present</option>
                                                 <option value="Absent" {% if record.status == 'Absent' %}selected{% endif %}>Absent</option>
@@ -66,7 +68,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-warning">Save Changes</button>
                                     </div>
                                 </form>
@@ -80,9 +82,7 @@
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
                                     <h5 class="modal-title" id="deleteAttendanceModalLabel{{ record.id }}">Delete Attendance</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     Are you sure you want to delete the attendance record for {{ record.employee.first_name }} {{ record.employee.last_name }} on {{ record.date }}?
@@ -91,7 +91,7 @@
                                     <form method="post" action="{% url 'attendance_delete' record.id %}">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -106,29 +106,29 @@
         <div class="modal fade" id="addAttendanceModal" tabindex="-1" aria-labelledby="addAttendanceModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
+                    <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title" id="addAttendanceModalLabel">Add Attendance</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" action="{% url 'attendance_add' %}">
                         {% csrf_token %}
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="employee">Employee</label>
-                                <select name="employee" class="form-control">
+                            <!-- Dropdown for Employee Selection -->
+                            <div class="mb-3">
+                                <label for="employee" class="form-label">Select Employee</label>
+                                <select id="employee" name="employee" class="form-control">
+                                    <option value="">-- Select Employee --</option>
                                     {% for employee in employees %}
                                     <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="date">Date</label>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Date</label>
                                 <input type="date" name="date" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
                                 <select name="status" class="form-control">
                                     <option value="Present">Present</option>
                                     <option value="Absent">Absent</option>
@@ -137,8 +137,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Add Attendance</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Attendance</button>
                         </div>
                     </form>
                 </div>
@@ -146,20 +146,28 @@
         </div>
 
         <!-- Pagination -->
-        <div class="pagination mt-3">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; First</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if attendance_records.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ attendance_records.previous_page_number }}">Previous</a>
+                </li>
                 {% endif %}
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ attendance_records.number }} of {{ attendance_records.paginator.num_pages }}</span>
+                </li>
+                {% if attendance_records.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ attendance_records.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ attendance_records.paginator.num_pages }}">Last &raquo;</a>
+                </li>
                 {% endif %}
-            </span>
-        </div>
+            </ul>
+        </nav>
     </div>
 {% endblock %}

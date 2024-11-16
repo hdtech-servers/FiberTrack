@@ -1,71 +1,80 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        {% include 'hr/hr_navbar.html' %}
+    {% include 'hr/hr_navbar.html' %}
 
-<div>
-    <h1>
-        Departments
-    <!-- Add Department Button to trigger modal -->
-    <button style="padding: 0.5rem; border-radius: 50%;" type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addDepartmentModal" >
-        <i class="fas fa-plus"></i>
-    </button>
-    </h1>
+    <div class="container mt-5">
+        <h1 class="d-flex justify-content-between align-items-center">
+            Departments
+            <!-- Add Department Button -->
+            <button type="button" class="btn btn-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                <i class="fas fa-plus"></i>
+            </button>
+        </h1>
 
+        <!-- Departments Table -->
+        <table class="table table-hover table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in departments %}
+                <tr>
+                    <td>{{ department.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <!-- Departments Table -->
-    <table class="table table-hover table-striped">
-        <thead class="thead-green">
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for department in departments %}
-            <tr>
-                <td>{{ department.name }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <!-- Pagination -->
+        <nav aria-label="Departments Pagination">
+            <ul class="pagination justify-content-center">
+                {% if departments.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ departments.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
 
-    <!-- Pagination -->
-    <div class="pagination">
-        {% if departments.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ departments.previous_page_number }}">previous</a>
-        {% endif %}
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ departments.number }} of {{ departments.paginator.num_pages }}</span>
+                </li>
 
-        <span>Page {{ departments.number }} of {{ departments.paginator.num_pages }}</span>
-
-        {% if departments.has_next %}
-            <a href="?page={{ departments.next_page_number }}">next</a>
-            <a href="?page={{ departments.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
+                {% if departments.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ departments.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ departments.paginator.num_pages }}">Last &raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
-</div>
 
-<!-- Add Department Modal -->
-<div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="addDepartmentModalLabel">Add Department</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- Add Department Modal -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="addDepartmentModalLabel">Add Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'department_add' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Department</button>
+                    </div>
+                </form>
             </div>
-            <form method="post" action="{% url 'department_add' %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    {{ form.as_p }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Save Department</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 {% endblock %}

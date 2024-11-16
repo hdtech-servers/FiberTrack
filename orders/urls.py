@@ -10,8 +10,6 @@ urlpatterns = [
     path('', views.list_orders, name='list_orders'),
     path('receive/<str:order_number>/', views.receive_stock, name='receive_stock'),
     path('download_lpo_pdf/<str:order_number>/', views.generate_lpo_pdf, name='download_lpo_pdf'),
-    path('download_receipt_pdf/<str:order_number>/', views.generate_receipt_pdf, name='download_receipt_pdf'),
     path('order/<str:order_number>/pdf/', views.generate_lpo_pdf, name='generate_lpo_pdf'),
-    path('order/<str:order_number>/receipt/', views.generate_receipt_pdf, name='generate_receipt_pdf'),
 
 ]
