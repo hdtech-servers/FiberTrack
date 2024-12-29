@@ -23,43 +23,51 @@ def render_modal_form(request, template_name, form):
     })
 
 
-### Dashboard ###
+from django.db.models.functions import ExtractMonth
+
 @login_required
 def dashboard(request):
-    # Total Expenses
-    total_expenses = Expense.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+    # Current Month Total Expenses
+    current_month = now().month
+    current_year = now().year
+    current_month_expenses = (
+        Expense.objects.filter(date__month=current_month, date__year=current_year)
+        .aggregate(Sum('amount'))['amount__sum'] or 0
+    )
 
     # Recent Expenses
     recent_expenses = Expense.objects.order_by('-date')[:3]
 
     # Category Breakdown
     category_data = (
-        Expense.objects.values('category__name')
+        Expense.objects.filter(date__month=current_month, date__year=current_year)
+        .values('category__name')
         .annotate(total_amount=Sum('amount'))
         .order_by('-total_amount')
     )
     category_labels = [data['category__name'] for data in category_data]
-    category_values = [float(data['total_amount']) for data in category_data]  # Convert Decimal to float
+    category_values = [float(data['total_amount']) for data in category_data]
 
-    # Monthly Expense Trend
-    current_year = now().year
+    # Monthly Expense Trend (Bar Chart with Abbreviations)
     monthly_data = (
         Expense.objects.filter(date__year=current_year)
-        .values('date__month')
+        .annotate(month=ExtractMonth('date'))
+        .values('month')
         .annotate(total_amount=Sum('amount'))
-        .order_by('date__month')
+        .order_by('month')
     )
-    month_labels = [f"Month {data['date__month']}" for data in monthly_data]
-    month_values = [float(data['total_amount']) for data in monthly_data]  # Convert Decimal to float
+    month_labels = [month_abbr[data['month']] for data in monthly_data]  # Abbreviated month names
+    month_values = [float(data['total_amount']) for data in monthly_data]
 
     return render(request, 'expenses/dashboard.html', {
-        'total_expenses': total_expenses,
+        'current_month_expenses': current_month_expenses,
         'recent_expenses': recent_expenses,
         'category_labels': json.dumps(category_labels),
         'category_values': json.dumps(category_values),
         'month_labels': json.dumps(month_labels),
         'month_values': json.dumps(month_values),
     })
+
 @login_required
 def expense_trend_data(request):
     period = request.GET.get('period', 'daily')  # Default to 'daily'
@@ -182,21 +190,22 @@ def create_expense(request):
     else:
         form = ExpenseForm()
     return render_modal_form(request, 'expenses/partial_expense_create.html', form)
-@login_required
+
 def update_expense(request, expense_id):
     expense = get_object_or_404(Expense, id=expense_id)
+
     if request.method == 'POST':
-        form = ExpenseForm(request.POST, request.FILES, instance=expense)
+        form = ExpenseForm(request.POST, instance=expense)
         if form.is_valid():
-            expense.last_updated_by = request.user
-            expense.save()
-            messages.success(request, "Expense updated successfully.")
+            form.save()
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
     else:
         form = ExpenseForm(instance=expense)
-    return render_modal_form(request, 'expenses/partial_expense_update.html', form)
+        return JsonResponse({
+            'html_form': render(request, 'expenses/partial_expense_form.html', {'form': form}).content.decode('utf-8')
+        })
 
 
 @login_required
